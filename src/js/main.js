@@ -3,7 +3,7 @@
 let rowIndex, rowData;
 const notyf = new Notyf();
 
-//init shop table and load data
+//init shop table and load datas
 let t1= $('#shopTable').DataTable( {
     "columnDefs": [
         { "width": "30%", "targets": 0},
