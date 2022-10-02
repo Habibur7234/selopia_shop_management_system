@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @@include('./_head.html', {
+    "path": "../..",
+    "title": "Shop"
+    })
+    <link href="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.7/js/jquery.dataTables.min.js"></script>
+
+</head>
+
+
+<style>
+    input:invalid:not(:placeholder-shown) {
+        border: 2px solid #e00808 !important;
+    }
+
+    input:invalid:not(:placeholder-shown) + [data-validation-text] {
+        color: #e37932 !important;
+        display: block;
+    }
+
+    [data-validation-text] {
+        display: none;
+    }
+    .table td {
+        word-break: break-word !important;
+        white-space: normal;
+    }
+
+</style>
+
+
+<body>
+<!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+@@include('./dashboard/_nav.html', {
+"path": "../.."
+})
+
+@@include('./dashboard/_sidenav.html', {
+"path": "../..",
+"page": "shop",
+"page_group": "dashboard"
+})
+
+<main class="content">
+
+    @@include('./dashboard/_topbar.html', {
+    "path": "../.."
+    })
+
+
+        <div>
+            <div class="py-4">
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    </ol>
+                </nav>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                    <div class="mb-3 mb-lg-0">
+                        <h1 class="h4" >Shop Information</h1>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--Add Form modal-->
+            <div class="modal fade" id="Submit_shop_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body p-0">
+                            <div class="card p-3 p-lg-4">
+                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="text-center text-md-center mb-4 mt-md-0">
+                                    <h1 class="mb-0 h3">Add New Shop</h1>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="card border-0 shadow components-section">
+                                        <div class="card-body">
+                                            <div class="row mb-4">
+                                                <div class="col-lg-12 col-sm-6">
+                                                    <!-- Form -->
+                                                    <form id="shop_form" method="POST">
+                                                        <div class="col-lg-12 col-sm-10 mb2">
+                                                            <label for="name">Shop Name</label>
+                                                            <input type="text" class="form-control"  title="Please enter Valid Name" name="name" id="name" pattern="[a-z A-Z]{2,50}" placeholder="Shop name.." required>
+                                                            <span data-validation-text>Please put a valid shop name !</span>
+                                                        </div>
+                                                        <div class="col-lg-12 col-sm-10 mb2">
+                                                            <label for="branch">Branch Name</label>
+                                                            <input type="text" class="form-control" name="branch" id="branch"  placeholder="Branch name.." required>
+                                                            <span data-validation-text>Please put a valid branch name !</span>
+                                                        </div>
+                                                        <div class="col-lg-12 col-sm-10 mb2">
+                                                            <label for="address">Location</label>
+
+                                                            <input type="text" class="form-control"  name="address" id="address"  pattern="[0-9,a-z A-Z,.()/-]{3,150}$" placeholder="Location.." required>
+                                                            <span data-validation-text>Please put a valid address !</span>
+                                                        </div>
+                                                        <button type="button" id="post_modal_id" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                            Submit
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table-->
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <table class="table table-flush wrap " id="shopTable" style="width: 100%; table-layout: fixed">
+                    <thead class="thead-light">
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Branch</th>
+                        <th>Location</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+
+
+     <!--Upgreate Shop-->
+
+            <div class="modal fade" id="update_shop_modal1" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body p-0">
+                            <div class="card p-3 p-lg-4">
+                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="text-center text-md-center mb-4 mt-md-0">
+                                    <h1 class="mb-0 h3">Update Shop</h1>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="card border-0 shadow components-section">
+                                        <div class="card-body">
+                                            <div class="row mb-4">
+                                                <div class="col-lg-12 col-sm-6">
+                                                    <!-- Form -->
+                                                    <form id="modal_form" method="PUT">
+                                                        <div class="col-lg-12 col-sm-10 mb2">
+                                                            <label  for="name">Shop Name</label>
+                                                            <input id="editName" class="form-control" required type="text">
+                                                        </div>
+                                                        <div class="col-lg-12 col-sm-10 mb2">
+                                                            <label  for="Branch">Branch Name</label>
+                                                            <input id="editBranch" class="form-control" required type="text">
+                                                        </div>
+                                                        <div class="col-lg-12 col-sm-10 mb2">
+                                                            <label for="address">Shop Location</label>
+                                                            <input id="editAddress" class="form-control" required type="text">
+                                                        </div>
+
+                                                        <button type="button" id="update_modal_id" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                            Update Info
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--delete Modal-->
+            <div class="modal fade" id="delete_shop_modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="h5 modal-title">Delete Shop</h2>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete your shop?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link text-gray ms-auto" data-bs-dismiss="modal">Close</button>
+                            <button type="button"  id="delete_modal_id" class="btn btn-secondary" >Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+
+
+    @@include('./dashboard/_footer.html', {
+    "path": "../..",
+    "classes": "text-dark"
+    })
+
+
+
+
+</main>
+
+@@include('./_scripts.html', {
+"path": "../.."
+})
+
+</body>
+</html>
+

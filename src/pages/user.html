@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @@include('./_head.html', {
+    "path": "../..",
+    "title": "Shop"
+    })
+</head>
+
+<body>
+<!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+@@include('./dashboard/_nav.html', {
+"path": "../.."
+})
+
+@@include('./dashboard/_sidenav.html', {
+"path": "../..",
+"page": "user",
+"page_group": "dashboard"
+})
+
+<main class="content">
+
+    @@include('./dashboard/_topbar.html', {
+    "path": "../.."
+    })
+
+
+    <div>
+
+        <div class="py-4">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#">User</a></li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between w-100 flex-wrap">
+                <div class="mb-3 mb-lg-0">
+                    <h1 class="h4" >Create New User</h1>
+                    <p class="mb-0">Add New User Information </p>
+                </div>
+                <!--                <div>-->
+                <!--                    <a href="https://themesberg.com/docs/volt-bootstrap-5-dashboard/components/forms/" class="btn btn-outline-gray"><i class="far fa-question-circle me-1"></i> Forms Docs</a>-->
+                <!--                </div>-->
+            </div>
+        </div>
+
+        <div class="col-12 mb-4">
+            <div class="card border-0 shadow components-section">
+                <div class="card-body">
+                    <div class="cointaner">
+                        <div class="row">
+                            <div class="col-6 sm-2 offset-3">
+                                <div class="text-center text-md-center mb-4 mt-md-0">
+                                    <h1 class="mb-0 h3">User Details</h1>
+                                </div>
+                                <form action="#" class="mt-4">
+                                    <!-- Form -->
+                                    <div class="form-group mb-4">
+                                        <label for="text">First Name:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Name.." id="text" autofocus required>
+                                        </div>
+                                    </div>
+                                    <!-- End of Form -->
+                                    <div class="form-group mb-4">
+                                        <label for="text"> Last Name:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Name.." id="text" autofocus required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="email">Email:</label>
+                                        <div class="input-group">
+
+                                            <input type="email" class="form-control" placeholder="Someone@something.com.." id="text" autofocus required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="text">User Name:</label>
+                                        <div class="input-group">
+
+                                            <input type="text" class="form-control" placeholder="User Name.." id="text" autofocus required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="number">National Id:</label>
+                                        <div class="input-group">
+
+                                            <input type="number" class="form-control" placeholder="Nid.." id="email" autofocus required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="number">Contact No:</label>
+                                        <div class="input-group">
+
+                                            <input type="number" class="form-control" placeholder="Number.." id="number" autofocus required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <!-- Form -->
+                                        <div class="form-group mb-4">
+                                            <label for="password">Password</label>
+                                            <div class="input-group">
+                                                <input type="password" placeholder="Password" class="form-control" id="password" required>
+                                            </div>
+                                        </div>
+                                        <!-- End of Form -->
+                                        <!-- Form -->
+                                        <div class="form-group mb-4">
+                                            <label for="confirm_password">Confirm Password</label>
+                                            <div class="input-group">
+                                                <input type="password" placeholder="Confirm Password" class="form-control" id="confirm_password" required>
+                                            </div>
+                                        </div>
+                                        <!-- End of Form -->
+                                        <div class="mb-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="remember">
+                                                <label class="form-check-label fw-normal mb-0" for="remember">
+                                                    I agree to the <a href="#" class="fw-bold">terms and conditions</a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-gray-800 mb-4">Create User</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="py-4">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+
+            <div class="d-flex justify-content-between w-100 flex-wrap">
+                <div class="mb-3 mb-lg-0">
+                    <h1 class="h4 ">User Information Table</h1>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="card border-0 shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                    <tr>
+                        <th class="border-0 rounded-start">Name</th>
+                        <th class="border-0">User Name</th>
+                        <th class="border-0">Email</th>
+                        <th class="border-0 rounded-end">National ID</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Item -->
+                    <tr>
+                        <td class="border-0">
+                            <div><span class="h6"><a data-bs-toggle="modal" data-bs-target="modal-form">Habibur Rahman</a></span></div>
+                            <!-- User Modal Content -->
+                            <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body p-0">
+                                            <div class="card p-3 p-lg-4">
+                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <div class="text-center text-md-center mb-4 mt-md-0">
+                                                    <h1 class="mb-0 h4">Delete User </h1>
+                                                </div>
+                                                <form action="#" class="mt-4">
+                                                    <!-- Form -->
+                                                    <div class="form-group mb-4">
+                                                        <label for="email">Name</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Habibur" id="email" autofocus required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of Form -->
+                                                    <div class="form-group">
+                                                        <!-- Form -->
+                                                        <div class="form-group mb-4">
+                                                            <label for="password">User Name</label>
+                                                            <div class="input-group">
+                                                                <input type="text" placeholder="Habibue723" class="form-control" id="password" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group mb-4">
+                                                            <label for="email">Email</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="habibur@gmail.com" id="text" autofocus required>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group mb-4">
+                                                            <label for="email">National Id</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="12345678969" id="text" autofocus required>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End of Form -->
+                                                    </div>
+                                                    <div class="d-grid">
+                                                        <button type="submit" class="btn btn-danger my-4">Delete User</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- End of Modal Content -->
+                        </td>
+                        <td class="border-0 font-weight-bold">Habibur723</td>
+                        <td class="border-0 ">
+                            <span class="fas fa-angle-down"></span>
+                            <span class="font-weight-bold">habibur@gmail.com</span>
+                        </td>
+
+                        <td class="border-0 ">
+                            <span class="fas fa-angle-down"></span>
+                            <span class="font-weight-bold">12345678969</span>
+                        </td>
+                        <td class="border-0">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-placement="bottom" data-bs-target="#Edit-Modal" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+
+                            <!--Edit modal-->
+
+                            <div class="modal fade" id="Edit-Modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body p-0">
+                                            <div class="card p-3 p-lg-4">
+                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <div class="text-center text-md-center mb-4 mt-md-0">
+                                                    <h1 class="mb-0 h4">Edit User Information</h1>
+                                                </div>
+                                                <form action="#" class="mt-4">
+                                                    <!-- Form -->
+                                                    <div class="form-group mb-4">
+                                                        <label for="email">Name</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Habibur" id="email" autofocus required>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End of Form -->
+                                                    <div class="form-group">
+                                                        <!-- Form -->
+                                                        <div class="form-group mb-4">
+                                                            <label for="password">User Name</label>
+                                                            <div class="input-group">
+                                                                <input type="text" placeholder="Habibue723" class="form-control" id="password" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group mb-4">
+                                                            <label for="email">Email</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="habibur@gmail.com" id="text" autofocus required>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group mb-4">
+                                                            <label for="email">National Id</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="12345678969" id="text" autofocus required>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End of Form -->
+                                                    </div>
+                                                    <div class="d-grid">
+                                                        <button type="submit" class="btn btn-success my-4">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Delete Modal-->
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-placement="bottom" data-bs-target="#modal-form" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </td>
+
+                    <!-- End of Item -->
+                    <!-- Item -->
+                    <tr>
+                        <td class="border-0">
+                            <div><span class="h6">Nahid Hasan</span></div>
+                        </td>
+                        <td class="border-0 font-weight-bold">Nahid1234</td>
+                        <td class="border-0 ">
+                            <span class="fas fa-angle-up"></span>
+                            <span class="font-weight-bold">nahid@gmail.com</span>
+                        </td>
+                        <td class="border-0 ">
+                            <span class="fas fa-angle-down"></span>
+                            <span class="font-weight-bold">12345678969</span>
+                        </td>
+                        <td class="border-0">
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+                            <button class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </td>
+                    </tr>
+                    <!-- End of Item -->
+                    <!-- Item -->
+                    <tr>
+                        <td class="border-0">
+                            <div><span class="h6">Shawon Islam</span></div>
+                        </td>
+                        <td class="border-0 font-weight-bold">Shanon007</td>
+                        <td class="border-0 ">
+                            <span class="fas fa-angle-up"></span>
+                            <span class="font-weight-bold">shawon@gmail.com</span>
+                        </td>
+                        <td class="border-0 ">
+                            <span class="fas fa-angle-down"></span>
+                            <span class="font-weight-bold">10000278969</span>
+                        </td>
+                        <td class="border-0">
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+                            <button class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    @@include('./dashboard/_footer.html', {
+    "path": "../..",
+    "classes": "text-dark"
+    })
+</main>
+
+@@include('./_scripts.html', {
+"path": "../.."
+})
+
+</body>
+</html>

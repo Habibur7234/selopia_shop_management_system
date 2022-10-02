@@ -1,0 +1,200 @@
+
+// global variable for storing index and data
+let rowIndex, rowData;
+const notyf = new Notyf();
+
+// hello
+
+//init shop table and load data
+let t1= $('#shopTable').DataTable( {
+    "columnDefs": [
+        { "width": "30%", "targets": 0},
+        { "width": "12%", "targets": 1},
+        { "width": "7%", "targets": 3}
+
+    ],
+    ajax: {
+        url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/supeshop',
+        dataSrc: '',
+    },
+    rowId: 'id',
+    dom: 'Blfrtip',
+    buttons: [
+        'excel', 'pdf', 'print',
+        '<button id="edit_button_id"  class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#Submit_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+    ],
+    columns: [
+        { data: 'name' },
+        { data: 'branch' },
+        { data: 'address' },
+        {data: 'id',
+            render: function(){
+                return '<button id="edit_button_id"  class="btn btn-primary  " type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal1" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                    +'<button   id="delete_button_id"  class="btn btn-danger " data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+            }
+        },
+    ]
+});
+
+
+//Update Data
+$(document).ready(function () {
+    // edit button
+    $('#shopTable tbody').on('click', '#edit_button_id', function () {
+        // getting parent row index and data
+        rowIndex = t1.row($(this).parents('tr')).index();
+        rowData =  t1.row($(this).parents('tr')).data();
+        // setting row values to modal input boxes
+        $("#editName").val(rowData.name);
+        $("#editBranch").val(rowData.branch);
+        $("#editAddress").val(rowData.address);
+    })
+    // Update submit button
+    $("#update_modal_id").click(function(){
+        // setting updated input value
+        rowData.name = $("#editName").val();
+        rowData.branch = $("#editBranch").val();
+        rowData.address = $("#editAddress").val();
+        // Change onclick Button text
+        $(this).text('Updating...');
+
+        $.ajax({
+            url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/supeshop/' + rowData.id,
+            type: 'PUT',
+            data: rowData,
+            dataType: "json",
+            success: function()
+            {
+                // hide modal
+                const modal = bootstrap.Modal.getInstance($("#update_shop_modal1"));
+                modal.hide();
+                //Set default button text again
+                $("#update_modal_id").text('Update Info');
+                // update datatable
+                t1.row(rowIndex).data( rowData ).draw();
+                //Notification
+                notyf.success({
+                    message: 'Shop  Update <strong>Successfully !</strong>',
+                    duration: 7000,
+                    icon: false
+                });
+                // reset variable value
+                rowIndex = undefined;
+                rowData = undefined;
+
+
+            },
+            error: function()
+            {
+                //Set default button text again
+                $("#update_modal_id").text('Update Info');
+                //Notification
+                notyf.error({
+                    message: "<strong>Warning !</strong> Can't update shop",
+                    duration: 7000,
+                    icon: false
+                });
+            },
+        });
+    })
+});
+
+//task
+// error message in modal
+
+// number of row select hidden now - fix
+
+
+
+//Post New Data
+
+$(document).ready(function () {
+    $("#post_modal_id").click(function(){
+        // change button name on submit
+        $(this).text('Submitting..');
+        let formPostModalData = {
+            name: $("#name").val(),
+            branch: $("#branch").val(),
+            address: $("#address").val(),
+        };
+
+
+        $.ajax({
+            url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/supeshop',
+            type: 'POST',
+            data: formPostModalData,
+            dataType: "json",
+            success: function()
+            {
+                //add row from input fields
+                t1.row.add(formPostModalData).draw();
+                $("#post_modal_id").text('Submit');
+                const modal = bootstrap.Modal.getInstance($("#Submit_shop_modal"));
+                modal.hide();
+                //reset input Field
+
+                $('form :input').val('');
+                  $('.input').val('');
+                //Success Notification
+                notyf.success({
+                    message: 'New Shop Added  <strong>Successfully !</strong>',
+                    duration: 7000,
+                    icon: false
+                });
+            },
+            error: function()
+            {
+                $("#post_modal_id").text('Submit');
+
+                notyf.error({
+                    message: "<strong>Warning !</strong> Can't add shop",
+                    duration: 7000,
+                    icon: false
+                });
+            },
+        });
+    })
+});
+
+//Delete Data
+
+$(document).ready(function () {
+    // edit button
+    $('#shopTable tbody').on('click', '#delete_button_id', function () {
+        rowData =  t1.row($(this).parents('tr')).data();
+        rowIndex = t1.row($(this).parents('tr')).index();
+        $("#delete_modal_id").click(function() {
+
+            $(this).text('Deleting...');
+            $.ajax({
+                url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/supeshop/' + rowData.id,
+                type: 'DELETE',
+                dataType: "json",
+                success: function()
+                {
+                    //Remove Row
+                    t1.row(rowIndex).data( rowData ).remove().draw();
+                    const modal = bootstrap.Modal.getInstance($("#delete_shop_modal"));
+                    modal.hide();
+                    $("#delete_modal_id").text('Delete');
+                    notyf.success({
+                        message: 'Shop  Delete <strong>Successfully !</strong>',
+                        duration: 7000,
+                        icon: false
+                    });
+
+                },
+                error: function()
+                {
+                    $("#delete_modal_id").text('Delete');
+                    notyf.error({
+                        message: "<strong>Warning !</strong> Can't Delete shop",
+                        duration: 7000,
+                        icon: false
+                    });
+                },
+            });
+            reset();
+        });
+    });
+});

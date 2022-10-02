@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    @@include('./_head.html', {
+    "path": "../..",
+    "title": "Salesman"
+    })
+    <script src="../../gulpfile.js"></script>
+
+
+</head>
+
+<body>
+
+<style>
+    input:invalid:not(:placeholder-shown) {
+        border: 2px solid #e00808 !important;
+    }
+
+    input:invalid:not(:placeholder-shown) + [data-validation-text] {
+        color: #e37932 !important;
+        display: block;
+    }
+
+    [data-validation-text] {
+        display: none;
+    }
+    .table td {
+        word-break: break-word !important;
+        white-space: normal;
+    }
+
+</style>
+
+<!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+@@include('./dashboard/_nav.html', {
+"path": "../.."
+})
+
+@@include('./dashboard/_sidenav.html', {
+"path": "../..",
+"page": "salesman",
+"page_group": "dashboard"
+})
+
+<main class="content">
+
+    @@include('./dashboard/_topbar.html', {
+    "path": "../.."
+    })
+        <div>
+            <div class="py-4">
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                        <li class="breadcrumb-item">
+                            <a href="#">
+                                <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="#">Salesman</a></li>
+                    </ol>
+                </nav>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                    <div class="mb-3 mb-lg-0">
+                        <h1 class="h4" >Add Salesman </h1>
+                        <p class="mb-0">Salesman Information </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow components-section">
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-lg-12 col-sm-6">
+                                <form id="salesman_form"  method="post" enctype="multipart/form-data">
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="name">Name</label>
+                                        <input type="text"  class="form-control" id="name" name="Name"  pattern="[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]){2,100}"  placeholder="Name.." required>
+                                        <span data-validation-text>Please put a valid name !</span>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label class="my-1 me-2" for="designation">Designation</label>
+                                        <select class="form-select" x-model="salesmanForm.designation_id" id="designation" aria-label="Default select example" name="Salesman Status">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option value="1">Junior Salesman</option>
+                                            <option value="2">Senior Salesman</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="age">Age</label>
+                                        <input type="text"  class="form-control" id="age" name="Age" pattern="(?:1[01][0-9]|120|1[8-9]|[2-9][0-9])$" placeholder="Age.."required >
+                                        <span data-validation-text>Age Must be 18 to 120 !</span>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label class="my-1 me-2" for="gender">Gender</label>
+                                        <select class="form-select"  id="gender" name="Gender" aria-label="Default select example"required>
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control"   id="email" name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="Email.."required>
+                                        <span data-validation-text> Must be a valid email !</span>
+
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="phone_number">Phone Number</label>
+                                        <input type="text" class="form-control"  id="phone_number" name="Phone" pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="Number..">
+                                        <span data-validation-text> Must be a valid Number !</span>
+
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="address">Address</label>
+                                        <input type="text" class="form-control"  id="address" name="Address" pattern="^[#./0-9a-zA-Z\s,-]+$" placeholder="Address.."required>
+                                        <span data-validation-text> Must be a valid address !</span>
+
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="nid">NID</label>
+                                        <input type="text" class="form-control"   id="nid" name="Nid" pattern="^([0-9]{8}|[0-9]{11}|[0-9]{20})$"  placeholder="Nid.."required>
+                                        <span data-validation-text> Must be 8 or 11 or 20 digit !</span>
+
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="nid_photos">Nid Photos</label>
+                                        <input type="text" class="form-control"  id="nid_photos" accept="image/*" name="Nid Photo"   placeholder="Nid photo..">
+                                        <span data-validation-text> Photo should be valid!</span>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4" >
+                                        <label for="profile_photos">Profile Photos</label>
+                                        <input type="text" class="form-control"  id="profile_photos" type="file" accept="image/*" name="Profile Photo"  placeholder="Choose Profile photos..">
+                                        <span data-validation-text> Photo should be valid!</span>
+
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="salary">Salary</label>
+                                        <input type="text" class="form-control"  id="salary" name="Salary" pattern="^[0-9]{1,6}$" placeholder="Salary.."required>
+                                        <span data-validation-text> Salary should be up to six digit !</span>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label for="joining_date">Joining Date</label>
+                                        <input type="date" class="form-control"  id="joining_date" name="Date" placeholder="Salary..">
+                                    </div>
+                                    <div class="col-lg-5 col-sm-10 mb-4 offset-lg-4">
+                                        <label class="my-1 me-2" for="status">Active Status</label>
+                                        <select class="form-select" id="status" name="Active Status" aria-label="Default select example"required>
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option value="1">Active</option>
+                                            <option value="2">Inactive</option>
+                                        </select>
+                                    </div>
+                                    <input class="btn btn-primary text-dark col-lg-5 col-sm-10 mb-4 offset-lg-4 my-3" type="submit" value="Add Salesman">
+                                </form>
+                            </div>
+                            <div id="err"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <
+
+        <div class="py-4">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                    <div class="mb-3 mb-lg-0">
+                        <h1 class="h4 ">Salesman Information Table</h1>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="card border-0 shadow">
+            <div class="card-body">
+
+                <table class="table table-flush wrap" id="myTable" style="width: 100%; table-layout: fixed">
+                    <thead class="thead-light">
+                    <tr >
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>Nid</th>
+                        <th>Nid Photo</th>
+                        <th>Profile Photo</th>
+                        <th>Salary</th>
+                        <th>Joining Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+    @@include('./dashboard/_footer.html', {
+    "path": "../..",
+    "classes": "text-dark"
+    })
+</main>
+
+@@include('./_scripts.html', {
+"path": "../.."
+})
+
+
+
+</body>
+</html>
