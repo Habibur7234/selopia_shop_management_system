@@ -27,8 +27,8 @@ let t1= $('#shopTable').DataTable( {
         { data: 'address' },
         {data: 'id',
             render: function(){
-                return '<button id="edit_button_id"  class="btn btn-primary  " type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal1" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                    +'<button   id="delete_button_id"  class="btn btn-danger " data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button id="edit_button_id"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal1" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                    +'<button   id="delete_button_id"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
@@ -110,7 +110,6 @@ $(document).ready(function () {
 
         if( $('#shop_form')[0].checkValidity() ) {
 
-            //console.log("aaaa");
 
             $(this).text('Submitting..');
             let formPostModalData = {
@@ -141,6 +140,18 @@ $(document).ready(function () {
                         icon: false
                     });
                 },
+                error: function()
+                {
+                    //Set default button text again
+                    $("#post_modal_id").text('Submit');
+
+                    //Notification
+                    notyf.error({
+                        message: "<strong>Warning !</strong> Can't update shop.",
+                        duration: 7000,
+                        icon: false
+                    });
+                }
             });
         } else {
             //console.log("aaa");
@@ -213,19 +224,19 @@ $(document).ready(function () {
 
 // pdf, excel etc hide useless collumn, full page, proper collumn size
 
-// padding/margin modal
+// padding/margin modal---Done!
 
-// ... instead of ..
+// ... instead of ..----Done!
 
-// label and placeholder same?
+// label and placeholder same----Done!
 
 // responsive button double line issue
 
-// are you sure
+// are you sure---Done!
 
-// button tooltip
+// button tooltip----Done!
 
-// proper commenting and intending all codes
+// proper commenting and intending all codes---Already Done! By Via..
 
 // add and update proper validation with message
 
