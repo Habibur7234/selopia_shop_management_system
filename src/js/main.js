@@ -211,5 +211,35 @@ $(document).ready(function () {
 
 
 
+// pdf, excel etc hide useless collumn, full page, proper collumn size
+
+// padding/margin modal
+
+// ... instead of ..
+
+// label and placeholder same?
+
+// responsive button double line issue
+
+// are you sure
+
+// button tooltip
+
+// proper commenting and intending all codes
+
+// add and update proper validation with message
+
+// after apu, handle server level errors
+
+//  add logo and favicon
+
+// fix footer and nav
+
+// styling datatable search button
+
+// remove top search button
+
+// remove entries word from top and bottom
+
 
 
