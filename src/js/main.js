@@ -6,10 +6,12 @@ const notyf = new Notyf();
 
 //init shop datatable and load data
 let t1= $('#shopTable').DataTable( {
+    order: [[0, 'desc']],
     "columnDefs": [
-        { "width": "30%", "targets": 0},
-        { "width": "12%", "targets": 1},
-        { "width": "7%", "targets": 3}
+        { 'visible': false, 'targets': 0 },
+        { "width": "30%", "targets": 1},
+        { "width": "12%", "targets": 2},
+        { "width": "10%", "targets": 4}
     ],
     ajax: {
         url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/supeshop',
@@ -17,11 +19,19 @@ let t1= $('#shopTable').DataTable( {
     },
     rowId: 'id',
     dom: 'Blfrtip',
+    oLanguage: {
+        sLengthMenu: "Show _MENU_",
+    },
+    language: {
+        search: "",
+        searchPlaceholder: "Search..."
+    },
     buttons: [
         'excel', 'pdf', 'print',
         '<button id="edit_button_id"  class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#Submit_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
     ],
     columns: [
+        { data: 'id' },
         { data: 'name' },
         { data: 'branch' },
         { data: 'address' },
@@ -43,6 +53,8 @@ $(document).ready(function () {
         // getting parent row index and data
         rowIndex = t1.row($(this).parents('tr')).index();
         rowData =  t1.row($(this).parents('tr')).data();
+
+        console.log(rowData.id);
 
         // setting row values to update modal input boxes
         $("#editName").val(rowData.name);
@@ -78,8 +90,17 @@ $(document).ready(function () {
                     //Set default button text again
                     $("#update_modal_id").text('Update Info');
 
+                    let currentPage = t1.page();
+
                     // update datatable
                     t1.row(rowIndex).data( rowData ).draw();
+
+                    // redrawing to original page
+                    t1.page(currentPage).draw( 'page' );
+
+                    // highlighting newly added row
+                    $( t1.row(rowIndex).nodes() ).addClass( 'selected' );
+                    setTimeout(function () { $( t1.row(rowIndex).nodes() ).removeClass( 'selected' ); }, 2000);
 
                     // notification
                     notyf.success({
@@ -89,8 +110,8 @@ $(document).ready(function () {
                     });
 
                     // reset global variable value
-                    rowIndex = undefined;
-                    rowData = undefined;
+                    // rowIndex = undefined;
+                    // rowData = undefined;
                 },
                 error: function()
                 {
@@ -118,8 +139,6 @@ $(document).ready(function () {
     $("#post_modal_id").click(function(){
 
         if( $('#shop_form')[0].checkValidity() ) {
-
-
             $(this).text('Submitting..');
             let formPostModalData = {
                 name: $("#name").val(),
@@ -132,16 +151,29 @@ $(document).ready(function () {
                 type: 'POST',
                 data: formPostModalData,
                 dataType: "json",
-                success: function()
+                success: function(data)
                 {
                     //add row from input fields
-                    t1.row.add(formPostModalData).draw();
+                    let newRowIndex = t1.row.add(data).draw();
+
                     $("#post_modal_id").text('Submit');
                     const modal = bootstrap.Modal.getInstance($("#Submit_shop_modal"));
                     modal.hide();
+
                     //reset input Field
                     $('form :input').val('');
                     $('.input').val('');
+
+                    // reset search
+                    t1.search('');
+
+                    // re-ordering to default
+                    t1.order( [ 0, 'desc' ] ).draw();
+
+                    // highlighting newly added row
+                    $( t1.row(newRowIndex.index()).nodes() ).addClass( 'selected' );
+                    setTimeout(function () { $( t1.row(newRowIndex.index()).nodes() ).removeClass( 'selected' ); }, 2000);
+
                     //Success Notification
                     notyf.success({
                         message: 'New Shop Added  <strong>Successfully !</strong>',
@@ -190,6 +222,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function(data)
             {
+                let currentPage = t1.page();
                 t1.row(rowIndex).remove().draw();
 
                 const modal = bootstrap.Modal.getInstance($("#delete_shop_modal"));
@@ -197,8 +230,11 @@ $(document).ready(function () {
 
                 $("#delete_modal_id").text('Delete');
 
+                // redrawing to original page
+                t1.page(currentPage).draw( 'page' );
+
                 notyf.success({
-                    message: 'Shop  Delete <strong>Successfully !</strong>',
+                    message: 'Shop  Deleted <strong>Successfully !</strong>',
                     duration: 7000,
                     icon: false
                 });
@@ -233,33 +269,33 @@ $(document).ready(function () {
 
 // pdf, excel etc hide useless collumn, full page, proper collumn size
 
-// padding/margin modal---Done!
+// padding/margin modal------------------
 
-// ... instead of ..----Done!
+// ... instead of ..---------------------
 
-// label and placeholder same!
+// label and placeholder same!................
 
-// responsive button double line issue
+// responsive button double line issue.............
 
-// are you sure---Done!
+// are you sure-----------------
 
-// button tooltip----Done!
+// button tooltip------------------
 
 // proper commenting and intending all codes
 
-// add and update proper validation with message... Done
+// add and update proper validation with message----------------
 
 // after apu, handle server level errors
 
-//  add logo and favicon
+//  add logo and favicon................
 
-// fix footer and nav
+// fix footer and nav--------------
 
-// styling datatable search button
+// styling datatable search button............
 
-// remove top search button
+// remove top search button-------------
 
-// remove entries word from top and bottom
+// remove entries word from top and bottom------------------------
 
 
 
