@@ -52,57 +52,66 @@ $(document).ready(function () {
 
     // Update Button
     $("#update_modal_id").click(function(){
-        // setting modal input value
-        rowData.name = $("#editName").val();
-        rowData.branch = $("#editBranch").val();
-        rowData.address = $("#editAddress").val();
 
-        // updating button text
-        $(this).text('Updating...');
 
-        // updating server row
-        $.ajax({
-            url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/supeshop/' + rowData.id,
-            type: 'PUT',
-            data: rowData,
-            dataType: "json",
-            success: function()
-            {
-                // hide modal
-                const modal = bootstrap.Modal.getInstance($("#update_shop_modal1"));
-                modal.hide();
+        if( $('#update_shop_form')[0].checkValidity() ) {
+            // setting modal input value
+            rowData.name = $("#editName").val();
+            rowData.branch = $("#editBranch").val();
+            rowData.address = $("#editAddress").val();
 
-                //Set default button text again
-                $("#update_modal_id").text('Update Info');
+            // updating button text
+            $(this).text('Updating...');
 
-                // update datatable
-                t1.row(rowIndex).data( rowData ).draw();
+            // updating server row
+            $.ajax({
+                url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/supeshop/' + rowData.id,
+                type: 'PUT',
+                data: rowData,
+                dataType: "json",
+                success: function()
+                {
+                    // hide modal
+                    const modal = bootstrap.Modal.getInstance($("#update_shop_modal1"));
+                    modal.hide();
 
-                // notification
-                notyf.success({
-                    message: "Shop updated <strong>successfully</strong>",
-                    duration: 7000,
-                    icon: false
-                });
+                    //Set default button text again
+                    $("#update_modal_id").text('Update Info');
 
-                // reset global variable value
-                rowIndex = undefined;
-                rowData = undefined;
-            },
-            error: function()
-            {
-                //Set default button text again
-                $("#update_modal_id").text('Update Info');
+                    // update datatable
+                    t1.row(rowIndex).data( rowData ).draw();
 
-                //Notification
-                notyf.error({
-                    message: "<strong>Warning !</strong> Can't update shop.",
-                    duration: 7000,
-                    icon: false
-                });
-            }
-        });
-    })
+                    // notification
+                    notyf.success({
+                        message: "Shop updated <strong>successfully</strong>",
+                        duration: 7000,
+                        icon: false
+                    });
+
+                    // reset global variable value
+                    rowIndex = undefined;
+                    rowData = undefined;
+                },
+                error: function()
+                {
+                    //Set default button text again
+                    $("#update_modal_id").text('Update Info');
+
+                    //Notification
+                    notyf.error({
+                        message: "<strong>Warning !</strong> Can't update shop.",
+                        duration: 7000,
+                        icon: false
+                    });
+                }
+            });
+        }
+        else {
+
+            $('#update_shop_form')[0].reportValidity();
+        }
+    });
+
     /* ### Update Data End ### */
 
     /* ### Add Data Start ### */
@@ -153,8 +162,8 @@ $(document).ready(function () {
                     });
                 }
             });
+
         } else {
-            //console.log("aaa");
 
             $('#shop_form')[0].reportValidity();
 
@@ -228,7 +237,7 @@ $(document).ready(function () {
 
 // ... instead of ..----Done!
 
-// label and placeholder same----Done!
+// label and placeholder same!
 
 // responsive button double line issue
 
