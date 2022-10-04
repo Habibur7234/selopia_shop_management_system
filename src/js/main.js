@@ -245,9 +245,9 @@ $(document).ready(function () {
 
 // button tooltip----Done!
 
-// proper commenting and intending all codes---Already Done! By Via..
+// proper commenting and intending all codes
 
-// add and update proper validation with message
+// add and update proper validation with message... Done
 
 // after apu, handle server level errors
 
