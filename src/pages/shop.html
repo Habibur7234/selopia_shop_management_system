@@ -58,7 +58,7 @@
         </div>
 
         <!--Add Form modal-->
-        <div class="modal fade" id="Submit_shop_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal fade" id="add_shop_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body p-0">
@@ -86,7 +86,7 @@
                                                         <label for="address">Location</label>
                                                         <input type="text" class="form-control" name="address" id="address"  placeholder="123 ABC Street..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
                                                     </div>
-                                                    <button type="button" id="post_modal_id" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                    <button type="button" id="add_shop" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
                                                         Submit
                                                     </button>
                                                 </form>
@@ -104,7 +104,7 @@
         <!-- Data Table-->
         <div class="card border-0 shadow">
             <div class="card-body">
-                <table class="table table-flush wrap hover" id="shopTable" style="width: 100%; table-layout: fixed">
+                <table class="table table-flush wrap hover" id="shop_dataTable" style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
                         <th>#</th>
@@ -122,7 +122,7 @@
 
         <!--Upgreate Shop-->
 
-        <div class="modal fade" id="update_shop_modal1" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal fade" id="update_shop_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body p-0">
@@ -150,7 +150,7 @@
                                                         <label for="address">Shop Location</label>
                                                         <input id="editAddress" class="form-control"  type="text" oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" placeholder="123 ABC Street..." required>
                                                     </div>
-                                                    <button type="button" id="update_modal_id" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                    <button type="button" id="update_shop" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
                                                         Update Info
                                                     </button>
                                                 </form>
@@ -170,15 +170,18 @@
         <div class="modal fade" id="delete_shop_modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
+<!--                    <div class="modal-header">-->
+<!--                        <h1 class="h4 modal-title">Delete Shop</h1>-->
+<!--                    </div>-->
                     <div class="modal-header">
-                        <h1 class="h4 modal-title">Delete Shop</h1>
-                    </div>
                     <div class="modal-body">
-                        <h5>Are you sure?</h5>
+                        <h5 id="sName"></h5>
+                        <p class="fw-light" style="font-size:14px;" >This item will be delete immediately. You can't undo this action.</p>
+                    </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-link text-gray ms-auto" data-bs-dismiss="modal">Close</button>
-                        <button type="button"  id="delete_modal_id" class="btn btn-secondary" >Delete</button>
+                        <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button"  id="delete_shop" class="btn btn-secondary" >Delete</button>
                     </div>
                 </div>
             </div>
