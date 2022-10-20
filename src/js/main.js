@@ -376,6 +376,7 @@ let salesman_table= $('#salesman_dataTable').DataTable( {
         { "width": "10%", "targets": 14},
         { "width": "10%", "targets": 15}
     ],
+
     ajax: {
         url: 'http://103.205.71.148/salesman',
         dataSrc: 'content',
