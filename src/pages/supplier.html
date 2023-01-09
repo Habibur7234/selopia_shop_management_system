@@ -46,310 +46,160 @@
                     <h1 class="h4" >Add New Supplier</h1>
                     <p class="mb-0">Supplier Information </p>
                 </div>
-                <!--                <div>-->
-                <!--                    <a href="https://themesberg.com/docs/volt-bootstrap-5-dashboard/components/forms/" class="btn btn-outline-gray"><i class="far fa-question-circle me-1"></i> Forms Docs</a>-->
-                <!--                </div>-->
             </div>
         </div>
 
-        <div class="col-12 mb-4">
-            <div class="card border-0 shadow components-section">
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-lg-12 col-sm-6">
-                            <!-- Form -->
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="shop">Supplier Name</label>
-                                <input type="text" class="form-control" id="shop" placeholder="Name..">
-                            </div>
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="number">Contact Number</label>
-                                <input type="number" class="form-control" id="number" placeholder="Number..">
-                            </div>
 
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="Address..">
+        <!--Add Form modal-->
+        <div class="modal fade" id="add_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card p-3 p-lg-4">
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="text-center text-md-center mb-4 mt-md-0">
+                                <h1 class="mb-0 h3">Add New Supplier</h1>
                             </div>
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="location">Location</label>
-                                <input type="text" class="form-control" id="location" placeholder="Location..">
+                            <div class="col-12 mb-4">
+                                <div class="card border shadow components-section">
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-lg-12 col-sm-6">
+                                                <!-- Form -->
+                                                <form id="supplier_form" method="POST">
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label for="supplier_name">Name</label>
+                                                        <input type="text" class="form-control" name="name" id="supplier_name" oninvalid="this.setCustomValidity('Please enter a valid name')" oninput="this.setCustomValidity('')" pattern="^[a-z,A-Z ].{2,50}$" placeholder="Supplier..." required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label for="supplier_phone">Phone</label>
+                                                        <input type="text" class="form-control" name="phone" id="supplier_phone"  oninvalid="this.setCustomValidity('Please enter a valid branch')" oninput="this.setCustomValidity('')" pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="+8801..." required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label for="supplier_address">Address</label>
+                                                        <input type="text" class="form-control" name="address" id="supplier_address"  placeholder="123 ABC Street..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label class="my-1 me-2" for="supplier_status">Active Status</label>
+                                                        <select class="form-select" id="supplier_status" name="Status"
+                                                                aria-label="Default select example" required>
+                                                            <option disabled selected value> -- select an option --</option>
+                                                            <option value="1">Active</option>
+                                                            <option value="2">Inactive</option>
+                                                        </select>
+                                                    </div>
+                                                    <button type="button" id="add_supplier" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                        Submit
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <button class="btn btn-primary text-dark col-lg-4 col-sm-10 mb-4 offset-lg-4" type="button">Add</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-
-
-    <!--    Table-->
-
-
-
-    <div class="py-4">
-        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-
-            <div class="d-flex justify-content-between w-100 flex-wrap">
-                <div class="mb-3 mb-lg-0">
-                    <h1 class="h4 ">Supplier Information Table</h1>
-                </div>
-            </div>
-        </nav>
-    </div>
-
-
-    <div class="card border-0 shadow">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-centered table-nowrap mb-0 rounded">
+        <!-- Data Table-->
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <table class="table table-flush wrap hover" id="supplier_dataTable" style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
-                        <th class="border-0 rounded-start">Supplier Name</th>
-                        <th class="border-0">Contact No</th>
-                        <th class="border-0">Address</th>
-                        <th class="border-0 rounded-end">Location</th>
-                        <th></th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <!-- Item -->
-                    <tr>
-                        <td class="border-0">
-                            <div><span class="h6"><a data-bs-toggle="modal" data-bs-target="#modal-supplier-details">Murad</a></span></div>
-                            <!-- Supplier Modal Content -->
-                            <div class="modal fade" id="modal-supplier-details" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card p-3 p-lg-4">
-                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                <div class="text-center text-md-center mb-4 mt-md-0">
-                                                    <h1 class="mb-0 h4">Supplier Details</h1>
-                                                </div>
-                                                <form action="#" class="mt-4">
-                                                    <!-- Form -->
-                                                    <div class="form-group mb-4">
-                                                        <label for="email">Supplier Name</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Murad" id="email" autofocus required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End of Form -->
-                                                    <div class="form-group">
-                                                        <!-- Form -->
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Contact No</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="0123456789" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Address</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="105/1a" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Location</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="Mohammadpur" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End of Form -->
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End of Modal Content -->
-                        </td>
-                        <td class="border-0 font-weight-bold">0123456789</td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-down"></span>
-                            <span class="font-weight-bold">105/1a</span>
-                        </td>
-
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">Mohammadpur</span>
-                        </td>
-                        <td class="border-0">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Edit_supplier-modal" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                            <!--Edit Shop Modal-->
-                            <div class="modal fade" id="Edit_supplier-modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card p-3 p-lg-4">
-                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                <div class="text-center text-md-center mb-4 mt-md-0">
-                                                    <h1 class="mb-0 h4">Edit Supplier Information</h1>
-                                                </div>
-                                                <form action="#" class="mt-4">
-                                                    <!-- Form -->
-                                                    <div class="form-group mb-4">
-                                                        <label for="email">Supplier Name</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Murad" id="email" autofocus required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End of Form -->
-                                                    <div class="form-group">
-                                                        <!-- Form -->
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Contact NO</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="0123456789" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Address</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="105/1a" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Location</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="Mohammadpur" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End of Form -->
-                                                    </div>
-                                                    <div class="d-grid">
-                                                        <button type="submit" class="btn btn-success my-4">Submit</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-supplier" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                            <!--Delete Shop Modal-->
-
-                            <div class="modal fade" id="modal-supplier" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card p-3 p-lg-4">
-                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                <div class="text-center text-md-center mb-4 mt-md-0">
-                                                    <h1 class="mb-0 h4">Delete Supplier</h1>
-                                                </div>
-                                                <form action="#" class="mt-4">
-                                                    <!-- Form -->
-                                                    <div class="form-group mb-4">
-                                                        <label for="email">Supplier Name</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Murad" id="email" autofocus required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End of Form -->
-                                                    <div class="form-group">
-                                                        <!-- Form -->
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Contact No</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="0123456789" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Address</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="105/1a" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Location</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="Mohammadpur" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End of Form -->
-                                                    </div>
-                                                    <div class="d-grid">
-                                                        <button type="submit" class="btn btn-danger my-4">Confirm Delete</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </td>
-                    </tr>
-                    <!-- End of Item -->
-                    <!-- Item -->
-                    <tr>
-                        <td class="border-0">
-                            <div><span class="h6">Meraz</span></div>
-                        </td>
-                        <td class="border-0 font-weight-bold">0123456789</td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">107/2b</span>
-                        </td>
-
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">Tangile</span>
-                        </td>
-                        <td class="border-0">
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                            <button class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        </td>
-                    </tr>
-                    <!-- End of Item -->
-                    <!-- Item -->
-                    <tr>
-                        <td class="border-0">
-                            <div><span class="h6">Mamun</span></div>
-                        </td>
-                        <td class="border-0 font-weight-bold">0123456789 </td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">105/1w</span>
-                        </td>
-
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">Mirpur</span>
-                        </td>
-                        <td class="border-0">
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                            <button class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        </td>
-
-                    </tr>
-
-                    </tbody>
                 </table>
             </div>
         </div>
+
+
+
+        <!--Upgreate Shop-->
+
+        <div class="modal fade" id="update_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card p-3 p-lg-4">
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="text-center text-md-center mb-4 mt-md-0">
+                                <h1 class="mb-0 h3">Update Supplier</h1>
+                            </div>
+                            <div class="col-12 mb-4">
+                                <div class="card border shadow components-section">
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-lg-12 col-sm-6">
+                                                <!-- Form -->
+                                                <form id="update_supplier_form">
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label  for="update_supplier_name">Name</label>
+                                                        <input id="update_supplier_name" class="form-control" type="text" oninvalid="this.setCustomValidity('Please enter a valid name')" oninput="this.setCustomValidity('')" pattern="^[a-z,A-Z ].{2,50}$" placeholder="supplier..." required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label  for="update_supplier_phone">Phone</label>
+                                                        <input id="update_supplier_phone" class="form-control"  type="text" oninvalid="this.setCustomValidity('Please enter a valid phone number')" oninput="this.setCustomValidity('')" pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="+8801..." required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label for="update_supplier_address">Address</label>
+                                                        <input id="update_supplier_address" class="form-control"  type="text" oninvalid="this.setCustomValidity('Please enter a valid address')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" placeholder="123 ABC Street..." required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label class="my-1 me-2" for="update_supplier_status">Active Status</label>
+                                                        <select class="form-select" id="update_supplier_status" name="Status"
+                                                                aria-label="Default select example" required>
+                                                            <option disabled selected value> -- select an option --</option>
+                                                            <option value="1">Active</option>
+                                                            <option value="2">Inactive</option>
+                                                        </select>
+                                                    </div>
+                                                    <button type="button" id="update_supplier" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                        Update Info
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--delete Modal-->
+        <div class="modal fade" id="delete_supplier_modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="pt-3">
+                        <div class="modal-body">
+                            <h5 id="supplier_Delete_name"></h5>
+                            <p class="fw-light" style="font-size:14px;" >This item will delete immediately. You can't undo this action.</p>
+                        </div>
+                    </div>
+                    <div style="margin-left: auto; padding-right:15px;padding-bottom: 15px">
+                        <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button"  id="delete_supplier" class="btn btn-secondary" >Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
-
-
-
+    </div>
 
 
 

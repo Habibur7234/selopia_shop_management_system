@@ -179,7 +179,7 @@ jQuery.fn.extend({
                 + '<!-- light modal footer -->'
                 + '<div class="light-modal-footer" style="justify-content: space-between;background:#F2F4F6" >'
                 + '<div onclick="closeModal()" class="light-modal-close-btn" style="cursor: pointer; background:#E11D48" aria-label="close">Cancel</div>'
-                + '<div onclick="cropzeeRotateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;background-color:#E11D48">Rotate 90deg</div>'
+                + '<div onclick="cropzeeRotateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;background-color:#1F2937">Rotate 90deg</div>'
                 + '<div onclick="cropzeeCreateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer; background-color:#1F2937;">Done</div>'
                 + '</div>'
                 + '</div>'

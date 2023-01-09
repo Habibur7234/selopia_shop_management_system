@@ -27,7 +27,6 @@
     })
 
 
-
     <div>
 
         <div class="py-4">
@@ -35,7 +34,11 @@
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
                         <a href="#">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
                         </a>
                     </li>
                     <li class="breadcrumb-item"><a href="#">Product</a></li>
@@ -43,386 +46,157 @@
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4" >Add New Product</h1>
+                    <h1 class="h4">Add New Product</h1>
                     <p class="mb-0">New Product Information </p>
                 </div>
-                <!--                <div>-->
-                <!--                    <a href="https://themesberg.com/docs/volt-bootstrap-5-dashboard/components/forms/" class="btn btn-outline-gray"><i class="far fa-question-circle me-1"></i> Forms Docs</a>-->
-                <!--                </div>-->
             </div>
         </div>
 
-        <div class="col-12 mb-4">
-            <div class="card border-0 shadow components-section">
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-lg-12 col-sm-6">
-                            <!-- Form -->
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="shop">Product Name</label>
-                                <input type="text" class="form-control" id="shop" placeholder="Shop name..">
-                            </div>
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label class="my-1 me-2" for="country">Product Category</label>
-                                <select class="form-select" id="country" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">Baby Food</option>
-                                    <option value="2">Beauty & Personal Care</option>
-                                    <option value="3">Electronics</option>
-                                    <option value="3">Home & Kitchen</option>
-                                    <option value="3">Clothing, Shoes and Jewelry</option>
-                                </select>
 
-                            </div>
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="location">Unit Price</label>
-                                <input type="number" class="form-control" id="location" placeholder="Price..">
-                            </div>
-
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="location">Product Quantity</label>
-                                <input type="text" class="form-control" id="location" placeholder="Quantity..">
-                            </div>
-
-                            <div class="col-lg-4 col-sm-10 mb-4 offset-lg-4">
-                                <label for="location">Expiry Date</label>
-                                <input type="date" class="form-control" id="location" placeholder="Date..">
-                            </div>
-
-                            <button class="btn btn-primary text-dark col-lg-4 col-sm-10 mb-4 offset-lg-4" type="button">Add</button>
-                        </div>
+        <!--Add Product modal-->
+        <div class="modal fade" id="add_product_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="l modal-dialog"
+                 style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add New Product</h3>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                     </div>
+                    <!-- Form -->
+                    <form id="product_form" method="POST">
+                        <div class="o modal-body" id="kk" style="height: 600px;">
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_name">Product Name</label>
+                                <input type="text" class="form-control" id="product_name" placeholder="ABC..">
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label class="my-1 me-2" for="product_category">Product Category</label>
+                                <select class="form-select" id="product_category" aria-label="Default select example" required>
+                                    <option disabled selected value> -- select an option --</option>
+                                    <option value="1">aaa</option>
+                                    <option value="2">bbb</option>
+                                    <option value="3">ccc</option>
+                                    <option value="4">ddd</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_unit_price">Unit Price</label>
+                                <input type="text" class="form-control" id="product_unit_price" placeholder="123...">
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_sell_price">MRP Price</label>
+                                <input type="text" class="form-control" id="product_sell_price" placeholder="123...">
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_quantity">Product Quantity</label>
+                                <input type="text" class="form-control" id="product_quantity" placeholder="123...">
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_expiry_date">Expiry Date</label>
+                                <input type="date" class="form-control" id="product_expiry_date">
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_photo">Product Photo</label>
+                                <input type="file" class="form-control" id="product_photo">
+                            </div>
+                        </div>
+                        <div class="modal-footer"><input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit" value="Add Product"></div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
 
 
+        <!--Update product Modal-->
 
-    <!--    Table-->
+        <div class="modal fade" id="update_product_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="l modal-dialog"
+                 style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Update Product</h3>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- Form -->
+                    <form id="update_product_form" method="POST">
+                        <div class="o modal-body" id="kkk" style="height: 600px;">
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_name">Product Name</label>
+                                <input type="text" class="form-control" id="update_product_name" placeholder="ABC..">
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label class="my-1 me-2" for="product_category">Product Category</label>
+                                <select class="form-select" id="update_product_category" aria-label="Default select example" required>
+                                    <option disabled selected value> -- select an option --</option>
+                                    <option value="1">aaa</option>
+                                    <option value="2">bbb</option>
+                                    <option value="3">ccc</option>
+                                    <option value="4">ddd</option>
+                                </select>
+                            </div>
 
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_unit_price">Unit Price</label>
+                                <input type="text" class="form-control" id="update_product_unit_price" placeholder="123...">
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_sell_price">MRP Price</label>
+                                <input type="text" class="form-control" id="update_product_sell_price" placeholder="123...">
+                            </div>
 
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_quantity">Product Quantity</label>
+                                <input type="text" class="form-control" id="update_product_quantity" placeholder="123...">
+                            </div>
 
-    <div class="py-4">
-        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-
-            <div class="d-flex justify-content-between w-100 flex-wrap">
-                <div class="mb-3 mb-lg-0">
-                    <h1 class="h4 ">Shop Information Table</h1>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_expiry_date">Expiry Date</label>
+                                <input type="date" class="form-control" id="update_product_expiry_date">
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="product_photo">Product Photo</label>
+                                <input type="file" class="form-control" id="update_product_photo">
+                            </div>
+                        </div>
+                        <div class="modal-footer"><input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit" value="Update Product"></div>
+                    </form>
                 </div>
             </div>
-        </nav>
-    </div>
-
-
-    <div class="card border-0 shadow">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-centered table-nowrap mb-0 rounded">
-                    <thead class="thead-light">
-                    <tr>
-                        <th class="border-0 rounded-start">Product Name</th>
-                        <th class="border-0">Product Category</th>
-                        <th class="border-0 rounded-end">Unit Price</th>
-                        <th class="border-0 rounded-end">Product Quantity</th>
-                        <th class="border-0 rounded-end">Expiry Date</th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- Item -->
-                    <tr>
-                        <td class="border-0">
-                            <div><span class="h6"><a data-bs-toggle="modal" data-bs-target="#product-form">Milk</a></span></div>
-                            <!-- Shwapno Modal Content -->
-                            <div class="modal fade" id="product-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card p-3 p-lg-4">
-                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                <div class="text-center text-md-center mb-4 mt-md-0">
-                                                    <h1 class="mb-0 h4">Product Details</h1>
-                                                </div>
-                                                <form action="#" class="mt-4">
-                                                    <!-- Form -->
-                                                    <div class="form-group mb-4">
-                                                        <label for="email">Product Name</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Milk" id="email" autofocus required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End of Form -->
-                                                    <div class="form-group">
-                                                        <!-- Form -->
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Product Category</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="Baby Food" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Unit Price</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="250-Bdt" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Product Quantity</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="50" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Expiry Date</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="25/07/2022" id="text" autofocus required>
-                                                            </div>
-                                                        </div><!-- End of Form -->
-                                                    </div>
-                                                    <div class="d-grid">
-                                                        <button type="submit" class="btn btn-secondary my-4">Deactivate product</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End of Modal Content -->
-                        </td>
-                        <td class="border-0 font-weight-bold">Baby Food</td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-down"></span>
-                            <span class="font-weight-bold">250-Bdt</span>
-                        </td>
-
-
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-down"></span>
-                            <span class="font-weight-bold">50</span>
-                        </td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-down"></span>
-                            <span class="font-weight-bold">25/07/2022</span>
-                        </td>
-                        <td class="border-0 ">
-                            <button class="btn btn-secondary text-dark" type="button">Damage</button>
-                        </td>
-
-
-                        <td class="border-0">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Edit_product-modal" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                            <!--Edit product Modal-->
-                            <div class="modal fade" id="Edit_product-modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card p-3 p-lg-4">
-                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                <div class="text-center text-md-center mb-4 mt-md-0">
-                                                    <h1 class="mb-0 h4">Edit Product Details</h1>
-                                                </div>
-                                                <form action="#" class="mt-4">
-                                                    <!-- Form -->
-                                                    <div class="form-group mb-4">
-                                                        <label for="email">Product Name</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Milk" id="email" autofocus required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End of Form -->
-                                                    <div class="form-group">
-                                                        <!-- Form -->
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Product Category</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="Baby Food" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Unit Price</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="250-Bdt" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Product Quantity</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="50" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Expiry Date</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="25/07/2022" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End of Form -->
-                                                    </div>
-                                                    <div class="d-grid">
-                                                        <button type="submit" class="btn btn-success my-4">Submit</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Delete_product-modal" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                            <!--Delete Shop Modal-->
-
-                            <div class="modal fade" id="Delete_product-modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body p-0">
-                                            <div class="card p-3 p-lg-4">
-                                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                <div class="text-center text-md-center mb-4 mt-md-0">
-                                                    <h1 class="mb-0 h4">Delete This Product</h1>
-                                                </div>
-
-                                                <form action="#" class="mt-4">
-                                                    <!-- Form -->
-                                                    <div class="form-group mb-4">
-                                                        <label for="email">Product Name</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Milk" id="email" autofocus required>
-                                                        </div>
-                                                    </div>
-                                                    <!-- End of Form -->
-                                                    <div class="form-group">
-                                                        <!-- Form -->
-                                                        <div class="form-group mb-4">
-                                                            <label for="password">Product Category</label>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="Baby Food" class="form-control" id="password" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Unit Price</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="250-Bdt" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Product Quantity</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="50" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group mb-4">
-                                                            <label for="email">Expiry Date</label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" placeholder="25/07/2022" id="text" autofocus required>
-                                                            </div>
-                                                        </div>
-                                                        <!-- End of Form -->
-                                                    </div>
-                                                </form>
-                                                <div class="d-grid">
-                                                    <button type="submit" class="btn btn-danger my-4">Confirm Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </td>
-                    </tr>
-                    <!-- End of Item -->
-                    <!-- Item -->
-                    <tr>
-                        <td class="border-0">
-                            <div><span class="h6">Hair Gel</span></div>
-                        </td>
-                        <td class="border-0 font-weight-bold">Beauty & Personal Care</td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">520-Bdt</span>
-                        </td>
-
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">40</span>
-                        </td>
-
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">20/02/2023</span>
-                        </td>
-
-                        <td class="border-0 ">
-                            <button class="btn btn-secondary text-dark" type="button">Damage</button>
-                        </td>
-
-                        <td class="border-0">
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                            <button class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        </td>
-                    </tr>
-                    <!-- End of Item -->
-                    <!-- Item -->
-                    <tr>
-                        <td class="border-0">
-                            <div><span class="h6">Shampoo</span></div>
-                        </td>
-                        <td class="border-0 font-weight-bold">eauty & Personal Care</td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">350-Bdt</span>
-                        </td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">35</span>
-                        </td>
-                        <td class="border-0 ">
-                            <span class="fas fa-angle-up"></span>
-                            <span class="font-weight-bold">15/04/2024</span>
-                        </td>
-
-                        <td class="border-0 ">
-                            <button class="btn btn-secondary text-dark btn-outline-dark" type="button">Damage</button>
-                        </td>
-
-                        <td class="border-0">
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                            <button class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        </td>
-
-                    </tr>
-
-                    </tbody>
-                </table>
-            </div>
         </div>
+
+
+
+
+
+        <button id="product_addBtn" toggle="tooltip" title="Add New"
+                class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal"
+                data-bs-target="#add_product_modal">
+            <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+        </button>
+
+
+        <button id="supplier_update_Btn" toggle="tooltip" title="Add New"
+                class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal"
+                data-bs-target="#update_product_modal">
+            <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+        </button>
+
+
     </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
     @@include('./dashboard/_footer.html', {
