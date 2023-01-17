@@ -13,8 +13,8 @@ let shop_table= $('#shop_dataTable').DataTable( {
         { "width": "10%", "targets": 4}
     ],
     ajax: {
-        url: 'http://103.205.71.148/shop',
-        dataSrc: 'content',
+        // url: 'https://62b15c56196a9e987033e9c4.mockapi.io/api/1/Shop',
+        dataSrc: '',
     },
     rowId: 'id',
     dom: 'Blfrtip',
@@ -94,7 +94,7 @@ let shop_table= $('#shop_dataTable').DataTable( {
         { data: 'id' },
         { data: 'name' },
         { data: 'branch' },
-        { data: 'address' },
+        { data: 'location' },
         {data: 'id',
             render: function(){
                 return '<button id="update_shopBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
@@ -211,6 +211,18 @@ $(document).ready(function () {
         }
     });
 
+    // const a = () =>{
+    //     console.log(1)
+    // }
+    // const b = () =>{
+    //     console.log(2)
+    // }
+    // const submitForm = () =>{
+    //     a()
+    //     b()
+    // }
+    //
+
     /* ### Update Data End ### */
 
     /* ### Add Data Start ### */
@@ -221,7 +233,7 @@ $(document).ready(function () {
             let formPostModalData = {
                 name: $("#name").val(),
                 branch: $("#branch").val(),
-                address: $("#address").val()
+                location: $("#address").val()
 
             };
             $.ajax({

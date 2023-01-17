@@ -68,40 +68,88 @@
                             <div class="text-center text-md-center mb-4 mt-md-0">
                                 <h1 class="mb-0 h3">Add New Shop</h1>
                             </div>
-                            <div class="col-12 mb-4">
-                                <div class="card border shadow components-section">
-                                    <div class="card-body">
-                                        <div class="row mb-4">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <!-- Form -->
-                                                <form id="shop_form" method="POST">
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="name">Shop Name</label>
-                                                        <input type="text" class="form-control" name="name" id="name" oninvalid="this.setCustomValidity('Please enter a valid name')" oninput="this.setCustomValidity('')" pattern="^[a-z,A-Z ].{2,50}$" placeholder="ABC Store..." required>
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Add shop</a>
+                                    <a class="nav-item nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Add Branch</a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                                    <div class="col-12 mb-4">
+                                        <div class="card border shadow components-section">
+                                            <div class="card-body">
+                                                <div class="row mb-4">
+                                                    <div class="col-lg-12 col-sm-6">
+                                                        <!-- Form -->
+                                                        <form id="shop_form" method="POST">
+                                                            <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                                <label for="name">Shop Name</label>
+                                                                <input type="text" class="form-control" name="name"  oninvalid="this.setCustomValidity('Please enter a valid name')" oninput="this.setCustomValidity('')" pattern="^[a-z,A-Z ].{2,50}$" placeholder="ABC Store..." required>
+                                                            </div>
+                                                            <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                                <label for="branch">Branch Name</label>
+                                                                <input type="text" class="form-control" name="branch" id="branch"  placeholder="ABC Zone..." oninvalid="this.setCustomValidity('Please enter a valid branch')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -].{2,60}$" required>
+                                                            </div>
+                                                            <button type="button" id="add_shop" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                                Submit
+                                                            </button>
+                                                        </form>
                                                     </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="branch">Branch Name</label>
-                                                        <input type="text" class="form-control" name="branch" id="branch"  placeholder="ABC Zone..." oninvalid="this.setCustomValidity('Please enter a valid branch')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -].{2,60}$" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+                                    <div class="col-12 mb-2">
+                                        <div class="card border shadow components-section">
+                                            <div class="card-body">
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-12 col-sm-6">
+                                                        <!-- Form -->
+                                                        <form id="branch from" method="POST">
+                                                            <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                                <label for="name">Name</label>
+                                                                <input type="text" class="form-control" name="name" id="name" oninvalid="this.setCustomValidity('Please enter a valid name')" oninput="this.setCustomValidity('')" pattern="^[a-z,A-Z ].{2,50}$" placeholder="ABC Branch..." required>
+                                                            </div>
+                                                            <label class="my-1 me-2" for="country">Shop</label>
+                                                            <select class="form-select" id="country" aria-label="Default select example">
+                                                                <option selected>Open this select menu</option>
+                                                                <option value="1">One</option>
+                                                                <option value="2">Two</option>
+                                                                <option value="3">Three</option>
+                                                            </select>
+                                                            <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                                <label for="address">Location</label>
+                                                                <input type="text" class="form-control" name="address" id="address"  placeholder="123 ABC Street..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
+                                                            </div>
+                                                            <div class="col-lg-12 col-sm-10 mb-2 ">
+                                                                <label for="address">Geolocation</label>
+                                                                <input type="text" class="form-control" name="address" id="address"  placeholder="123 ABC Street..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
+                                                            </div>
+                                                            <button type="button" id="add_shop" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                                Submit
+                                                            </button>
+                                                        </form>
                                                     </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="address">Location</label>
-                                                        <input type="text" class="form-control" name="address" id="address"  placeholder="123 ABC Street..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
-                                                    </div>
-                                                    <button type="button" id="add_shop" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Submit
-                                                    </button>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <input class="example" type="text" value="17.9787,81.0352" />
+        <div id="mapContainer"></div>
         <!-- Data Table-->
         <div class="card border-0 shadow">
             <div class="card-body">
@@ -186,6 +234,8 @@
         </div>
 
     </div>
+
+
 
 
 
