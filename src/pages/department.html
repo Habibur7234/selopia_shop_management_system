@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @@include('./_head.html', {
+    "path": "../..",
+    "title": "Department"
+    })
+
+</head>
+
+
+<style>
+    .table td {
+        word-break: break-word !important;
+        white-space: normal;
+    }
+</style>
+
+
+<body>
+<!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+@@include('./dashboard/_nav.html', {
+"path": "../.."
+})
+
+@@include('./dashboard/_sidenav.html', {
+"path": "../..",
+"page": "department",
+"page_group": "dashboard"
+})
+
+<main class="content">
+
+    @@include('./dashboard/_topbar.html', {
+    "path": "../.."
+    })
+
+
+    <div>
+
+
+        <!--Add Department-->
+
+        <div class="modal fade" id="add_department_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card p-3 p-lg-4">
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            <div class="text-center text-md-center mb-4 mt-md-0">
+                                <h1 class="mb-0 h3">Update Shop</h1>
+                            </div>
+                            <div class="col-12 mb-4">
+                                <div class="card border shadow components-section">
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-lg-12 col-sm-6">
+                                                <!-- Form -->
+                                                <form id="update_shop_form">
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label for="department_name">Department Name</label>
+                                                        <input id="department_name" class="form-control" type="text"  placeholder="ABC Store..." required>
+                                                    </div>
+
+                                                    <button type="button" id="update_shop"
+                                                            class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                        Update Info
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table-->
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <table class="table table-flush wrap hover" id="department_dataTable" style="width: 100%; table-layout: fixed">
+
+                    <thead class="thead-light">
+                    <tr>
+                        <th> id</th>
+                        <th>name</th>
+                        <th>name</th>
+
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+    @@include('./dashboard/_footer.html', {
+    "path": "../..",
+    "classes": "text-dark"
+    })
+
+</main>
+
+@@include('./_scripts.html', {
+"path": "../.."
+})
+
+</body>
+</html>

@@ -160,6 +160,43 @@
                 </a>
             </li>
 
+            <li class="nav-item @@if (context.page === 'purchase') { active }">
+                <a href="@@path/pages/purchase.html" class="nav-link">
+          <span class="sidebar-icon">
+            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
+                    fill-rule="evenodd" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    clip-rule="evenodd"></path></svg>
+          </span>
+                    <span class="sidebar-text">Purchase</span>
+                </a>
+            </li>
+
+
+            <li class="nav-item @@if (context.page === 'Category') { active }">
+                <a href="@@path/pages/category.html" class="nav-link">
+          <span class="sidebar-icon">
+            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
+                    fill-rule="evenodd" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    clip-rule="evenodd"></path></svg>
+          </span>
+                    <span class="sidebar-text">Category</span>
+                </a>
+            </li>
+
+
+            <li class="nav-item @@if (context.page === 'department') { active }">
+                <a href="@@path/pages/department.html" class="nav-link">
+          <span class="sidebar-icon">
+            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
+                    fill-rule="evenodd" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    clip-rule="evenodd"></path></svg>
+          </span>
+                    <span class="sidebar-text">Department</span>
+                </a>
+            </li>
+
+
+
 
             <!--      <li class="nav-item @@if (context.page === 'user') { active }">-->
             <!--        <a href="@@path/pages/user.html" class="nav-link">-->
@@ -352,6 +389,6 @@
             <!--          <span class="sidebar-text">Themesberg</span>-->
             <!--        </a>-->
             <!--      </li>-->
-                </ul>
-              </div>
+        </ul>
+    </div>
 </nav>

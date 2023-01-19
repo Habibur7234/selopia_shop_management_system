@@ -1,10 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    @@include('./_head.html', {
+    "path": "../..",
+    "title": "Shop"
+    })
+
 </head>
+
+
+<style>
+    .table td {
+        word-break: break-word !important;
+        white-space: normal;
+    }
+</style>
+
+
 <body>
+<!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+@@include('./dashboard/_nav.html', {
+"path": "../.."
+})
+
+@@include('./dashboard/_sidenav.html', {
+"path": "../..",
+"page": "purchase",
+"page_group": "dashboard"
+})
+
+<main class="content">
+
+    @@include('./dashboard/_topbar.html', {
+    "path": "../.."
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@include('./dashboard/_footer.html', {
+    "path": "../..",
+    "classes": "text-dark"
+    })
+
+
+
+
+</main>
+
+@@include('./_scripts.html', {
+"path": "../.."
+})
 
 </body>
 </html>
