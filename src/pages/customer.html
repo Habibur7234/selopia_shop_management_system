@@ -52,78 +52,108 @@
             </div>
         </div>
 
-
-        <!--Add Customer modal-->
-        <div class="modal fade" id="add_customer_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+        <!--Add Customer Modal-->
+        <div class="modal fade" id="add_customer_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="m modal-dialog"
+                 style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;">
                 <div class="modal-content">
-                    <div class="modal-body p-0">
-                        <div class="card p-3 p-lg-4">
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3">Add New Customer</h1>
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add New Salesman</h3>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="customer_post_form" method="post" enctype="multipart/form-data">
+                        <div class="n modal-body" id="kk" style="height: 600px;">
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                       pattern="[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]){2,100}" placeholder="Name.."
+                                >
                             </div>
-                            <div class="col-12 mb-4">
-                                <div class="card border shadow components-section">
-                                    <div class="card-body">
-                                        <div class="row mb-4">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <!-- Form -->
-                                                <form id="customer_form" method="POST">
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="customer_name">Name</label>
-                                                        <input type="text" class="form-control" id="customer_name"
-                                                               placeholder="Abc...">
-                                                    </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="customer_phone">Phone No</label>
-                                                        <input type="text" class="form-control" id="customer_phone"
-                                                               placeholder="+88012...">
-                                                    </div>
 
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="customer_address">Address</label>
-                                                        <input type="number" class="form-control"
-                                                               id="customer_address" placeholder="123 ABC Street...">
-                                                    </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="email">email</label>
+                                <input type="email" class="form-control" id="email" name="email">
 
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="customer_nid">National Id</label>
-                                                        <input type="text" class="form-control" id="customer_nid"
-                                                               placeholder="Id...">
-                                                    </div>
+                            </div>
 
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="customer_photo">Add Photo</label>
-                                                        <input type="file" class="form-control" id="customer_photo"
-                                                               placeholder="Date..">
-                                                    </div>
-                                                    <button type="button" id="add_product"
-                                                            class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Submit
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="phone_no">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_no" name="phone_no"
+                                       pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="Number..">
+                                <span data-validation-text> Must be a valid Number !</span>
+
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" name="Address"
+                                       placeholder="Address..">
+
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control" id="company_name" name="company_name"
+                                >
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="image_url">Image Upload</label>
+                                <div class="modal-content" style="width:40%">
+                                    <div class="modal-body align-items-center-center"  data-cropzee="customer_image">
+                                        <img  src="">
                                     </div>
                                 </div>
+                                <input type="file" class="form-control" id="image_url" name="image_url">
                             </div>
+
+
+                            <input type="hidden" value="true" class="form-control" id="create" name="create" >
                         </div>
-                    </div>
+
+                        <div class="modal-footer"><input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit" value="Add Salesman"></div>
+                    </form>
                 </div>
+            </div>
+        </div>
+    <!--Update Customer Modal-->
+
+
+
+
+
+        <!-- Data Table-->
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <table class="table table-flush wrap hover" id="customer_dataTable" style="width: 100%; table-layout: fixed">
+                    <thead class="thead-light">
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone No</th>
+                        <th>Address</th>
+                        <th>Customer Image</th>
+                        <th>Action</th>
+                        <th>Address</th>
+                        <th>Customer Image</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
         </div>
 
 
 
 
-    <!--Update Customer Modal-->
 
 
 
-        <!--Add Form modal-->
+
+
+
+
+        <!--update Form modal-->
         <div class="modal fade" id="update_customer_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
