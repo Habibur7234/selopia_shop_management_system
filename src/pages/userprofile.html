@@ -3,7 +3,7 @@
 <head>
     @@include('./_head.html', {
     "path": "../..",
-    "title": "Salesman"
+    "title": "User Profile"
     })
 <!--    <script src="../../gulpfile.js"></script>-->
 
@@ -41,7 +41,7 @@
 
 @@include('./dashboard/_sidenav.html', {
 "path": "../..",
-"page": "salesman",
+"page": "userprofile",
 "page_group": "dashboard"
 })
 
@@ -68,8 +68,8 @@
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Add Salesman </h1>
-                    <p class="mb-0">Salesman Information </p>
+                    <h1 class="h4">Add Customer </h1>
+                    <p class="mb-0">Customer Information </p>
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
                  style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title">Add New Salesman</h3>
+                        <h3 class="modal-title">Add New Customer</h3>
                         <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="salesman_post_form" method="post" enctype="multipart/form-data">
@@ -207,10 +207,9 @@
         </div>
         <div class="card border-0 shadow">
             <div class="card-body">
-                <table class="table table-flush wrap" id="salesman_dataTable" style="width: 100%; table-layout: fixed">
+                <table class="table table-flush wrap" id="userProfile_datatable" style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
-                        <th>#</th>
                         <th>Name</th>
                         <th>Designation</th>
                         <th>Age</th>
@@ -347,130 +346,130 @@
 
 
 
-<!--        <div class="modal fade" id="update_salesman_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
-<!--             aria-hidden="true">-->
-<!--            <div class="m modal-dialog"-->
-<!--                 style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;" >-->
-<!--                <div class="modal-content">-->
-<!--                    <div class="modal-header">-->
-<!--                        <h3 class="modal-title">Update Salesman</h3>-->
-<!--                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                    </div>-->
-<!--                    <form id="salesman_update_form" method="put" enctype="multipart/form-data">-->
-<!--                        <div class="n modal-body" style="height: 600px;">-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="name">Name</label>-->
-<!--                                <input type="text" class="form-control" id="salesman_edit_name" name="Name"-->
-<!--                                       pattern="[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]){2,100}" placeholder="Name.."-->
-<!--                                       required>-->
-<!--                                <span data-validation-text>Please put a valid name !</span>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1">-->
-<!--                                <label class="my-1 me-2" for="designation">Designation</label>-->
-<!--                                <select class="form-select" id="salesman_edit_designation"-->
-<!--                                        aria-label="Default select example" name="Salesman Status">-->
-<!--                                    <option disabled selected value> &#45;&#45; select an option &#45;&#45;</option>-->
-<!--                                    <option value="1">Junior Salesman</option>-->
-<!--                                    <option value="2">Senior Salesman</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="age">Age</label>-->
-<!--                                <input type="text" class="form-control" id="salesman_edit_age" name="Age"-->
-<!--                                       pattern="(?:1[01][0-9]|120|1[8-9]|[2-9][0-9])$" placeholder="Age.." required>-->
-<!--                                <span data-validation-text>Age Must be 18 to 120 !</span>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label class="my-1 me-2" for="gender">Gender</label>-->
-<!--                                <select class="form-select" id="salesman_edit_gender" name="Gender"-->
-<!--                                        aria-label="Default select example" required>-->
-<!--                                    <option disabled selected value> &#45;&#45; select an option &#45;&#45;</option>-->
-<!--                                    <option value="1">Male</option>-->
-<!--                                    <option value="2">Female</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="email">Email</label>-->
-<!--                                <input type="email" class="form-control" id="salesman_edit_email" name="email"-->
-<!--                                       pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="Email.."-->
-<!--                                       required>-->
-<!--                                <span data-validation-text> Must be a valid email !</span>-->
+        <div class="modal fade" id="update_salesman_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="m modal-dialog"
+                 style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Update Salesman</h3>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="salesman_update_form" method="put" enctype="multipart/form-data">
+                        <div class="n modal-body" style="height: 600px;">
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="salesman_edit_name" name="Name"
+                                       pattern="[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]){2,100}" placeholder="Name.."
+                                       required>
+                                <span data-validation-text>Please put a valid name !</span>
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1">
+                                <label class="my-1 me-2" for="designation">Designation</label>
+                                <select class="form-select" id="salesman_edit_designation"
+                                        aria-label="Default select example" name="Salesman Status">
+                                    <option disabled selected value> -- select an option --</option>
+                                    <option value="1">Junior Salesman</option>
+                                    <option value="2">Senior Salesman</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="age">Age</label>
+                                <input type="text" class="form-control" id="salesman_edit_age" name="Age"
+                                       pattern="(?:1[01][0-9]|120|1[8-9]|[2-9][0-9])$" placeholder="Age.." required>
+                                <span data-validation-text>Age Must be 18 to 120 !</span>
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label class="my-1 me-2" for="gender">Gender</label>
+                                <select class="form-select" id="salesman_edit_gender" name="Gender"
+                                        aria-label="Default select example" required>
+                                    <option disabled selected value> -- select an option --</option>
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="salesman_edit_email" name="email"
+                                       pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" placeholder="Email.."
+                                       required>
+                                <span data-validation-text> Must be a valid email !</span>
 
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="phone_number">Phone Number</label>-->
-<!--                                <input type="text" class="form-control" id="salesman_edit_phone_number" name="Phone"-->
-<!--                                       pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="Number..">-->
-<!--                                <span data-validation-text> Must be a valid Number !</span>-->
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="text" class="form-control" id="salesman_edit_phone_number" name="Phone"
+                                       pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="Number..">
+                                <span data-validation-text> Must be a valid Number !</span>
 
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="address">Address</label>-->
-<!--                                <input type="text" class="form-control" id="salesman_edit_address" name="Address"-->
-<!--                                       pattern="^[#./0-9a-zA-Z\s,-]+$" placeholder="Address.." required>-->
-<!--                                <span data-validation-text> Must be a valid address !</span>-->
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="salesman_edit_address" name="Address"
+                                       pattern="^[#./0-9a-zA-Z\s,-]+$" placeholder="Address.." required>
+                                <span data-validation-text> Must be a valid address !</span>
 
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="nid">NID</label>-->
-<!--                                <input type="text" class="form-control" id="salesman_edit_nid" name="Nid"-->
-<!--                                       pattern="^([0-9]{8}|[0-9]{11}|[0-9]{20})$" placeholder="Nid.." required>-->
-<!--                                <span data-validation-text> Must be 8 or 11 or 20 digit !</span>-->
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="nid">NID</label>
+                                <input type="text" class="form-control" id="salesman_edit_nid" name="Nid"
+                                       pattern="^([0-9]{8}|[0-9]{11}|[0-9]{20})$" placeholder="Nid.." required>
+                                <span data-validation-text> Must be 8 or 11 or 20 digit !</span>
 
-<!--                            </div>-->
-
-
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="nid_photos">Nid Photo</label>-->
-<!--                                <div class="modal-content" style="width:40%">-->
-<!--                                    <div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_nid_photos">-->
-<!--                                        <img id="s_nid_img" src="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="input-group custom-file-button">-->
-<!--                                    <label class="input-group-text my-2" for="salesman_edit_nid_photos">Change photo</label>-->
-<!--                                <input type="file" id="salesman_edit_nid_photos"  name="Nid Photo" class="form-control btn btn-sm btn-gray-200 my-2">-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            </div>
 
 
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1" >-->
-<!--                                <label for="profile_photos">Profile Photo</label>-->
-<!--                                <div class="modal-content" style="width:40%">-->
-<!--                                    <div class="modal-body align-items-center-center" data-cropzee="salesman_edit_profile_photos" >-->
-<!--                                        <img id="s_profile_img" src="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="input-group custom-file-button">-->
-<!--                                <label class="input-group-text my-2" for="salesman_edit_profile_photos">Change photo</label>-->
-<!--                                <input type="file"  id="salesman_edit_profile_photos" class="form-control btn btn-sm btn-gray-200 my-2">-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="salary">Salary</label>-->
-<!--                                <input type="text" class="form-control" id="salesman_edit_salary" name="Salary"-->
-<!--                                       pattern="^[0-9]{1,6}$" placeholder="Salary.." required>-->
-<!--                                <span data-validation-text> Salary should be up to six digit !</span>-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label for="joining_date">Joining Date</label>-->
-<!--                                <input type="date" class="form-control" id="salesman_edit_joining_date" name="Date">-->
-<!--                            </div>-->
-<!--                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">-->
-<!--                                <label class="my-1 me-2" for="status">Active Status</label>-->
-<!--                                <select class="form-select" id="salesman_edit_status" name="Active Status"-->
-<!--                                        aria-label="Default select example" required>-->
-<!--                                    <option disabled selected value> &#45;&#45; select an option &#45;&#45;</option>-->
-<!--                                    <option value="1">Active</option>-->
-<!--                                    <option value="2">Inactive</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="modal-footer"><input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="button" value="Update Salesman"></div>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="nid_photos">Nid Photo</label>
+                                <div class="modal-content" style="width:40%">
+                                    <div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_nid_photos">
+                                        <img id="s_nid_img" src="">
+                                    </div>
+                                </div>
+                                <div class="input-group custom-file-button">
+                                    <label class="input-group-text my-2" for="salesman_edit_nid_photos">Change photo</label>
+                                <input type="file" id="salesman_edit_nid_photos"  name="Nid Photo" class="form-control btn btn-sm btn-gray-200 my-2">
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1" >
+                                <label for="profile_photos">Profile Photo</label>
+                                <div class="modal-content" style="width:40%">
+                                    <div class="modal-body align-items-center-center" data-cropzee="salesman_edit_profile_photos" >
+                                        <img id="s_profile_img" src="">
+                                    </div>
+                                </div>
+                                <div class="input-group custom-file-button">
+                                <label class="input-group-text my-2" for="salesman_edit_profile_photos">Change photo</label>
+                                <input type="file"  id="salesman_edit_profile_photos" class="form-control btn btn-sm btn-gray-200 my-2">
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="salary">Salary</label>
+                                <input type="text" class="form-control" id="salesman_edit_salary" name="Salary"
+                                       pattern="^[0-9]{1,6}$" placeholder="Salary.." required>
+                                <span data-validation-text> Salary should be up to six digit !</span>
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="joining_date">Joining Date</label>
+                                <input type="date" class="form-control" id="salesman_edit_joining_date" name="Date">
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label class="my-1 me-2" for="status">Active Status</label>
+                                <select class="form-select" id="salesman_edit_status" name="Active Status"
+                                        aria-label="Default select example" required>
+                                    <option disabled selected value> -- select an option --</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer"><input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="button" value="Update Salesman"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
            <!--Delete Salesman Modal-->
         <div class="modal fade" id="delete_salesman_modal" tabindex="-1" role="dialog" aria-hidden="true">

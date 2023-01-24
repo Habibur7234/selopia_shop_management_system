@@ -69,20 +69,30 @@
                                         <div class="row mb-4">
                                             <div class="col-lg-12 col-sm-6">
                                                 <!-- Form -->
-                                                <form id="brand_form" method="POST">
+                                                <form id="Brand_post_form" method="post" enctype="multipart/form-data">
                                                     <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="brand_name">Brand Name</label>
+                                                        <label for="brand_name">Name</label>
                                                         <input type="text" class="form-control" id="brand_name"
-                                                               placeholder="ABC...">
+                                                               placeholder="ABC..." name="name">
                                                     </div>
                                                     <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="brand_type">Brand </label>
-                                                        <input type="text" class="form-control" id="brand_type"
-                                                               placeholder="ABC...">
+                                                        <label >Description </label>
+                                                        <textarea type="text" class="form-control" id="brand_description"
+                                                                  name="description" ></textarea>
                                                     </div>
-                                                    <button type="button" id="add_brand" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Submit
-                                                    </button>
+
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label>Image Upload</label>
+                                                        <div class="modal-content" style="width:40%">
+                                                            <div class="modal-body align-items-center-center" data-cropzee="brand_image_url">
+                                                                <img src=" ">
+                                                            </div>
+                                                        </div>
+                                                        <input type="file" class="form-control" id="brand_image_url" name="image_url">
+                                                    </div>
+                                                    <input type="hidden" value="true" class="form-control"  name="create">
+
+                                                    <input class="btn btn-success text-dark col-lg-12 col-sm-10 mb2 my-4 mx-auto" type="submit" value="Add Brand">
                                                 </form>
                                             </div>
                                         </div>
@@ -107,6 +117,7 @@
 
                         <th>Brand Name</th>
                         <th>Branch Description</th>
+                        <th>Image</th>
                         <th>Action </th>
                     </tr>
                     </thead>
@@ -117,6 +128,19 @@
 
 
 
+        <!--customer Photo Modal-->
+        <div class="modal img-fluid" id="brand_image_modal">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content" style="width:70%">
+                    <div class="modal-body align-items-center-center ">
+                        <img id="brand_image" src="">
+                        <button type="button" class="modal-footer ms-auto btn-outline-dark border-0 btn btn-outline-light text-primary"
+                                data-bs-dismiss="modal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -141,20 +165,30 @@
                                         <div class="row mb-4">
                                             <div class="col-lg-12 col-sm-6">
                                                 <!-- Form -->
-                                                <form id="update_brand_form" method="POST">
+                                                <form id="update_brand_post_form" method="post" enctype="multipart/form-data">
                                                     <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="brand_name">Brand Name</label>
+                                                        <label for="brand_name">Name</label>
                                                         <input type="text" class="form-control" id="update_brand_name"
-                                                               placeholder="ABC...">
+                                                               placeholder="ABC..." name="name">
                                                     </div>
                                                     <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="brand_type">Brand Type</label>
-                                                        <input type="text" class="form-control" id="update_brand_type"
-                                                               placeholder="ABC...">
+                                                        <label >Description </label>
+                                                        <textarea type="text" class="form-control" id="update_brand_description"
+                                                                  name="description" ></textarea>
                                                     </div>
-                                                    <button type="button" id="update_brand" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Update
-                                                    </button>
+
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
+                                                        <label>Image Upload</label>
+                                                        <div class="modal-content" style="width:40%">
+                                                            <div class="modal-body align-items-center-center" data-cropzee="update_brand_image_url">
+                                                                <img src="">
+                                                            </div>
+                                                        </div>
+                                                        <input type="file" class="form-control" id="update_brand_image_url" name="image_url">
+                                                    </div>
+                                                    <input type="hidden" value="true" class="form-control"  name="create">
+
+                                                    <input class="btn btn-success text-dark col-lg-12 col-sm-10 mb2 my-4 mx-auto" type="submit" value="Update">
                                                 </form>
                                             </div>
                                         </div>
@@ -168,33 +202,11 @@
         </div>
 
 
-        <button id="brand_addBtn" toggle="tooltip" title="Add New"
-                class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal"
-                data-bs-target="#add_brand_modal">
-            <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-        </button>
 
 
-        <button id="update_brand_Btn" toggle="tooltip" title="Add New"
-                class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal"
-                data-bs-target="#update_brand_modal">
-            <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-        </button>
 
 
     </div>
-
-
-
-
 
 
 

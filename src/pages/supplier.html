@@ -27,7 +27,6 @@
     })
 
 
-
     <div>
 
         <div class="py-4">
@@ -35,7 +34,11 @@
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
                         <a href="#">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
                         </a>
                     </li>
                     <li class="breadcrumb-item"><a href="#">Supplier</a></li>
@@ -43,7 +46,7 @@
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4" >Add New Supplier</h1>
+                    <h1 class="h4">Add New Supplier</h1>
                     <p class="mb-0">Supplier Information </p>
                 </div>
             </div>
@@ -51,72 +54,78 @@
 
 
         <!--Add Form modal-->
-        <div class="modal fade" id="add_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                <div class="m modal-dialog"
-                     style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Add New Salesman</h3>
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form id="Supplier_post_form" method="post" enctype="multipart/form-data">
-                            <div class="n modal-body" id="kk" style="height: 600px;">
-                                <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Name..">
-                                </div>
-
-                                <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                    <label for="email">email</label>
-                                    <input type="email" class="form-control" id="email" name="email">
-
-                                </div>
-
-                                <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                    <label for="phone_no">Phone Number</label>
-                                    <input type="text" class="form-control" id="phone_no" name="phone_no"
-                                           pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="Number..">
-
-
-                                </div>
-                                <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                    <label for="address">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address"
-                                           placeholder="Address..">
-
-                                </div>
-                                <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                    <label for="company_name">Company Name</label>
-                                    <input type="text" class="form-control" id="company_name" name="company_name"
-                                    >
-                                </div>
-
-                                <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                    <label for="image_url">Image Upload</label>
-                                    <div class="modal-content" style="width:40%">
-                                        <div class="modal-body align-items-center-center"  data-cropzee="image_url">
-                                            <img  src=" ">
-                                        </div>
-                                    </div>
-                                    <input type="file" class="form-control" id="image_url" name="image_url">
-                                </div>
-
-
-                                <input type="hidden" value="true" class="form-control" id="create" name="create" >
+        <div class="modal fade" id="add_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+             aria-hidden="true">
+            <div class="m modal-dialog"
+                 style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add New Supplier</h3>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <form id="Supplier_post_form" method="post" enctype="multipart/form-data">
+                        <div class="n modal-body" id="kk" style="height: 600px;">
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Name..">
                             </div>
 
-                            <div class="modal-footer"><input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit" value="Add Salesman"></div>
-                        </form>
-                    </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="email">email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="phone_no">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_no" name="phone_no"
+                                       pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="Number..">
+
+
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" name="address"
+                                       placeholder="Address..">
+
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control" id="company_name" name="company_name"
+                                >
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="image_url">Image Upload</label>
+                                <div class="modal-content" style="width:40%">
+                                    <div class="modal-body align-items-center-center" data-cropzee="image_url">
+                                        <img src=" ">
+                                    </div>
+                                </div>
+                                <input type="file" class="form-control" id="image_url" name="image_url">
+                            </div>
+
+
+                            <input type="hidden" value="true" class="form-control" id="create" name="create">
+                        </div>
+
+                        <div class="modal-footer"><input
+                                class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit"
+                                value="Add Salesman"></div>
+                    </form>
                 </div>
             </div>
+        </div>
 
         <!-- Data Table-->
         <div class="card border-0 shadow">
             <div class="card-body">
-                <table class="table table-flush wrap hover" id="supplier_dataTable" style="width: 100%; table-layout: fixed">
+                <table class="table table-flush wrap hover" id="supplier_dataTable"
+                       style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -128,6 +137,7 @@
                         <th>Ref Comment</th>
                         <th>Blacklist</th>
                         <th>Image</th>
+                        <th>Details</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -136,50 +146,62 @@
         </div>
 
 
-
-        <!--Upgreate Supplier-->
-
-        <div class="modal fade" id="update_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal fade" id="details_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body p-0">
                         <div class="card p-3 p-lg-4">
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3">Update Supplier</h1>
+                                <h1 class="mb-0 h3 text-info">Salesman Details</h1>
                             </div>
                             <div class="col-12 mb-4">
                                 <div class="card border shadow components-section">
                                     <div class="card-body">
                                         <div class="row mb-4">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <!-- Form -->
-                                                <form id="update_supplier_form">
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label  for="update_supplier_name">Name</label>
-                                                        <input id="update_supplier_name" class="form-control" type="text" oninvalid="this.setCustomValidity('Please enter a valid name')" oninput="this.setCustomValidity('')" pattern="^[a-z,A-Z ].{2,50}$" placeholder="supplier..." required>
-                                                    </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label  for="update_supplier_phone">Phone</label>
-                                                        <input id="update_supplier_phone" class="form-control"  type="text" oninvalid="this.setCustomValidity('Please enter a valid phone number')" oninput="this.setCustomValidity('')" pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="+8801..." required>
-                                                    </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label for="update_supplier_address">Address</label>
-                                                        <input id="update_supplier_address" class="form-control"  type="text" oninvalid="this.setCustomValidity('Please enter a valid address')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" placeholder="123 ABC Street..." required>
-                                                    </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-4">
-                                                        <label class="my-1 me-2" for="update_supplier_status">Active Status</label>
-                                                        <select class="form-select" id="update_supplier_status" name="Status"
-                                                                aria-label="Default select example" required>
-                                                            <option disabled selected value> -- select an option --</option>
-                                                            <option value="1">Active</option>
-                                                            <option value="2">Inactive</option>
-                                                        </select>
-                                                    </div>
-                                                    <button type="button" id="update_supplier" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Update Info
-                                                    </button>
-                                                </form>
+                                            <div class="col-lg-12 col-sm-6 ">
+                                                <div class="text-dark bg my-1">
+                                                    <h5 class="d-inline">Name :</h5>
+                                                    <p class="d-inline" id="sup_name"></p>
+                                                </div>
+                                                <div class="bg-gray-100 text-dark my-1">
+                                                    <h5 class="d-inline">Email :</h5>
+                                                    <p class="d-inline" id="sup_email"></p>
+                                                </div>
+                                                <div class="text-dark bg my-1">
+                                                    <h5 class="d-inline">Age :</h5>
+                                                    <p class="d-inline" id="sup_pn"></p>
+                                                </div>
+                                                <div class="bg-gray-100 text-dark my-1">
+                                                    <h5 class="d-inline">Address :</h5>
+                                                    <p class="d-inline" id="sup_address"></p>
+                                                </div>
+                                                <div class="text-dark bg my-1">
+                                                    <h5 class="d-inline">Company Name :</h5>
+                                                    <p class="d-inline" id="sup_companyN"></p>
+                                                </div>
+                                                <div class="bg-gray-100 text-dark my-1">
+                                                    <h5 class="d-inline">Company Phone :</h5>
+                                                    <p class="d-inline" id="sup_phone"></p>
+                                                </div>
+                                                <div class="text-dark bg my-1">
+                                                    <h5 class="d-inline">Company Address :</h5>
+                                                    <p class="d-inline" id="sup_com_address"></p>
+                                                </div>
+                                                <div class="bg-gray-100 text-dark my-1">
+                                                    <h5 class="d-inline">Bank Info :</h5>
+                                                    <p class="d-inline" id="sup_bank_info"></p>
+                                                </div>
+                                                <div class="text-dark bg my-1">
+                                                    <h5 class="d-inline">Ref Comment :</h5>
+                                                    <p class="d-inline" id="sup_ref_comm"></p>
+                                                </div>
+                                                <div class="bg-gray-100 text-dark my-1">
+                                                    <h5 class="d-inline">Blacklist :</h5>
+                                                    <p class="d-inline" id="sup_blacklist"></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -190,6 +212,76 @@
                 </div>
             </div>
         </div>
+        <!--Details Modal end-->
+
+
+        <!--Upgreate Supplier-->
+
+        <!--Add Form modal-->
+        <div class="modal fade" id="Update_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+             aria-hidden="true">
+            <div class="m modal-dialog"
+                 style="overflow-y: scroll;  margin-top: 100px; margin-bottom:50px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Update Supplier</h3>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <form id="Supplier_update_post_form" method="post" enctype="multipart/form-data">
+                        <div class="n modal-body" style="height: 600px;">
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="Uname" name="name" placeholder="Name..">
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="email">email</label>
+                                <input type="email" class="form-control" id="Uemail" name="email">
+
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="phone_no">Phone Number</label>
+                                <input type="text" class="form-control" id="Uphone_no" name="phone_no"
+                                       pattern="[+8801|8801|01][0-9]{0,14}\d$" placeholder="Number..">
+
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="Uaddress" name="address"
+                                       placeholder="Address..">
+
+                            </div>
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control" id="Ucompany_name" name="company_name"
+                                >
+                            </div>
+
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label>Image Upload</label>
+                                <div class="modal-content" style="width:40%">
+                                    <div class="modal-body align-items-center-center" data-cropzee="image_url">
+                                        <img src=" ">
+                                    </div>
+                                </div>
+                                <input type="file" class="form-control" id="Uimage_url" name="image_url">
+                            </div>
+
+
+                            <input type="hidden" value="true" class="form-control" id="Ucreate" name="create">
+                        </div>
+
+                        <div class="modal-footer"><input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit" value="Update Salesman"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
 
 
         <!--delete Modal-->
@@ -199,27 +291,42 @@
                     <div class="pt-3">
                         <div class="modal-body">
                             <h5 id="supplier_Delete_name"></h5>
-                            <p class="fw-light" style="font-size:14px;" >This item will delete immediately. You can't undo this action.</p>
+                            <p class="fw-light" style="font-size:14px;">This item will delete immediately. You can't
+                                undo this action.</p>
                         </div>
                     </div>
                     <div style="margin-left: auto; padding-right:15px;padding-bottom: 15px">
-                        <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button"  id="delete_supplier" class="btn btn-secondary" >Delete</button>
+                        <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200"
+                                data-bs-dismiss="modal">Cancel
+                        </button>
+                        <button type="button" id="delete_supplier" class="btn btn-secondary">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
 
+
+        <!--Supplier Photo Modal-->
+        <div class="modal img-fluid" id="supplier_image_modal">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content" style="width:70%">
+                    <div class="modal-body align-items-center-center ">
+                        <img id="supplier_image" src="">
+                        <button type="button" class="modal-footer ms-auto btn-outline-dark border-0 btn btn-outline-light text-primary"
+                                data-bs-dismiss="modal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
     </div>
-
-
-    </div>
-
-
-
-
-
-
 
 
     @@include('./dashboard/_footer.html', {

@@ -101,6 +101,16 @@
                 </a>
             </li>
 
+            <li class="nav-item @@if (context.page === 'userprofile') { active }">
+                <a href="@@path/pages/userprofile.html" class="nav-link">
+          <span class="sidebar-icon">
+            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
+                    fill-rule="evenodd" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    clip-rule="evenodd"></path></svg>
+          </span>
+                    <span class="sidebar-text">User Profile</span>
+                </a>
+            </li>
 
             <li class="nav-item @@if (context.page === 'supplier') { active }">
                 <a href="@@path/pages/supplier.html" class="nav-link">
@@ -112,6 +122,20 @@
                     <span class="sidebar-text">Supplier</span>
                 </a>
             </li>
+
+
+            <li class="nav-item @@if (context.page === 'sales') { active}">
+                <a href="@@path/pages/sales.html" class="nav-link">
+          <span class="sidebar-icon">
+            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
+                    fill-rule="evenodd"
+                    d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                    clip-rule="evenodd"></path></svg>
+          </span>
+                    <span class="sidebar-text">Sales KPI</span>
+                </a>
+            </li>
+
 
             <li class="nav-item @@if (context.page === 'product') { active }">
                 <a href="@@path/pages/product.html" class="nav-link">
@@ -149,16 +173,7 @@
                 </a>
             </li>
 
-            <li class="nav-item @@if (context.page === 'salesman') { active }">
-                <a href="@@path/pages/salesman.html" class="nav-link">
-          <span class="sidebar-icon">
-            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
-                    fill-rule="evenodd" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    clip-rule="evenodd"></path></svg>
-          </span>
-                    <span class="sidebar-text">Salesman</span>
-                </a>
-            </li>
+
 
             <li class="nav-item @@if (context.page === 'purchase') { active }">
                 <a href="@@path/pages/purchase.html" class="nav-link">
