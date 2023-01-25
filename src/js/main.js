@@ -3390,17 +3390,17 @@
 
 
 
+
+
     //Sales KPI=======================================================================================
 
 
 
-
-
     //init category  datatable and load data
-    let kpi_datatable = $('#salesKpi_dataTable').DataTable({
+    let kpi_table = $('#salesKpi_dataTable').DataTable({
 
         ajax: {
-            url: nafisa_domain + '/category',
+            url: riyad_domain + '/sales_kpi',
             dataSrc: 'data',
         },
         rowId: 'id',
@@ -3473,20 +3473,20 @@
                 }
             },
 
-            '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_category_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+            '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
 
         ],
 
         columns: [
             {data: 'name'},
-            {data: 'description'},
-            {data: 'featured'},
+            {data: 'sales_volume'},
+            {data: 'last_modified'},
 
             {
                 data: 'id',
                 render: function () {
-                    return '<button id="update_categoryBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_category_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                        + '<button   id="delete_categorybtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_category_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                    return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                        + '<button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
                 }
             },
         ]
@@ -3494,12 +3494,13 @@
 
     //init Parent--------------------------------------------
     $.ajax({
-        url: 'https://nafisa.selopian.us/category/byparent/0',
+        url: riyad_domain + '/salesman',
         type: 'GET',
         success: function (data) {
             let category_parents = data?.data.map(item => item)
             category_parents.forEach((element) => {
-                $('<option/>').val(element['id']).html(element['name']).appendTo('#cParent', '#update_cParent');
+                $('<option/>').val(element['user_id']).html(element['name']).appendTo('#kpi_user');
+                $('<option/>').val(element['user_id']).html(element['name']).appendTo('#update_kpi_user');
 
             });
         }
@@ -3508,20 +3509,17 @@
 
     //Post Category-------------------------------------------
 
-    $("#add_category").click(function () {
+    $("#add_kpi").click(function () {
 
         $(this).text('Submitting..');
-        let addcategoryModal = {
-            name: $("#category_name").val(),
-            description: $("#category_description").val(),
-            parent_id: $("#cParent").val(),
-            featured: $("#category_featured").val(),
-
+        let addKpiModal = {
+            user_id: $("#kpi_user").val(),
+            sales_volume: $("#sales_kpi_volume").val(),
         };
         $.ajax({
-            url: nafisa_domain + '/category',
+            url: riyad_domain + '/sales_kpi',
             type: 'POST',
-            data: JSON.stringify(addcategoryModal),
+            data: JSON.stringify(addKpiModal),
             contentType: "application/json",
             success: function (data) {
 
@@ -3572,28 +3570,24 @@
     //Update Category-----------------------------------
 
     // EDIT button
-    $('#category_dataTable tbody').on('click', '#update_categoryBtn', function () {
+    $('#salesKpi_dataTable tbody').on('click', '#update_kpiBtn', function () {
         // getting parent row index and data
-        rowIndex = category_table.row($(this).parents('tr')).index();
-        rowData = category_table.row($(this).parents('tr')).data();
+        rowIndex = kpi_table.row($(this).parents('tr')).index();
+        rowData = kpi_table.row($(this).parents('tr')).data();
 
         // setting row values to update modal input boxes
-        $("#update_category_name").val(rowData.name);
-        $("#update_category_description").val(rowData.description);
-        $('<option/>').val(rowData['id']).html(rowData['name']).appendTo('#update_cParent');
-        $("#update_category_featured").val(rowData.featured);
+
+        $("#update_kpi_user option:selected").text(rowData.name);
+        $("#update_kpi_volume ").val(rowData.sales_volume);
+
     })
 
     // Update Button
-    $("#update_category").click(function () {
+    $("#update_kpi").click(function () {
 
-
-        let ddcategoryModal = {
-            name: $("#update_category_name").val(),
-            description: $("#update_category_description").val(),
-            parent_id: $("#update_cParent").val(),
-            featured: $("#update_category_featured").val(),
-
+        let addKpiModal = {
+            user_id: $("#update_kpi_user").val(),
+            sales_volume: $("#update_kpi_volume").val(),
         };
 
         // updating button text
@@ -3602,15 +3596,15 @@
         console.log(rowData)
         // updating server row
         $.ajax({
-            url: nafisa_domain + '/category/' + rowData.id,
+            url: riyad_domain + '/sales_kpi/' + rowData.id,
             type: 'PUT',
-            data: JSON.stringify(ddcategoryModal),
+            data: JSON.stringify(addKpiModal),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
 
                 if (data.status.code === 1) {
                     // hide modal
-                    const modal = bootstrap.Modal.getInstance($("#update_category_modal"));
+                    const modal = bootstrap.Modal.getInstance($("#update_kpi_modal"));
                     modal.hide();
 
                     //Set default button text again
@@ -3637,7 +3631,7 @@
                         icon: false
                     });
                 } else {
-                    const modal = bootstrap.Modal.getInstance($("#update_category_modal"));
+                    const modal = bootstrap.Modal.getInstance($("#update_kpi_modal"));
                     modal.hide();
 
                     //Set default button text again
@@ -3653,7 +3647,7 @@
             },
 
             error: function () {
-                const modal = bootstrap.Modal.getInstance($("#update_category_modal"));
+                const modal = bootstrap.Modal.getInstance($("#update_kpi_modal"));
                 modal.hide();
                 //Set default button text again
                 $("#update_category").text('Update');
