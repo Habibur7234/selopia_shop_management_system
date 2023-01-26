@@ -2981,414 +2981,423 @@
 
 //User Profile================================================================================================================
 
-    // //init Salesman datatable and load data
-    // let customer_table = $('#customer_dataTable').DataTable({
-    //     // order: [[0, 'desc']],
-    //     // "columnDefs": [
-    //     //     {'visible': false, 'targets': 0},
-    //     //     {"width": "25%", "targets": 1},
-    //     //     {"width": "15%", "targets": 2},
-    //     //     {'visible': false, 'targets': 3},
-    //     //     {'visible': false, 'targets': 4},
-    //     //     {'visible': false, 'targets': 5},
-    //     //     {'visible': false, 'targets': 6},
-    //     //     {'visible': false, 'targets': 7},
-    //     //     {'visible': false, 'targets': 8},
-    //     //     {"width": "10%", "targets": 9},
-    //     //     {"width": "10%", "targets": 10},
-    //     //     {'visible': false, 'targets': 11},
-    //     //     {'visible': false, 'targets': 12},
-    //     //     {'visible': false, 'targets': 13},
-    //     //     {"width": "10%", "targets": 14},
-    //     //     {"width": "10%", "targets": 15}
-    //     // ],
-    //
-    //     ajax: {
-    //         url:nafisa_domain + '/user_profile',
-    //         dataSrc: 'data',
-    //     },
-    //     rowId: 'id',
-    //     dom: 'Blfrtip',
-    //     oLanguage: {
-    //         sLengthMenu: "Show _MENU_",
-    //     },
-    //     language: {
-    //         search: "",
-    //         searchPlaceholder: "Search..."
-    //     },
-    //     buttons: [
-    //         {
-    //             extend: 'print',
-    //             title: 'Salesman Information',
-    //             orientation: 'landscape',
-    //             exportOptions: {
-    //                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13,],
-    //                 modifier: {
-    //                     page: 'current'
-    //                 }
-    //             },
-    //             pageSize: 'LEGAL',
-    //             customize: function (salesman) {
-    //                 $(salesman.document.body)
-    //                     .css('font-size', '10pt')
-    //             }
-    //         },
-    //         {
-    //             extend: 'excelHtml5',
-    //             title: 'Shop Information',
-    //             exportOptions: {
-    //                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13,]
-    //
-    //             },
-    //
-    //         },
-    //         {
-    //             extend: 'pdf',
-    //             exportOptions: {
-    //                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13,],
-    //             },
-    //             pageSize: 'LEGAL',
-    //             title: 'Shop Information',
-    //             // customize: function (doc) {
-    //             //     doc.content[1].table.widths = [
-    //             //         '11%',
-    //             //         '8%',
-    //             //         '5%',
-    //             //         '8%',
-    //             //         '10%',
-    //             //         '10%',
-    //             //         '15%',
-    //             //         '7%',
-    //             //         '7%',
-    //             //         '10%',
-    //             //         '8%',
-    //             //     ]
-    //             //     let salesmanRowCount = doc.content[1].table.body.length;
-    //             //     for (let i = 1; i < salesmanRowCount; i++) {
-    //             //         doc.content[1].table.body[i][0].alignment = 'center';
-    //             //         doc.content[1].table.body[i][1].alignment = 'center';
-    //             //         doc.content[1].table.body[i][2].alignment = 'center';
-    //             //         doc.content[1].table.body[i][3].alignment = 'center';
-    //             //         doc.content[1].table.body[i][4].alignment = 'center';
-    //             //         doc.content[1].table.body[i][5].alignment = 'center';
-    //             //         doc.content[1].table.body[i][6].alignment = 'center';
-    //             //         doc.content[1].table.body[i][7].alignment = 'center';
-    //             //         doc.content[1].table.body[i][8].alignment = 'center';
-    //             //         doc.content[1].table.body[i][9].alignment = 'center';
-    //             //         doc.content[1].table.body[i][10].alignment = 'center';
-    //             //     }
-    //             // }
-    //         },
-    //
-    //         '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
-    //     ],
-    //
-    //     columns: [
-    //         {data: 'name'},
-    //         {data: 'email'},
-    //         {data: 'phone_no'},
-    //         {data: 'address'},
-    //         {data: 'company_name'},
-    //         {data: 'image_url',
-    //
-    //             render: function () {
-    //                 return '<button id="customer_profile_img_url"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#customer_image_modal">View</button>'
-    //             }
-    //         },
-    //
-    //         // {
-    //         //     data: '',
-    //         //     render: function () {
-    //         //         return '<button id="salesman_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_salesman_modal">Details</button>'
-    //         //     }
-    //         // },
-    //         {
-    //             data: '',
-    //             render: function () {
-    //                 return '<button id="update_customerBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-    //                     + '<button   id="delete_customerBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_customerr_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
-    //             }
-    //         },
-    //     ]
-    // });
-    //
-    //
-    // //cropzee-----------------
-    // $(document).ready(function () {
-    //     $("#customer_image_url").cropzee();
-    // });
-    //
-    //
-    //
-    // // Details Button
-    // $('#salesman_dataTable tbody').on('click', '#salesman_details', function () {
-    //     rowData = salesman_table.row($(this).parents('tr')).data();
-    //
-    //     // Set value on Modal
-    //     $("#sd_name").text(rowData.name);
-    //     $("#sd_designation").text(rowData.designation_id.designation);
-    //     $("#sd_age").text(rowData.age);
-    //
-    //     if (rowData.gender === 1) {
-    //         $("#sd_gender").text('Male');
-    //     } else {
-    //         $("#sd_gender").text('Female');
-    //     }
-    //     $("#sd_email").text(rowData.email);
-    //     $("#sd_phone").text(rowData.phone);
-    //     $("#sd_address").text(rowData.address);
-    //     $("#sd_nid").text(rowData.nid);
-    //     $("#sd_salary").text(rowData.salary);
-    //     $("#sd_joinDate").text(rowData.joining_date);
-    //
-    //     if (rowData.status === 1) {
-    //         $("#sd_status").text('Active');
-    //     } else {
-    //         $("#sd_status").text('Inactive');
-    //     }
-    //
-    // });
-    //
-    //
-    // //View Customer Photo Button
-    // $('#customer_dataTable tbody').on('click', '#customer_profile_img_url', function () {
-    //     rowData = customer_table.row($(this).parents('tr')).data();
-    //     $("#customer_image").attr("src", rowData.image_url);
-    // });
-    //
-    //
-    // //Salesman CRUD Start
-    //
-    // //Reset salesman add Modal Input when it's Close
-    // $('#add_customer_modal').on('hidden.bs.modal', function () {
-    //     $('[data-cropzee="' + 'customer_image_url' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="customer_image_url"><img  src=""></div>');
-    //     $(this).find('#salesman_post_form').trigger('reset');
-    // });
-    // //
-    // // //Reset salesman update Modal Input when it's Close
-    // // $('#update_salesman_modal').on('hidden.bs.modal', function () {
-    // //     $('[data-cropzee="' + 'salesman_edit_nid_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_nid_photos"><img id="s_nid_img" src=""></div>');
-    // //     $('[data-cropzee="' + 'salesman_edit_profile_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_profile_photos"><img id="s_profile_img" src=""></div>');
-    // //     $(this).find('#salesman_update_form').trigger('reset');
-    // // });
-    //
-    //
-    // /* ### Post Data Start ### */
-    // $("#customer_post_form").on('submit', (function (e) {
-    //     e.preventDefault();
-    //     $.ajax({
-    //         url: nafisa_domain + '/customer',
-    //         type: "POST",
-    //         data: new FormData(this),
-    //         contentType: false,
-    //         cache: false,
-    //         processData: false,
-    //
-    //         success: function (data) {
-    //             if (data.status.code === 1) {
-    //                 $("#add_supplier").text('Add');
-    //
-    //                 const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
-    //                 modal.hide();
-    //
-    //                 let newSRowIndex = customer_table.row.add(data.data).draw();
-    //                 //Success Notification
-    //                 notyf.success({
-    //                     message: data.status.message,
-    //                     duration: 7000,
-    //                     icon: false
-    //                 });
-    //                 //reset input Field
-    //                 $('form :input').val('');
-    //                 $('.input').val('');
-    //                 customer_table.search('');
-    //                 // re-ordering to default
-    //
-    //                 customer_table.order([0, 'desc']).draw();
-    //                 // highlighting newly added row
-    //                 $(customer_table.row(newSRowIndex.index()).nodes()).addClass('selected');
-    //             } else {
-    //                 //Set default button text again
-    //                 const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
-    //                 modal.hide();
-    //                 //Notification
-    //                 notyf.error({
-    //                     message: data.status.message,
-    //                     duration: 7000,
-    //                     icon: false
-    //                 });
-    //             }
-    //         },
-    //         error: function (data) {
-    //             const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
-    //             modal.hide();
-    //             //Notification
-    //             notyf.error({
-    //                 message: data.status.message,
-    //                 duration: 7000,
-    //                 icon: false
-    //             });
-    //         }
-    //     });
-    // }));
-    // /* ### Post Data End ### */
-    //
-    //
-    // // Delete button
-    // $('#customer_dataTable tbody').on('click', '#delete_customerBtn', function () {
-    //     rowData = customer_table.row($(this).parents('tr')).data();
-    //     rowIndex = customer_table.row($(this).parents('tr')).index();
-    // });
-    //
-    // // DELETE Confirmation button
-    // $("#delete_customer").click(function () {
-    //
-    //     $(this).text('Deleting...');
-    //     $.ajax({
-    //         url:   nafisa_domain + '/customer/' + rowData.id,
-    //         type: 'DELETE',
-    //         success: function (data) {
-    //
-    //             if(data.status.code === 1){
-    //                 let currentPage = customer_table.page();
-    //                 customer_table.row(rowIndex).remove().draw();
-    //
-    //                 const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
-    //                 modal.hide();
-    //
-    //                 $("#delete_customer").text('Delete');
-    //                 // redrawing to original page
-    //                 customer_table.page(currentPage).draw('page');
-    //
-    //                 notyf.success({
-    //                     message: 'Customer  Deleted <strong>Successfully !</strong>',
-    //                     duration: 7000,
-    //                     icon: false
-    //                 });
-    //                 rowData = undefined;
-    //                 rowIndex = undefined;
-    //             }
-    //             else{
-    //                 notyf.success({
-    //                     message: data.status.message,
-    //                     duration: 7000,
-    //                     icon: false
-    //                 });
-    //                 const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
-    //                 modal.hide();
-    //                 $("#delete_customer").text('Delete');
-    //             }
-    //         },
-    //         error: function () {
-    //             $("#delete_customer").text('Delete');
-    //             notyf.success({
-    //                 message: data.status.message,
-    //                 duration: 7000,
-    //                 icon: false
-    //             });
-    //
-    //         },
-    //     });
-    // });
-    // /* ### Delete Data End ### */
-    //
-    //
-    //
-    // // Update Customer Data Start --------------------------------------------
-    //
-    // //Chance nid photo preview when update
-    // function updateNidURL(input) {
-    //     if (input.files && input.files[0]) {
-    //         var reader = new FileReader();
-    //         reader.onload = function (e) {
-    //
-    //             $('#update_customer_image_url').attr('src', e.target.result);
-    //             $('#update_customer_image_url').hide();
-    //             $('#update_customer_image_url').fadeIn(650);
-    //         }
-    //         reader.readAsDataURL(input.files[0]);
-    //     }
-    // }
-    // $("#salesman_edit_nid_photos").change(function () {
-    //     updateNidURL(this);
-    // });
-    //
-    //
-    // $('#customer_dataTable tbody').on('click', '#update_customerBtn', function () {
-    //     // getting parent row Data
-    //     rowData = customer_table.row($(this).parents('tr')).data();
-    //
-    //     // setting row values to update modal input boxes
-    //     $("#update_customer_name").val(rowData.name);
-    //     $('#update_customer_email').val(rowData.email);
-    //     $('#update_customer_phone_no').val(rowData.phone_no);
-    //     $("#update_customer_address").val(rowData.address);
-    //     $('#update_customer_company_name').val(rowData.company_name);
-    //     $("#update_customer_image_url").val(rowData.image_url);
-    //
-    //     //Close "#" In url From cropzee modal
-    //     closeModal();
-    // })
-    //
-    //
-    // // Update Button
-    // $("#update_customer_post_form").on('submit', (function (e) {
-    //     e.preventDefault();
-    //     $.ajax({
-    //         url: nafisa_domain + '/customer/' + rowData.id,
-    //         type: "POST",
-    //         data: new FormData(this),
-    //         contentType: false,
-    //         cache: false,
-    //         processData: false,
-    //
-    //         success: function (data) {
-    //             if (data.status.code === 1) {
-    //                 const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-    //                 modal.hide();
-    //
-    //                 let newSRowIndex = customer_table.row.add(data.data).draw();
-    //                 //Success Notification
-    //                 notyf.success({
-    //                     message: data.status.message,
-    //                     duration: 7000,
-    //                     icon: false
-    //                 });
-    //                 //reset input Field
-    //                 $('form :input').val('');
-    //                 $('.input').val('');
-    //                 customer_table.search('');
-    //                 // re-ordering to default
-    //
-    //                 customer_table.order([0, 'desc']).draw();
-    //                 // highlighting newly added row
-    //                 $(customer_table.row(newSRowIndex.index()).nodes()).addClass('selected');
-    //             } else {
-    //                 //Set default button text again
-    //                 const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-    //                 modal.hide();
-    //                 //Notification
-    //                 notyf.error({
-    //                     message: data.status.message,
-    //                     duration: 7000,
-    //                     icon: false
-    //                 });
-    //             }
-    //         },
-    //         error: function (data) {
-    //             const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-    //             modal.hide();
-    //             //Notification
-    //             notyf.error({
-    //                 message: data.status.message,
-    //                 duration: 7000,
-    //                 icon: false
-    //             });
-    //         }
-    //     });
-    // }));
+    //init Salesman datatable and load data
+    let userProfile_table = $('#userProfile_datatable').DataTable({
+        // order: [[0, 'desc']],
+        // "columnDefs": [
+        //     {'visible': false, 'targets': 0},
+        //     {"width": "25%", "targets": 1},
+        //     {"width": "15%", "targets": 2},
+        //     {'visible': false, 'targets': 3},
+        //     {'visible': false, 'targets': 4},
+        //     {'visible': false, 'targets': 5},
+        //     {'visible': false, 'targets': 6},
+        //     {'visible': false, 'targets': 7},
+        //     {'visible': false, 'targets': 8},
+        //     {"width": "10%", "targets": 9},
+        //     {"width": "10%", "targets": 10},
+        //     {'visible': false, 'targets': 11},
+        //     {'visible': false, 'targets': 12},
+        //     {'visible': false, 'targets': 13},
+        //     {"width": "10%", "targets": 14},
+        //     {"width": "10%", "targets": 15}
+        // ],
+
+        ajax: {
+            url: nafisa_domain + '/user_profile',
+            dataSrc: 'data',
+        },
+        rowId: 'id',
+        dom: 'Blfrtip',
+        oLanguage: {
+            sLengthMenu: "Show _MENU_",
+        },
+        language: {
+            search: "",
+            searchPlaceholder: "Search..."
+        },
+        buttons: [
+            {
+                extend: 'print',
+                title: 'Salesman Information',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13,],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                customize: function (salesman) {
+                    $(salesman.document.body)
+                        .css('font-size', '10pt')
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Shop Information',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13,]
+
+                },
+
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13,],
+                },
+                pageSize: 'LEGAL',
+                title: 'Shop Information',
+                // customize: function (doc) {
+                //     doc.content[1].table.widths = [
+                //         '11%',
+                //         '8%',
+                //         '5%',
+                //         '8%',
+                //         '10%',
+                //         '10%',
+                //         '15%',
+                //         '7%',
+                //         '7%',
+                //         '10%',
+                //         '8%',
+                //     ]
+                //     let salesmanRowCount = doc.content[1].table.body.length;
+                //     for (let i = 1; i < salesmanRowCount; i++) {
+                //         doc.content[1].table.body[i][0].alignment = 'center';
+                //         doc.content[1].table.body[i][1].alignment = 'center';
+                //         doc.content[1].table.body[i][2].alignment = 'center';
+                //         doc.content[1].table.body[i][3].alignment = 'center';
+                //         doc.content[1].table.body[i][4].alignment = 'center';
+                //         doc.content[1].table.body[i][5].alignment = 'center';
+                //         doc.content[1].table.body[i][6].alignment = 'center';
+                //         doc.content[1].table.body[i][7].alignment = 'center';
+                //         doc.content[1].table.body[i][8].alignment = 'center';
+                //         doc.content[1].table.body[i][9].alignment = 'center';
+                //         doc.content[1].table.body[i][10].alignment = 'center';
+                //     }
+                // }
+            },
+
+            '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_user_profile_photo" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+        ],
+
+        columns: [
+            {data: 'name'},
+            {data: 'user_id.phone_username'},
+            {data: 'nid_no'},
+            {data: 'designation_id.name'},
+            {data: 'salary'},
+            {data: 'department_id.name'},
+            {data: 'shop_id.name'},
+            {data: 'ref_comment'},
 
 
+            {data: 'nid_photo_url',
+
+                render: function () {
+                    return '<button id="customer_profile_img_url"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#customer_image_modal">View</button>'
+                }
+            },
+            {data: 'profile_photo_url',
+
+                render: function () {
+                    return '<button id="customer_profile_img_url"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#customer_image_modal">View</button>'
+                }
+            },
+
+            // {
+            //     data: '',
+            //     render: function () {
+            //         return '<button id="salesman_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_salesman_modal">Details</button>'
+            //     }
+            // },
+            {
+                data: '',
+                render: function () {
+                    return '<button id="update_customerBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                        + '<button   id="delete_customerBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_customerr_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                }
+            },
+        ]
+    });
+
+
+    //cropzee-------------------------------
+    $(document).ready(function () {
+        $("#customer_image_url").cropzee();
+    });
+
+
+
+    // Details Button
+    $('#salesman_dataTable tbody').on('click', '#salesman_details', function () {
+        rowData = salesman_table.row($(this).parents('tr')).data();
+
+        // Set value on Modal
+        $("#sd_name").text(rowData.name);
+        $("#sd_designation").text(rowData.designation_id.designation);
+        $("#sd_age").text(rowData.age);
+
+        if (rowData.gender === 1) {
+            $("#sd_gender").text('Male');
+        } else {
+            $("#sd_gender").text('Female');
+        }
+        $("#sd_email").text(rowData.email);
+        $("#sd_phone").text(rowData.phone);
+        $("#sd_address").text(rowData.address);
+        $("#sd_nid").text(rowData.nid);
+        $("#sd_salary").text(rowData.salary);
+        $("#sd_joinDate").text(rowData.joining_date);
+
+        if (rowData.status === 1) {
+            $("#sd_status").text('Active');
+        } else {
+            $("#sd_status").text('Inactive');
+        }
+
+    });
+
+
+    //View Customer Photo Button
+    $('#customer_dataTable tbody').on('click', '#customer_profile_img_url', function () {
+        rowData = customer_table.row($(this).parents('tr')).data();
+        $("#customer_image").attr("src", rowData.image_url);
+    });
+
+
+    //Salesman CRUD Start
+
+    //Reset salesman add Modal Input when it's Close
+    $('#add_customer_modal').on('hidden.bs.modal', function () {
+        $('[data-cropzee="' + 'customer_image_url' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="customer_image_url"><img  src=""></div>');
+        $(this).find('#salesman_post_form').trigger('reset');
+    });
+    //
+    // //Reset salesman update Modal Input when it's Close
+    // $('#update_salesman_modal').on('hidden.bs.modal', function () {
+    //     $('[data-cropzee="' + 'salesman_edit_nid_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_nid_photos"><img id="s_nid_img" src=""></div>');
+    //     $('[data-cropzee="' + 'salesman_edit_profile_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_profile_photos"><img id="s_profile_img" src=""></div>');
+    //     $(this).find('#salesman_update_form').trigger('reset');
+    // });
+
+
+    /* ### Post Data Start ### */
+    $("#user_profile_post_form").on('submit', (function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: nafisa_domain + '/userprofile',
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success: function (data) {
+                if (data.status.code === 1) {
+                    $("#add_supplier").text('Add');
+
+                    const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
+                    modal.hide();
+
+                    let newSRowIndex = customer_table.row.add(data.data).draw();
+                    //Success Notification
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                    //reset input Field
+                    $('form :input').val('');
+                    $('.input').val('');
+                    customer_table.search('');
+                    // re-ordering to default
+
+                    customer_table.order([0, 'desc']).draw();
+                    // highlighting newly added row
+                    $(customer_table.row(newSRowIndex.index()).nodes()).addClass('selected');
+                } else {
+                    //Set default button text again
+                    const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
+                    modal.hide();
+                    //Notification
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                }
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
+                modal.hide();
+                //Notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        });
+    }));
+    /* ### Post Data End ### */
+
+
+    // Delete button
+    $('#customer_dataTable tbody').on('click', '#delete_customerBtn', function () {
+        rowData = customer_table.row($(this).parents('tr')).data();
+        rowIndex = customer_table.row($(this).parents('tr')).index();
+    });
+
+    // DELETE Confirmation button
+    $("#delete_customer").click(function () {
+
+        $(this).text('Deleting...');
+        $.ajax({
+            url:   nafisa_domain + '/customer/' + rowData.id,
+            type: 'DELETE',
+            success: function (data) {
+
+                if(data.status.code === 1){
+                    let currentPage = customer_table.page();
+                    customer_table.row(rowIndex).remove().draw();
+
+                    const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
+                    modal.hide();
+
+                    $("#delete_customer").text('Delete');
+                    // redrawing to original page
+                    customer_table.page(currentPage).draw('page');
+
+                    notyf.success({
+                        message: 'Customer  Deleted <strong>Successfully !</strong>',
+                        duration: 7000,
+                        icon: false
+                    });
+                    rowData = undefined;
+                    rowIndex = undefined;
+                }
+                else{
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                    const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
+                    modal.hide();
+                    $("#delete_customer").text('Delete');
+                }
+            },
+            error: function () {
+                $("#delete_customer").text('Delete');
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+            },
+        });
+    });
+    /* ### Delete Data End ### */
+
+
+
+    // Update Customer Data Start --------------------------------------------
+
+    //Chance nid photo preview when update
+    function updateNidURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+
+                $('#update_customer_image_url').attr('src', e.target.result);
+                $('#update_customer_image_url').hide();
+                $('#update_customer_image_url').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#salesman_edit_nid_photos").change(function () {
+        updateNidURL(this);
+    });
+
+
+    $('#customer_dataTable tbody').on('click', '#update_customerBtn', function () {
+        // getting parent row Data
+        rowData = customer_table.row($(this).parents('tr')).data();
+
+        // setting row values to update modal input boxes
+        $("#update_customer_name").val(rowData.name);
+        $('#update_customer_email').val(rowData.email);
+        $('#update_customer_phone_no').val(rowData.phone_no);
+        $("#update_customer_address").val(rowData.address);
+        $('#update_customer_company_name').val(rowData.company_name);
+        $("#update_customer_image_url").val(rowData.image_url);
+
+        //Close "#" In url From cropzee modal
+        closeModal();
+    })
+
+
+    // Update Button
+    $("#update_customer_post_form").on('submit', (function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: nafisa_domain + '/customer/' + rowData.id,
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success: function (data) {
+                if (data.status.code === 1) {
+                    const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
+                    modal.hide();
+
+                    let newSRowIndex = customer_table.row.add(data.data).draw();
+                    //Success Notification
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                    //reset input Field
+                    $('form :input').val('');
+                    $('.input').val('');
+                    customer_table.search('');
+                    // re-ordering to default
+
+                    customer_table.order([0, 'desc']).draw();
+                    // highlighting newly added row
+                    $(customer_table.row(newSRowIndex.index()).nodes()).addClass('selected');
+                } else {
+                    //Set default button text again
+                    const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
+                    modal.hide();
+                    //Notification
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                }
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
+                modal.hide();
+                //Notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        });
+    }));
 
 
 
@@ -3522,47 +3531,56 @@
             data: JSON.stringify(addKpiModal),
             contentType: "application/json",
             success: function (data) {
+                console.log(data)
 
                 if (data.status.code === 1) {
 
-                    const modal = bootstrap.Modal.getInstance($("#add_category_modal"));
+                    const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
                     modal.hide();
                     notyf.success({
                         message: data.status.message,
                         duration: 7000,
                         icon: false
                     });
-                    let newRowIndex = category_table.row.add(addcategoryModal).draw();
+                    let newRowIndex = kpi_table.row.add(addKpiModal).draw();
 
                     //Success Notification
 
-                    $("#add_category").text('Submit');
+                    $("#add_kpi").text('Submit');
 
                     //reset input Field
                     $('form :input').val('');
                     $('.input').val('');
-                    category_table.search('');
+                    kpi_table.search('');
                     // re-ordering to default
-
-                    category_table.order([0, 'desc']).draw();
+                    kpi_table.order([0, 'desc']).draw();
                     // highlighting newly added row
-                    $(category_table.row(newRowIndex.index()).nodes()).addClass('selected');
+                    $(kpi_table.row(newRowIndex.index()).nodes()).addClass('selected');
                 } else {
                     //Set default button text again
-                    $("#add_category").text('Submit');
-                    const modal = bootstrap.Modal.getInstance($("#add_category_modal"));
+                    $("#add_kpi").text('Submit');
+                    const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
                     modal.hide();
                     //Notification
                     notyf.error({
-                        message: "<strong>Warning !</strong> Can't Add Category.",
+                        message: data.status.message,
                         duration: 7000,
                         icon: false
                     });
-
                 }
-
             },
-
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+                modal.hide();
+                //Set default button text again
+                $("#add_kpi").text('Submit');
+                // notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
         });
 
     })
@@ -3602,55 +3620,55 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
 
+
+                console.log(data)
                 if (data.status.code === 1) {
                     // hide modal
                     const modal = bootstrap.Modal.getInstance($("#update_kpi_modal"));
                     modal.hide();
 
                     //Set default button text again
-                    $("#update_category").text('Update');
-
-                    let currentPage = category_table.page();
-
-                    // update datatable
-                    category_table.row(rowIndex).data(ddcategoryModal).draw();
-
-                    // redrawing to original page
-                    category_table.page(currentPage).draw('page');
-
-                    // highlighting newly added row
-                    $(category_table.row(rowIndex).nodes()).addClass('selected');
-                    setTimeout(function () {
-                        $(category_table.row(rowIndex).nodes()).removeClass('selected');
-                    }, 2000);
-
+                    $("#update_kpi").text('Update');
                     // notification
                     notyf.success({
                         message: data.status.message,
                         duration: 7000,
                         icon: false
                     });
+                    let currentPage = kpi_table.page();
+
+                    // update datatable
+                    kpi_table.row(rowIndex).data(data.data.sales_volume).draw();
+
+                    // redrawing to original page
+                    kpi_table.page(currentPage).draw('page');
+
+                    // highlighting newly added row
+                    $(kpi_table.row(rowIndex).nodes()).addClass('selected');
+                    setTimeout(function () {
+                        $(kpi_table.row(rowIndex).nodes()).removeClass('selected');
+                    }, 2000);
+
+
                 } else {
                     const modal = bootstrap.Modal.getInstance($("#update_kpi_modal"));
                     modal.hide();
-
-                    //Set default button text again
-                    $("#update_category").text('Update');
-                    // notification
                     notyf.error({
                         message: data.status.message,
                         duration: 7000,
                         icon: false
                     });
                 }
+                    //Set default button text again
+                    $("#update_kpi").text('Update');
+                    // notification
 
             },
-
-            error: function () {
+            error: function (data) {
                 const modal = bootstrap.Modal.getInstance($("#update_kpi_modal"));
                 modal.hide();
                 //Set default button text again
-                $("#update_category").text('Update');
+                $("#update_kpi").text('Update');
                 // notification
                 notyf.error({
                     message: data.status.message,
@@ -3666,26 +3684,25 @@
 
 
     //    DELETE button ------------------------------------------------
-    $('#category_dataTable tbody').on('click', '#delete_categorybtn', function () {
-        rowData = category_table.row($(this).parents('tr')).data();
-        rowIndex = category_table.row($(this).parents('tr')).index();
+    $('#salesKpi_dataTable tbody').on('click', '#delete_kpibtn', function () {
+        rowData = kpi_table.row($(this).parents('tr')).data();
+        rowIndex = kpi_table.row($(this).parents('tr')).index();
     });
 
     // DELETE Confirmation button
-    $("#delete_category").click(function () {
+    $("#delete_kpi").click(function () {
         $("#delete_category").text('Deleting....');
         $.ajax({
-            url: nafisa_domain + '/category/' + rowData.id,
+            url: riyad_domain + '/sales_kpi/' + rowData.id,
             type: 'DELETE',
             dataType: "json",
             success: function (data) {
 
                 if (data.status.code === 1) {
-
-                    $("#delete_category").text('Delete');
+                    $("#delete_kpi").text('Delete');
                     let currentPage = category_table.page();
                     category_table.row(rowIndex).remove().draw();
-                    const modal = bootstrap.Modal.getInstance($("#delete_category_modal"));
+                    const modal = bootstrap.Modal.getInstance($("#delete_kpi_modal"));
                     modal.hide();
                     // redrawing to original page
                     category_table.page(currentPage).draw('page');
@@ -3698,9 +3715,9 @@
                     rowData = undefined;
                     rowIndex = undefined;
                 } else {
-                    const modal = bootstrap.Modal.getInstance($("#delete_category_modal"));
+                    const modal = bootstrap.Modal.getInstance($("#delete_kpi_modal"));
                     modal.hide();
-                    $("#delete_category").text('Delete');
+                    $("#delete_kpi").text('Delete');
                     notyf.error({
                         message: data.status.message,
                         duration: 7000,
@@ -3712,17 +3729,940 @@
 
             },
             error: function (data) {
-
+                const modal = bootstrap.Modal.getInstance($("#delete_kpi_modal"));
+                modal.hide();
+                $("#delete_kpi").text('Delete');
                 notyf.error({
-                    message: data.responseJSON.message,
+                    message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
-                $("#delete_category").text('Delete');
-
-                console.log(data.responseJSON.status)
             }
 
 
         });
     });
+
+    //Attendance=============================================================================
+
+    //init category  datatable and load data
+    let attendance_table = $('#attendance_datatable').DataTable({
+
+        ajax: {
+            url: nafisa_domain + '/attendance/all/1/100',
+            dataSrc: 'data',
+        },
+        rowId: 'id',
+        dom: 'Blfrtip',
+        oLanguage: {
+            sLengthMenu: "Show _MENU_",
+        },
+        language: {
+            search: "",
+            searchPlaceholder: "Search..."
+        },
+        buttons: [
+            {
+                extend: 'print',
+                title: 'Shop Information',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                customize: function (win) {
+                    $(win.document.body)
+                        .css('font-size', '15pt')
+                    $(win.document.body).find('th')
+                        .css({
+                            "font-size": 'inherit',
+                            "text-align": 'center',
+                        })
+                        .addClass('compact')
+                    $(win.document.body).find('table')
+                        .css('font-size', 'inherit')
+                        .css('text-align', 'center')
+
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Shop Information',
+                exportOptions: {
+                    columns: [1, 2, 3]
+
+                },
+
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                title: 'Shop Information',
+                customize: function (doc) {
+                    doc.content[1].table.widths = [
+                        '20%',
+                        '35%',
+                        '45%',
+                    ]
+                    let rowCount = doc.content[1].table.body.length;
+                    for (let i = 1; i < rowCount; i++) {
+                        doc.content[1].table.body[i][0].alignment = 'center';
+                        doc.content[1].table.body[i][1].alignment = 'center';
+                        doc.content[1].table.body[i][2].alignment = 'center';
+                    }
+                }
+            },
+
+            '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+
+        ],
+
+        columns: [
+            {data: 'name'},
+            {data: 'date'},
+            {data: 'check_in'},
+            {data: 'check_out'},
+
+            {
+                data: 'id',
+                render: function () {
+                    return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                        + '<button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                }
+            },
+        ]
+    });
+
+
+
+
+
+
+
+
+
+
+
+    //PRODUCT=====================================================================================================================================
+
+    //init supplier datatable and load data
+
+    let product_table = $('#product_dataTable').DataTable({
+        // order: [[0, 'desc']],
+        // "columnDefs": [
+        //     {'visible': false, 'targets': 0},
+        //     {"width": "15%", "targets": 1},
+        //     {"width": "20%", "targets": 2},
+        //     {'visible': "20%", 'targets': 3},
+        //     {'visible': false, 'targets': 4},
+        //     {'visible': false, 'targets': 5},
+        //     {'visible': false, 'targets': 6},
+        //     {'visible': false, 'targets': 7},
+        //     {'visible': false, 'targets': 8},
+        //     {"visible": false, "targets": 9},
+        //     {"visible": false, "targets": 10},
+        //     {"width": "15%", "targets": 11},
+        //     {"width": "7%", "targets": 12},
+        //     {"width": "10%", "targets": 13},
+        // ],
+        ajax: {
+            url: nafisa_domain + '/products',
+            dataSrc: 'data',
+        },
+        rowId: 'id',
+        dom: 'Blfrtip',
+        oLanguage: {
+            sLengthMenu: "Show _MENU_",
+        },
+        language: {
+            search: "",
+            searchPlaceholder: "Search..."
+        },
+        buttons: [
+            {
+                extend: 'print',
+                title: 'Shop Information',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                customize: function (win) {
+                    $(win.document.body)
+                        .css('font-size', '15pt')
+                    $(win.document.body).find('th')
+                        .css({
+                            "font-size": 'inherit',
+                            "text-align": 'center',
+                        })
+                        .addClass('compact')
+                    $(win.document.body).find('table')
+                        .css('font-size', 'inherit')
+                        .css('text-align', 'center')
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Shop Information',
+                exportOptions: {
+                    columns: [1, 2, 3]
+
+                },
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                title: 'Shop Information',
+                customize: function (doc) {
+                    doc.content[1].table.widths = [
+                        '20%',
+                        '35%',
+                        '45%',
+                    ]
+                    let rowCount = doc.content[1].table.body.length;
+                    for (let i = 1; i < rowCount; i++) {
+                        doc.content[1].table.body[i][0].alignment = 'center';
+                        doc.content[1].table.body[i][1].alignment = 'center';
+                        doc.content[1].table.body[i][2].alignment = 'center';
+                    }
+                }
+            },
+
+            '<button id="supplier_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_product_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+
+        ],
+        columns: [
+            {data: 'name'},
+            {data: 'description'},
+            {data: 'unit_type.name'},
+            {data: 'unit_size'},
+            {data: 'brand_id.name'},
+            {data: 'category_id.name'},
+            {data: 'cost_price'},
+            {data: 'mrp'},
+            {data: 'wholesale_price'},
+            {data: 'retail_price'},
+            {data: 'discount_amount'},
+            {
+                data: 'product_image_url',
+                render: function () {
+                    return '<button id="supplier_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#supplier_image_modal">View</button>'
+                }
+            },
+            {
+                data: 'details',
+                render: function () {
+                    return '<button id="supplier_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_supplier_modal">Details</button>'
+                }
+            },
+            {
+                data: '',
+                render: function () {
+                    return '<button id="update_productBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"  data-bs-target="#update_product_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>'
+                        + '<button   id="delete_productBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                }
+            },
+        ]
+    });
+
+    //View  Supplier Photo Button----------------
+
+    $('#supplier_dataTable tbody').on('click', '#supplier_photo', function () {
+        rowData = shop_supplier_table.row($(this).parents('tr')).data();
+
+        $("#supplier_image").attr("src", riyad_domain + rowData.image_url);
+    });
+
+    //cropzee-----------------
+    $(document).ready(function () {
+        $("#product_image_url").cropzee();
+    });
+
+    //init brand--------------------------------------------
+    $.ajax({
+        url: nafisa_domain + '/brand',
+        type: 'GET',
+        success: function (data) {
+            let category_parents = data?.data.map(item => item)
+            category_parents.forEach((element) => {
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#product_brand_id');
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#update_product_brand_id');
+            });
+        }
+    });
+    //init Category-------------------------------------------
+    $.ajax({
+        url: nafisa_domain + '/category',
+        type: 'GET',
+        success: function (data) {
+            let category_parents = data?.data.map(item => item)
+            category_parents.forEach((element) => {
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#product_category_id');
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#update_product_category_id');
+            });
+        }
+    });
+    //init product unit------------------------------------------
+    $.ajax({
+        url: nafisa_domain + '/product_unit',
+        type: 'GET',
+        success: function (data) {
+            let category_parents = data?.data.map(item => item)
+            category_parents.forEach((element) => {
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#product_unit_type');
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#update_product_unit_type');
+            });
+        }
+    });
+
+    /* ### Post Data Start ### */
+    $("#product_post_form").on('submit', (function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: nafisa_domain + '/products',
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                if (data.status.code === 1) {
+                    const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
+                    modal.hide();
+                    let newSRowIndex = product_table.row.add(data.data).draw();
+                    //Success Notification
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                    //reset input Field
+                    $('form :input').val('');
+                    $('.input').val('');
+                    product_table.search('');
+                    // re-ordering to default
+                    product_table.order([0, 'desc']).draw();
+                    // highlighting newly added row
+                    $(product_table.row(newSRowIndex.index()).nodes()).addClass('selected');
+                } else {
+                    //Set default button text again
+                    const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
+                    modal.hide();
+                    //Notification
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                }
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
+                modal.hide();
+                //Notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        });
+    }));
+
+
+    $('#product_dataTable tbody').on('click', '#update_productBtn', function () {
+        // getting parent row Data
+        rowData = product_table.row($(this).parents('tr')).data();
+        // setting row values to update modal input boxes
+        $("#update_name").val(rowData.name);
+        $('#update_product_description').val(rowData.description);
+        $("#update_product_brand_id :selected").text(rowData.brand_id.name);
+        $("#update_product_category_id :selected").text(rowData.category_id.name);
+        $("#update_product_unit_type :selected").text(rowData.unit_type.name);
+        $("#update_product_unit_size").val(rowData.unit_size);
+        $("#update_product_cost_price").val(rowData.cost_price);
+        $("#update_product_mrp").val(rowData.mrp);
+        $("#update_product_wholesale_price").val(rowData.wholesale_price);
+        $("#update_product_retail_price").val(rowData.retail_price);
+        $("#update_product_discount_amount").val(rowData.discount_amount);
+        $("#product_image_url").val(rowData.product_image_url);
+
+    })
+
+    $("#update_product_post_form").on('submit', (function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: riyad_domain + '/supplier/' + rowData.id,
+            type: "PUT",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success: function (data) {
+                if (data.status.code === 1) {
+                    // hide modal
+                    const modal = bootstrap.Modal.getInstance($("#update_product_modal"));
+                    modal.hide();
+                    //Set default button text again
+                    let currentPage = product_table.page();
+                    // update datatable
+                    product_table.row(rowIndex).data(data.data).draw();
+                    // redrawing to original page
+                    product_table.page(currentPage).draw('page');
+                    // highlighting newly added row
+                    $(product_table.row(rowIndex).nodes()).addClass('selected');
+                    setTimeout(function () {
+                        $(product_table.row(rowIndex).nodes()).removeClass('selected');
+                    }, 2000);
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                } else {
+                    //Set default button text again
+                    const modal = bootstrap.Modal.getInstance($("#update_product_modal"));
+                    modal.hide();
+                    //Notification
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                }
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#update_product_modal"));
+                modal.hide();
+                //Notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        });
+    }));
+
+    //Delete supplier-------------------------------------
+
+    $('#product_dataTable tbody').on('click', '#delete_productBtn', function () {
+        rowData = product_table.row($(this).parents('tr')).data();
+        rowIndex = product_table.row($(this).parents('tr')).index();
+    });
+
+    // DELETE Confirmation button
+    $("#delete_product").click(function () {
+
+        $(this).text('Deleting...');
+        $.ajax({
+            url: nafisa_domain + '/products/' + rowData.id,
+            type: 'DELETE',
+            dataType: "json",
+            success: function (data) {
+                let currentPage = product_table.page();
+                product_table.row(rowIndex).remove().draw();
+
+                const modal = bootstrap.Modal.getInstance($("#delete_product_modal"));
+                modal.hide();
+
+                $("#delete_product").text('Delete');
+                // redrawing to original page
+                product_table.page(currentPage).draw('page');
+
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+                rowData = undefined;
+                rowIndex = undefined;
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#delete_product_modal"));
+                modal.hide();
+                $("#delete_product").text('Delete');
+                notyf.error({
+                    message: "Cannot Delete This Product",
+                    duration: 7000,
+                    icon: false
+                });
+            },
+        });
+    });
+
+//PRODUCT UNIT========================================================================================================================================================
+
+    //init category  datatable and load data
+    let unit_table = $('#product_unit_datatable').DataTable({
+
+        ajax: {
+            url: riyad_domain + '/product_unit',
+            dataSrc: 'data',
+        },
+        rowId: 'id',
+        dom: 'Blfrtip',
+        oLanguage: {
+            sLengthMenu: "Show _MENU_",
+        },
+        language: {
+            search: "",
+            searchPlaceholder: "Search..."
+        },
+        buttons: [
+            {
+                extend: 'print',
+                title: 'Shop Information',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                customize: function (win) {
+                    $(win.document.body)
+                        .css('font-size', '15pt')
+                    $(win.document.body).find('th')
+                        .css({
+                            "font-size": 'inherit',
+                            "text-align": 'center',
+                        })
+                        .addClass('compact')
+                    $(win.document.body).find('table')
+                        .css('font-size', 'inherit')
+                        .css('text-align', 'center')
+
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Shop Information',
+                exportOptions: {
+                    columns: [1, 2, 3]
+
+                },
+
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                title: 'Shop Information',
+                customize: function (doc) {
+                    doc.content[1].table.widths = [
+                        '20%',
+                        '35%',
+                        '45%',
+                    ]
+                    let rowCount = doc.content[1].table.body.length;
+                    for (let i = 1; i < rowCount; i++) {
+                        doc.content[1].table.body[i][0].alignment = 'center';
+                        doc.content[1].table.body[i][1].alignment = 'center';
+                        doc.content[1].table.body[i][2].alignment = 'center';
+                    }
+                }
+            },
+
+            '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+
+        ],
+
+        columns: [
+            {data: 'id'},
+            {data: 'name'},
+            {data: 'product_raw_material_product_unit_id'},
+
+
+            {
+                data: 'id',
+                render: function () {
+                    return '<button id="update_rawBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                        + '<button   id="delete_rawBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_raw_material_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                }
+            },
+        ]
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    PRODUCT RAW MATERIAL ================================================================================================================================
+
+    //init category  datatable and load data
+    let raw_material_table = $('#product_raw_material_dataTable').DataTable({
+
+        ajax: {
+            url: nafisa_domain + '/product_raw_material',
+            dataSrc: 'data',
+        },
+        rowId: 'id',
+        dom: 'Blfrtip',
+        oLanguage: {
+            sLengthMenu: "Show _MENU_",
+        },
+        language: {
+            search: "",
+            searchPlaceholder: "Search..."
+        },
+        buttons: [
+            {
+                extend: 'print',
+                title: 'Shop Information',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                customize: function (win) {
+                    $(win.document.body)
+                        .css('font-size', '15pt')
+                    $(win.document.body).find('th')
+                        .css({
+                            "font-size": 'inherit',
+                            "text-align": 'center',
+                        })
+                        .addClass('compact')
+                    $(win.document.body).find('table')
+                        .css('font-size', 'inherit')
+                        .css('text-align', 'center')
+
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Shop Information',
+                exportOptions: {
+                    columns: [1, 2, 3]
+
+                },
+
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [1, 2, 3],
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                pageSize: 'LEGAL',
+                title: 'Shop Information',
+                customize: function (doc) {
+                    doc.content[1].table.widths = [
+                        '20%',
+                        '35%',
+                        '45%',
+                    ]
+                    let rowCount = doc.content[1].table.body.length;
+                    for (let i = 1; i < rowCount; i++) {
+                        doc.content[1].table.body[i][0].alignment = 'center';
+                        doc.content[1].table.body[i][1].alignment = 'center';
+                        doc.content[1].table.body[i][2].alignment = 'center';
+                    }
+                }
+            },
+
+            '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+
+        ],
+
+        columns: [
+            {data: 'id'},
+
+            {data: 'name'},
+            {data: 'product_unit_id.name'},
+            {data: 'unit_size'},
+            {data: 'cost_price'},
+
+            {
+                data: 'id',
+                render: function () {
+                    return '<button id="update_rawBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                        + '<button   id="delete_rawBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_raw_material_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                }
+            },
+        ]
+    });
+
+    //init Unit--------------------------------------------
+    $.ajax({
+        url: nafisa_domain + '/product_unit',
+        type: 'GET',
+        success: function (data) {
+            let category_parents = data?.data.map(item => item)
+            category_parents.forEach((element) => {
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#product_raw_material_unit_name');
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#update_product_raw_material_unit_name');
+
+
+            });
+        }
+
+    });
+
+    //Post Category-------------------------------------------
+
+    $("#add_product_raw_material").click(function () {
+
+        $(this).text('Submitting..');
+        let addRawModal = {
+            name: $("#product_raw_material_name").val(),
+            product_unit_id: $("#product_raw_material_unit_name").val(),
+            unit_size: $("#product_raw_material_unit_size").val(),
+            cost_price: $("#product_raw_material_cost_price").val(),
+        };
+        $.ajax({
+            url: nafisa_domain + '/product_raw_material',
+            type: 'POST',
+            data: JSON.stringify(addRawModal),
+            contentType: "application/json",
+            success: function (data) {
+                console.log(data)
+
+                if (data.status.code === 1) {
+
+                    const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
+                    modal.hide();
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                    let newRowIndex = raw_material_table.row.add(addRawModal).draw();
+
+                    //Success Notification
+
+                    $("#add_product_raw_material").text('Submit');
+
+                    //reset input Field
+                    $('form :input').val('');
+                    $('.input').val('');
+                    raw_material_table.search('');
+                    // re-ordering to default
+                    raw_material_table.order([0, 'desc']).draw();
+                    // highlighting newly added row
+                    $(raw_material_table.row(newRowIndex.index()).nodes()).addClass('selected');
+                } else {
+                    //Set default button text again
+                    $("#add_product_raw_material").text('Submit');
+                    const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
+                    modal.hide();
+                    //Notification
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                }
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
+                modal.hide();
+                //Set default button text again
+                $("#add_kpi").text('Submit');
+                // notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        });
+
+    })
+
+    //Update raw-----------------------------------
+
+    // EDIT button
+    $('#product_raw_material_dataTable tbody').on('click', '#update_rawBtn', function () {
+        // getting parent row index and data
+        rowData = raw_material_table.row($(this).parents('tr')).data();
+        rowIndex = raw_material_table.row($(this).parents('tr')).index();
+
+        $("#update_product_raw_material_name").val(rowData.name);
+        $("#update_product_raw_material_unit_name :selected").text(rowData.product_unit_id.name);
+        $("#update_product_raw_material_unit_size").val(rowData.unit_size);
+        $("#update_product_raw_material_cost_price").val(rowData.cost_price);
+    })
+
+    // Update Button
+    $("#update_product_raw_material").click(function () {
+        let updateRawModal = {
+            name: $("#update_product_raw_material_name").val(),
+            product_unit_id: $("#update_product_raw_material_unit_name").val(),
+            unit_size: $("#update_product_raw_material_unit_size").val(),
+            cost_price: $("#update_product_raw_material_cost_price").val(),
+        };
+        // updating button text
+        $(this).text('Updating...');
+
+        console.log(rowData)
+        // updating server row
+        $.ajax({
+            url: nafisa_domain + '/product_raw_material/' + rowData.id,
+            type: 'PUT',
+            data: JSON.stringify(updateRawModal),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.status.code === 1) {
+                    // hide modal
+                    const modal = bootstrap.Modal.getInstance($("#update_product_raw_material_modal"));
+                    modal.hide();
+
+                    //Set default button text again
+                    $("#update_product_raw_material").text('Update');
+                    // notification
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                    let currentPage = raw_material_table.page();
+
+                    // update datatable
+                    raw_material_table.row(rowIndex).data(data.data).draw();
+
+                    // redrawing to original page
+                    raw_material_table.page(currentPage).draw('page');
+                    // highlighting newly added row
+                    $(raw_material_table.row(rowIndex).nodes()).addClass('selected');
+                    setTimeout(function () {
+                        $(raw_material_table.row(rowIndex).nodes()).removeClass('selected');
+                    }, 2000);
+
+                } else {
+                    const modal = bootstrap.Modal.getInstance($("#update_product_raw_material_modal"));
+                    modal.hide();
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                }
+                $("#update_product_raw_material").text('Update');
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#update_product_raw_material_modal"));
+                modal.hide();
+                //Set default button text again
+                $("#update_product_raw_material").text('Update');
+                // notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        });
+
+    });
+
+    /* ### Update Data End ### */
+
+
+    //    DELETE button ------------------------------------------------
+    $('#product_raw_material_dataTable tbody').on('click', '#delete_rawBtn', function () {
+        rowData = raw_material_table.row($(this).parents('tr')).data();
+        rowIndex = raw_material_table.row($(this).parents('tr')).index();
+    });
+
+    // DELETE Confirmation button
+    $("#delete_raw_product").click(function () {
+        $("#delete_raw_product").text('Deleting....');
+        $.ajax({
+            url: nafisa_domain + '/product_raw_material/' + rowData.id,
+            type: 'DELETE',
+            dataType: "json",
+            success: function (data) {
+
+                if (data.status.code === 1) {
+                    $("#delete_raw_product").text('Delete');
+                    let currentPage = raw_material_table.page();
+                    raw_material_table.row(rowIndex).remove().draw();
+                    const modal = bootstrap.Modal.getInstance($("#delete_product_raw_material_modal"));
+                    modal.hide();
+                    // redrawing to original page
+                    category_table.page(currentPage).draw('page');
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+
+                    rowData = undefined;
+                    rowIndex = undefined;
+                } else {
+                    const modal = bootstrap.Modal.getInstance($("#delete_product_raw_material_modal"));
+                    modal.hide();
+                    $("#delete_raw_product").text('Delete');
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                    rowData = undefined;
+                    rowIndex = undefined;
+                }
+
+            },
+            error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#delete_product_raw_material_modal"));
+                modal.hide();
+                $("#delete_raw_product").text('Delete');
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+
+
+        });
+    });
+
+
+    //SALES PRODUCT============================================================================================================================
+
+

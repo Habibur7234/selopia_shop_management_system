@@ -3,10 +3,22 @@
 <head>
     @@include('./_head.html', {
     "path": "../..",
-    "title": "Sales KPI"
+    "title": "Product Raw Material"
     })
 </head>
+<style>
 
+    table {
+        table-layout:fixed;
+    }
+    table td {
+        word-wrap: break-word;
+        max-width: 400px;
+    }
+    #product_dataTable td {
+        white-space:inherit;
+    }
+</style>
 <body>
 <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
 
@@ -16,7 +28,7 @@
 
 @@include('./dashboard/_sidenav.html', {
 "path": "../..",
-"page": "sales",
+"page": "product_raw_material",
 "page_group": "dashboard"
 })
 
@@ -28,29 +40,35 @@
 
 
     <div>
+
+
         <div class="py-4">
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
                         <a href="#">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Sales</a></li>
+                    <li class="breadcrumb-item"><a href="#">Supplier</a></li>
                 </ol>
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Sales Target</h1>
+                    <h1 class="h4">Add Product Raw Material</h1>
+                    <p class="mb-0">Raw Material Information </p>
                 </div>
             </div>
         </div>
 
 
 
-
         <!--Add Category modal-->
-        <div class="modal fade" id="add_kpi_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+        <div class="modal fade" id="product_raw_material_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -58,7 +76,7 @@
                         <div class="card p-3 p-lg-4">
                             <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                             <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3">Add New Category</h1>
+                                <h1 class="mb-0 h3">Add Raw Material</h1>
                             </div>
                             <div class="col-12 mb-4">
                                 <div class="card border shadow components-section">
@@ -66,23 +84,26 @@
                                         <div class="row mb-4">
                                             <div class="col-lg-12 col-sm-6">
                                                 <!-- Form -->
-
-                                                <form id="add_kpi_from" method="POST">
-
+                                                <form id="add_product_raw_mateiral_from" method="POST">
                                                     <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label class="my-1 me-2" >Select Name</label>
-                                                        <select class="form-select" id="kpi_user" aria-label="Default select example">
-                                                            <option selected>Open this select menu</option>
-
+                                                        <label>Name</label>
+                                                        <input type="text" class="form-control" name="address" id="product_raw_material_name"  placeholder="ABC...">
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                        <label class="my-1 me-2" >Unit Name</label>
+                                                        <select class="form-select" id="product_raw_material_unit_name" aria-label="Default select example">
+                                                            <option disabled selected>Open this select menu</option>
                                                         </select>
                                                     </div>
-
                                                     <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label>Sales Target(BDT)</label>
-                                                        <input type="text" class="form-control" name="address" id="sales_kpi_volume"  placeholder="12345..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
+                                                        <label>Unit Size</label>
+                                                        <input type="text" class="form-control" name="address" id="product_raw_material_unit_size" placeholder="123..." >
                                                     </div>
-
-                                                    <button type="button" id="add_kpi" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                        <label>Cost Price</label>
+                                                        <input type="text" class="form-control" name="address" id="product_raw_material_cost_price"  placeholder="123..." >
+                                                    </div>
+                                                    <button type="button" id="add_product_raw_material" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
                                                         Submit
                                                     </button>
                                                 </form>
@@ -98,15 +119,18 @@
         </div>
 
 
+
         <!-- Data Table-->
         <div class="card border-0 shadow">
             <div class="card-body">
-                <table class="table table-flush wrap hover" id="salesKpi_dataTable" style="width: 100%; table-layout: fixed">
+                <table class="table table-flush wrap hover" id="product_raw_material_dataTable" style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
-                        <th>Salesman Name</th>
-                        <th>Sales Target(BDT)</th>
-                        <th>Last Update</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Unit Name</th>
+                        <th>Unit Size</th>
+                        <th>Cost Price</th>
                         <th>Action </th>
                     </tr>
                     </thead>
@@ -116,8 +140,10 @@
 
 
 
-        <!--Update kpi modal-->
-        <div class="modal fade" id="update_kpi_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+
+
+        <!--Update Category modal-->
+        <div class="modal fade" id="update_product_raw_material_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -125,7 +151,7 @@
                         <div class="card p-3 p-lg-4">
                             <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                             <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3">Add New Target</h1>
+                                <h1 class="mb-0 h3">Update Raw Material</h1>
                             </div>
                             <div class="col-12 mb-4">
                                 <div class="card border shadow components-section">
@@ -133,19 +159,25 @@
                                         <div class="row mb-4">
                                             <div class="col-lg-12 col-sm-6">
                                                 <!-- Form -->
-                                                <form id="update_kpi_from" method="POST">
+                                                <form id="update_product_raw_mateiral_from" method="POST">
                                                     <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label class="my-1 me-2" >Select Name</label>
-                                                        <select class="form-select" id="update_kpi_user" aria-label="Default select example">
+                                                        <label>Name</label>
+                                                        <input type="text" class="form-control" name="address" id="update_product_raw_material_name"  placeholder="ABC...">
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                        <label class="my-1 me-2" >Unit Name</label>
+                                                        <select class="form-select" id="update_product_raw_material_unit_name" aria-label="Default select example">
                                                         </select>
                                                     </div>
-
                                                     <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label>Sales Target(BDT)</label>
-                                                        <input type="text" class="form-control" name="address" id="update_kpi_volume"  placeholder="123 ABC Street..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
+                                                        <label>Unit Size</label>
+                                                        <input type="text" class="form-control" name="address" id="update_product_raw_material_unit_size" placeholder="123..." >
                                                     </div>
-
-                                                    <button type="button" id="update_kpi" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
+                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                        <label>Cost Price</label>
+                                                        <input type="text" class="form-control" name="address" id="update_product_raw_material_cost_price"  placeholder="123..." >
+                                                    </div>
+                                                    <button type="button" id="update_product_raw_material" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
                                                         Submit
                                                     </button>
                                                 </form>
@@ -163,8 +195,11 @@
 
 
 
+
+
+
         <!--delete Modal-->
-        <div class="modal fade" id="delete_kpi_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="delete_product_raw_material_modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="pt-3">
@@ -175,11 +210,14 @@
                     </div>
                     <div style="margin-left: auto; padding-right:15px;padding-bottom: 15px">
                         <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button"  id="delete_kpi" class="btn btn-secondary" >Delete</button>
+                        <button type="button"  id="delete_raw_product" class="btn btn-secondary" >Delete</button>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
 
 
 
