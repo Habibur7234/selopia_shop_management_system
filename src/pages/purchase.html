@@ -14,6 +14,94 @@
         word-break: break-word !important;
         white-space: normal;
     }
+
+    .title{
+        background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #adadc3), color-stop(100, #d0d0dd));
+        background: -moz-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -ms-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -o-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: linear-gradient(to bottom right, #adadc3 0%, #d0d0dd 100%);
+        border-radius:5px 5px 0 0 ;
+        padding: 20px;
+        color: #f6f6f6;
+    }
+    h2{
+        margin: 0;
+        padding-left: 15px;
+    }
+
+    .quantity-field {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 40px;
+        margin: 0 auto;
+    }
+
+    .quantity-field .value-button{
+        border: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        padding: 0;
+        background: #eee;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .quantity-field .value-button:hover {
+        background: rgb(230, 230, 230);
+    }
+
+    .quantity-field .value-button:active{
+        background: rgb(210, 210, 210);
+    }
+
+    .quantity-field .decrease-button {
+        margin-right: -4px;
+        border-radius: 8px 0 0 8px;
+    }
+
+    .quantity-field .increase-button {
+        margin-left: -4px;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .quantity-field .number{
+        display: inline-block;
+        text-align: center;
+        border: none;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        line-height: 40px;
+        font-size: 11pt;
+        box-sizing: border-box;
+        background: white;
+        font-family: calibri;
+    }
+
+    .quantity-field .number::selection{
+        background: none;
+    }
+
+    /*
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    */
+    table tr th,table tr td{
+        vertical-align: middle;
+    }
+    table th{
+        horiz-align: center;
+    }
+
 </style>
 
 
@@ -37,29 +125,136 @@
     })
 
 
+    <div>
+        <div class="py-4">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#">Purchase</a></li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between w-100 flex-wrap">
+                <div class="mb-3 mb-lg-0">
+                    <h1 class="h4">Purchase Details</h1>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="title">
+                    <h2>Purchase Order Form</h2>
+                </div>
+                <div class="container">
+                    <div class="row my-5 ">
+                        <div class="col-lg-5 col-md-4 col-sm-12">
+                            <select class="form-select bg-gray-100" id="select_supplier" aria-label="Default select example">
+                                <option disabled selected>Select Supplier</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                            <select class="form-select bg-gray-100 align-content-center" id="select_branch" aria-label="Default select example">
+                                <option disabled selected>Select Branch</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <input  type="date" class="form-control text-center">
+
+                            <button id="add_row" style="margin-left: 85%;margin-top: 10%"  value="add"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>
+
+                        </div>
+                    </div>
+
+                </div>
 
 
 
 
+                <div class="container">
+                    <table id="tab_logic" class="table table-hover table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="th2" style="width:10%">#</th>
+                            <th style="width:40%">Product</th>
+                            <th style="width:15%">Price</th>
+                            <th style="width:15%">Discount</th>
+                            <th style="width:15%">Unit</th>
+                            <th style="width:20%">Unit Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="addr0">
+                            <td class="th2" >1</td>
+                            <td>
+                                <select class="form-select Name product_list" name='product[]' id="product_list" aria-label="Default select example ">
+                                    <option disabled selected>Select Product</option>
+                                </select>
+                            </td>
 
+                            <td>
+                                <input type="number" name='price[]' id="price" class="form-control text-center price" placeholder="price..........">
+                            </td>
+                            <td>
+                                <input type="number" name='discount[]' class="form-control text-center discount">
+                            </td>
+                            <td>
+                                <input type="number" name='qty[]' class="form-control text-center qty">
+                                <span id="Unit_size">sss</span>
+                            </td>
+                            <td>
+                                <input type="number" name='total[]' class="form-control text-center total" >
+                            </td>
+                            <td>
+                                <button class="btn text-danger">
+                                    <i class="fa fa-trash-o"></i>-
+                                </button>
+                            </td>
+                        </tr>
+                        <tr id='addr1'></tr>
+                        </tbody>
+                        <tfoot>
 
+                        <tr>
+                            <td data-th="Quantity">
 
+                            </td>
+                            <td data-th="Quantity">
+                               <p> 500 BDT</p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p> 100 BDT</p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p> 10 <span class="text-success">KG</span></p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p> 4000 BDT</p>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
+                <button class="btn btn-success" id="Submit_btn" >Submit</button>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            </div>
+        </div>
+    </div>
 
 
     @@include('./dashboard/_footer.html', {
@@ -68,13 +263,29 @@
     })
 
 
-
-
 </main>
+
 
 @@include('./_scripts.html', {
 "path": "../.."
 })
+<script>
+    function increaseValue(button, limit) {
+        const numberInput = button.parentElement.querySelector('.number');
+        var value = parseInt(numberInput.innerHTML, 10);
+        if(isNaN(value)) value = 0;
+        if(limit && value >= limit) return;
+        numberInput.innerHTML = value+1;
+    }
 
+
+    function decreaseValue(button) {
+        const numberInput = button.parentElement.querySelector('.number');
+        var value = parseInt(numberInput.innerHTML, 10);
+        if(isNaN(value)) value = 0;
+        if(value < 1) return;
+        numberInput.innerHTML = value-1;
+    }
+</script>
 </body>
 </html>

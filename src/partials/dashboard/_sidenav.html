@@ -97,7 +97,7 @@
                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         </span>
-                        <span class="sidebar-text">Third Party</span>
+                        <span class="sidebar-text">Location</span>
                       </span>
                       <span class="link-arrow">
                         <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20"
@@ -156,18 +156,21 @@
                              xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                       </span>
                     </span>
-                <div class="multi-level collapse @@if (context.page === 'user' ||  context.page === 'userprofile' || context.page === 'sales' || context.page === 'department' || context.page === 'Attendance') { show }" role="list"
+                <div class="multi-level collapse @@if (context.page === 'user' || context.page === 'designation' || context.page === 'userprofile' ||  context.page === 'sales' || context.page === 'department' || context.page === 'Attendance') { show }" role="list"
                      id="submenu-pages1" aria-expanded="false">
                     <ul class="flex-column nav">
 
-
                         <li class="nav-item @@if (context.page === 'user') { active }">
                             <a href="@@path/pages/user.html" class="nav-link">
-                                <span class="sidebar-text">User</span>
+                                <span class="sidebar-text">Add User</span>
                             </a>
                         </li>
 
-
+                        <li class="nav-item @@if (context.page === 'designation') { active }">
+                            <a href="@@path/pages/designation.html" class="nav-link">
+                                <span class="sidebar-text">Designation</span>
+                            </a>
+                        </li>
 
                         <li class="nav-item @@if (context.page === 'userprofile') { active }">
                             <a href="@@path/pages/userprofile.html" class="nav-link">
@@ -175,15 +178,11 @@
                             </a>
                         </li>
 
-
-
-
                         <li class="nav-item @@if (context.page === 'sales') { active}">
                             <a href="@@path/pages/sales.html" class="nav-link">
                                 <span class="sidebar-text">Sales Target</span>
                             </a>
                         </li>
-
 
                         <li class="nav-item @@if (context.page === 'department') { active }">
                             <a href="@@path/pages/department.html" class="nav-link">
@@ -191,13 +190,11 @@
                             </a>
                         </li>
 
-
                         <li class="nav-item @@if (context.page === 'Attendance') { active }">
                             <a href="@@path/pages/attendance.html" class="nav-link">
                                 <span class="sidebar-text">Attendance</span>
                             </a>
                         </li>
-
 
                     </ul>
                 </div>
