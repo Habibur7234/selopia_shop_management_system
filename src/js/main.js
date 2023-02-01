@@ -409,7 +409,6 @@
 
 
 
-
     //Add Branch
     /* ### Add Data Start ### */
     $("#add_Branch").click(function () {
@@ -417,24 +416,22 @@
         $(this).text('Submitting..');
         let addBranch = {
             name: $("#branch_name").val(),
-            location: $("#branch_location").val(),
-            shop_id: $("#items").val(),
-            // name: $("#shopName").val(),
-
+            location: $("#add_location").val(),
+            shop_id: $("#selectShop").val(),
         };
+        console.log(addBranch)
         $.ajax({
-            url: 'https://riyadshop.selopian.us/shop ',
+            url: 'https://riyadshop.selopian.us/branch ',
             type: 'POST',
             data: JSON.stringify(addBranch),
             contentType: "application/json",
             success: function (data) {
-                //add row from input fields
-                // console.log(data.shop_name)
-                //
-                let newRowIndex = shop_table.row.add(data).draw();
 
-                $("#add_shop").text('Submit');
-                const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
+
+
+                let newRowIndex = branch_table.row.add(addBranch).draw();
+
+                const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
                 modal.hide();
 
                 //reset input Field
@@ -442,31 +439,31 @@
                 $('.input').val('');
 
                 // reset search
-                shop_table.search('');
+                branch_table.search('');
 
                 // re-ordering to default
-                shop_table.order([0, 'desc']).draw();
+                branch_table.order([0, 'desc']).draw();
 
                 // highlighting newly added row
-                $(shop_table.row(newRowIndex.index()).nodes()).addClass('selected');
+                $(branch_table.row(newRowIndex.index()).nodes()).addClass('selected');
                 setTimeout(function () {
-                    $(shop_table.row(newRowIndex.index()).nodes()).removeClass('selected');
+                    $(branch_table.row(newRowIndex.index()).nodes()).removeClass('selected');
                 }, 2000);
 
                 //Success Notification
                 notyf.success({
-                    message: 'New Shop Added  <strong>Successfully !</strong>',
+                    message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
             },
-            error: function () {
+            error: function (data) {
                 //Set default button text again
-                $("#add_shop").text('Submit');
-
+                const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
+                modal.hide();
                 //Notification
                 notyf.error({
-                    message: "<strong>Warning !</strong> Can't update shop.",
+                    message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
@@ -4805,7 +4802,6 @@ console.log($("#update_kpi_user").val())
 
         columns: [
             {data: 'id'},
-
             {data: 'name'},
             {data: 'product_unit_id.name'},
             {data: 'unit_size'},
@@ -4825,21 +4821,15 @@ console.log($("#update_kpi_user").val())
 
     //PURCHASE ORDER FROM ==========================================================================================================
 
-    // $(document).ready(function(){
-    //     $(".th2").hide();
-    // });
+
+
     $(document).ready(function(){
         var i=1;
         $("#add_row").click(function(){
             b=i-1;
             $('#addr'+i).html($('#addr'+b).html()).find('td:first-child').html(i+1);
-            $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+            $('.tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
             i++;
-
-
-
-
-
         });
         $("#delete_row").click(function(){
             if(i>1){
@@ -4848,62 +4838,99 @@ console.log($("#update_kpi_user").val())
             }
             calc();
         });
-        $('#tab_logic tbody').on('keyup change',function(){
+        $('.tab_logic tbody').on('keyup change',function(){
             calc();
         });
-
-
     });
 
-    // $(document).ready(function(){
-    //     var i=1;
-    //     $("#add_row").click(function(){b=i-1;
-    //         $('#addr'+i).html($('#addr'+b).html()).find('td:first-child').html(i+1);
-    //         $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
-    //         i++;
-    //     });
-    //     $("#delete_row").click(function(){
-    //         if(i>1){
-    //             $("#addr"+(i-1)).html('');
-    //             i--;
-    //         }
-    //     });
-    //
-    // });
 
-    function calc()
-    {
-        $('#tab_logic tbody tr').each(function(i, element) {
+    function calc(){
+        $('.tab_logic tbody tr').each(function(i, element) {
             var html = $(this).html();
             if(html!='')
             {
                 var qty = $(this).find('.qty').val();
                 var price = $(this).find('.price').val();
                 var dis = $(this).find('.discount').val();
-
                 $(this).find('.total').val(qty*price-dis);
-                calc_total();
+
             }
         });
     }
 
-    function calc_total()
-    {
-        total=0;
-        $('.total').each(function() {
-            total += parseInt($(this).val());
-        });
-        $('#sub_total').val(total.toFixed(2));
-    }
 
-    $(document).on('click', '.btn', function() {
-        $(this).parent().parent('tr').remove();
+    $(document).ready( function() {
+        $(document).on("change", ".price", function() {
+            var arr = $('.price').map((i, e) => e.value).get();
+            var sum = arr.reduce(function(a, b){
+                if(isNaN(a) || a=="")
+                    a=0;
+                if(isNaN(b)  || b=="")
+                    b=0;
+                return parseInt(a) + parseInt(b);
+            }, 0);
+            $('#totalPrice').text(sum +" BDT");
+
+        });
+    });
+
+    $(document).ready( function() {
+        $(document).on("change", ".discount", function() {
+            var arr = $('.discount').map((i, e) => e.value).get();
+            var sum = arr.reduce(function(a, b){
+                if(isNaN(a) || a=="")
+                    a=0;
+                if(isNaN(b)  || b=="")
+                    b=0;
+                return parseInt(a) + parseInt(b);
+            }, 0);
+            $('#totalDiscount').text(sum +" BDT");
+
+        });
+    });
+
+    $(document).ready( function() {
+        $(document).on("change", ".qty", function() {
+
+
+            var arr = $('.qty').map((i, e) => e.value).get();
+            var sum = arr.reduce(function(a, b){
+                if(isNaN(a) || a=="")
+                    a=0;
+                if(isNaN(b)  || b=="")
+                    b=0;
+                return parseInt(a) + parseInt(b);
+            }, 0);
+            $('#totalUnit').text(sum +" BDT");
+
+        });
     });
 
 
 
+    $(document).ready( function() {
+        $(document).on("change", ".total", function() {
 
-let product_list_data= [];
+            console.log("jjjjj")
+
+            //var arr = $('.total').map((i, e) => e.value).get();
+
+            //console.log(arr)
+
+            // var sum = arr.reduce(function(a, b){
+            //     if(isNaN(a) || a=="")
+            //         a=0;
+            //     if(isNaN(b)  || b=="")
+            //         b=0;
+            //     return parseInt(a) + parseInt(b);
+            // }, 0);
+            // $('#allTotal').text(sum +" BDT");
+
+        });
+    });
+
+
+
 
     //init Unit--------------------------------------------
   $.ajax({
@@ -4911,46 +4938,27 @@ let product_list_data= [];
         type: 'GET',
         success: function (data) {
             let product_parents = data?.data.map(item => item)
-
             product_parents.forEach((element) => {
-
                 $('<option/>').val(element['id']).html(element['name']).attr("data-price",element['cost_price'] ).attr("data-unit",element['unit_id']['name'] ).appendTo('.product_list');
-                // $('<input/>').htmlelement['cost_price'])).appendTo('#price');
-                //$('<option/>').data()
-
-
-
-                //$('#price').data('myval',20);
             });
         }
     });
 
-  // let selectBoxes = document.querySelectorAll(".product_list")
-  //   selectBoxes.forEach(selectBox => {
-  //       console.log(selectBox)
-  //       selectBox.addEventListener("click",(e)=>{
-  //           console.log(e.target.value);
-  //       })
-  //   })
 
-
-
-    $('#tab_logic').on('change', 'select', function() {
+    $('.tab_logic').on('change', 'select', function() {
         let matha = $(this).find(':selected').data('price');
-        $(this).closest('tr').find('#price').val(matha);
-
-        $(this).closest('tr').find('#Unit_size').text($(this).find(':selected').data('unit'));
+        $(this).closest('tr').find('.price').val(matha);
+        $(this).closest('tr').find('.Unit_size').text($(this).find(':selected').data('unit'));
     });
 
 
 
-
+    //
     $(document).ready(function(){
         $("#Submit_btn").click(function(){
-            console.log("hhhhh")
-            var inputValues = $('#tab_logic :input').map(function() {
+            var inputValues = $('#tab_logic :input').map(()=> {
                 var type = $(this).prop("type");
-
+                console.log('ok' + $(this).val())
                 // checked radios/checkboxes
                 if ((type == "checkbox" || type == "radio") && this.checked) {
                     return $(this).val();
@@ -4960,8 +4968,6 @@ let product_list_data= [];
                     return $(this).val();
                 }
             })
-            // return inputValues.join(',');
             console.log(inputValues)
-
         });
     });

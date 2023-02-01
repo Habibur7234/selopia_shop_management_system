@@ -3,9 +3,110 @@
 <head>
     @@include('./_head.html', {
     "path": "../..",
-    "title": "Sales KPI"
+    "title": "Sales product"
     })
+
 </head>
+
+
+<style>
+    .table td {
+        word-break: break-word !important;
+        white-space: normal;
+    }
+
+    .title {
+        background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #adadc3), color-stop(100, #d0d0dd));
+        background: -moz-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -ms-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -o-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: linear-gradient(to bottom right, #adadc3 0%, #d0d0dd 100%);
+        border-radius: 5px 5px 0 0;
+        padding: 20px;
+        color: #f6f6f6;
+    }
+
+    h2 {
+        margin: 0;
+        padding-left: 15px;
+    }
+
+    .quantity-field {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 40px;
+        margin: 0 auto;
+    }
+
+    .quantity-field .value-button {
+        border: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        padding: 0;
+        background: #eee;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .quantity-field .value-button:hover {
+        background: rgb(230, 230, 230);
+    }
+
+    .quantity-field .value-button:active {
+        background: rgb(210, 210, 210);
+    }
+
+    .quantity-field .decrease-button {
+        margin-right: -4px;
+        border-radius: 8px 0 0 8px;
+    }
+
+    .quantity-field .increase-button {
+        margin-left: -4px;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .quantity-field .number {
+        display: inline-block;
+        text-align: center;
+        border: none;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        line-height: 40px;
+        font-size: 11pt;
+        box-sizing: border-box;
+        background: white;
+        font-family: calibri;
+    }
+
+    .quantity-field .number::selection {
+        background: none;
+    }
+
+    /*
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    */
+    table tr th, table tr td {
+        vertical-align: middle;
+    }
+
+    table th {
+        horiz-align: center;
+    }
+
+
+</style>
+
 
 <body>
 <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
@@ -16,7 +117,7 @@
 
 @@include('./dashboard/_sidenav.html', {
 "path": "../..",
-"page": "sales",
+"page": "sales_page",
 "page_group": "dashboard"
 })
 
@@ -33,123 +134,202 @@
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
                         <a href="#">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Sales</a></li>
+                    <li class="breadcrumb-item"><a href="#">Purchase</a></li>
                 </ol>
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Sales Target</h1>
+                    <h1 class="h4">Sales Details</h1>
+
                 </div>
             </div>
         </div>
 
-
-
-
-        <!--Add Category modal-->
-        <div class="modal fade" id="add_kpi_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body p-0">
-                        <div class="card p-3 p-lg-4">
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                            <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3">Add New Category</h1>
-                            </div>
-                            <div class="col-12 mb-4">
-                                <div class="card border shadow components-section">
-                                    <div class="card-body">
-                                        <div class="row mb-4">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <!-- Form -->
-
-                                                <form id="add_kpi_from" method="POST">
-
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label class="my-1 me-2" >Select Name</label>
-                                                        <select class="form-select" id="kpi_user" aria-label="Default select example">
-                                                            <option selected>Open this select menu</option>
-
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label>Sales Target(BDT)</label>
-                                                        <input type="text" class="form-control" name="address" id="sales_kpi_volume"  placeholder="12345..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
-                                                    </div>
-
-                                                    <button type="button" id="add_kpi" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Submit
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Data Table-->
-        <div class="card border-0 shadow">
+        <div id="all_data" class="card border-0 shadow">
             <div class="card-body">
-                <table class="table table-flush wrap hover" id="salesKpi_dataTable" style="width: 100%; table-layout: fixed">
-                    <thead class="thead-light">
-                    <tr>
-                        <th>Salesman Name</th>
-                        <th>Sales Target(BDT)</th>
-                        <th>Last Update</th>
-                        <th>Action </th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
+                <div class="title">
+                    <h2>Sales Order Form</h2>
+                </div>
+                <div class="container">
+                    <div class="row my-5 ">
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                            <select class="form-select bg-gray-100 align-content-center" id="select_branch"
+                                    aria-label="Default select example">
+                                <option disabled selected>Sales Type</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <select class="form-select bg-gray-100 align-content-center" aria-label="Default select example">
+                                <option disabled selected>Select Customer</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+
+                            <button id="add_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
+                                    title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none"
+                                    type="button">
+                                <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
 
 
+                <div class="container">
+                    <table id="tab_logic" class="table table-hover table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="th2" style="width:2%">#</th>
+                            <th style="width:35%">Product</th>
+                            <th style="width:15%">Buying Price</th>
+                            <th style="width:15%">Unit</th>
+                            <th style="width:29%">Discount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="addr0">
+                            <td class="th2">1</td>
+                            <td>
+                                <select class="form-select Name product_list" name='product[]' id="product_list"
+                                        aria-label="Default select example ">
+                                    <option disabled selected>Select Product</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" name='price[]' id="price" class="form-control text-center price"
+                                       placeholder="price..........">
+                            </td>
+                            <td>
+                                <input type="number" name='discount[]' class="form-control text-center discount">
+                            </td>
+                            <td>
+                                <input type="number" name='qty[]' class="form-control text-center qty">
+                                <span id="Unit_size"
+                                      style="margin-left: 74px!important;position: absolute;margin-top: -28px;">fff</span>
+                            </td>
+                            <td>
+                                <input type="number" name='total[]' class="form-control text-center total">
+                            </td>
+                        </tr>
+                        <tr id='addr1'></tr>
+                        </tbody>
+                        <tfoot>
 
-        <!--Update kpi modal-->
-        <div class="modal fade" id="update_kpi_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body p-0">
-                        <div class="card p-3 p-lg-4">
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                            <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3">Add New Target</h1>
+                        <tr>
+                            <td data-th="Quantity">
+
+                            </td>
+                            <td data-th="Quantity">
+                                <p>Total =</p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p>100 BDT</p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p> 10 <span class="text-success">KG</span></p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p> 40 Gram</p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p> 4000 BDT</p>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div style="margin-left: 13.50%; padding: 1%">
+                    <button class="btn btn-success" id="Submit_btn" data-bs-toggle="modal"
+                            data-bs-target="#payment_modal">Submit
+                    </button>
+                    <button class="btn btn-warning" id="delete_row">Delete Row</button>
+                </div>
+
+
+                <!--delete Modal-->
+                <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="pt-3 ">
+                                <div class="modal-body container">
+                                    <div class="row">
+
+                                        <p> Do You Want to Pay Now ?</p>
+
+                                        <select class="form-select Name product_list" id=""
+                                                aria-label="Default select example ">
+                                            <option disabled selected>Select Transaction Type</option>
+                                        </select>
+                                        <button type="button" id="delete_kpi" class="btn btn-secondary">Delete</button>
+
+                                    </div>
+
+
+                                </div>
                             </div>
-                            <div class="col-12 mb-4">
-                                <div class="card border shadow components-section">
-                                    <div class="card-body">
-                                        <div class="row mb-4">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <!-- Form -->
-                                                <form id="update_kpi_from" method="POST">
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label class="my-1 me-2" >Select Name</label>
-                                                        <select class="form-select" id="update_kpi_user" aria-label="Default select example">
-                                                            <option value="">hh</option>
-                                                        </select>
-                                                    </div>
+                        </div>
+                    </div>
+                </div>
 
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label>Sales Target(BDT)</label>
-                                                        <input type="text" class="form-control" name="address" id="update_kpi_volume"  placeholder="123 ABC Street..." oninvalid="this.setCustomValidity('Please enter a valid location')" oninput="this.setCustomValidity('')" pattern="^[0-9,a-z,A-Z -#/.,()].{2,100}$" required>
-                                                    </div>
 
-                                                    <button type="button" id="update_kpi" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Submit
-                                                    </button>
-                                                </form>
+                <div class="modal fade" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body p-0">
+                                <div class="card p-3 p-lg-4" style="background:#425374;">
+                                    <button type="button" class="btn-close ms-auto btn-danger text-white" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    <div class="text-center text-md-center mb-4 mt-md-0">
+                                        <h1 class="mb-0 h3 text-white">Do you want to pay now ?</h1>
+                                    </div>
+                                    <div class="col-12 mb-4">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-sm-6">
+                                                    <!-- Form -->
+                                                    <form id="add_product_raw_mateiral_from" method="POST">
+                                                        <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                            <label class="my-1 me-2 text-white my-3">Transaction type</label>
+                                                            <select class="form-select"
+                                                                    id="product_raw_material_unit_name"
+                                                                    aria-label="Default select example">
+                                                                <option disabled selected>select Transaction</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                            <label  class="my-1 me-2 text-white my-3">Amount paid</label>
+                                                            <input type="text" class="form-control" name="address"
+                                                                   id="product_raw_material_unit_size"
+                                                                   placeholder="123...">
+                                                        </div>
+                                                        <!--                                                        <div class="d-flex align-items-center justify-content-center">-->
+                                                        <!--                                                            <button type="button" class="btn btn-success text-dark my-4">Pay</button>-->
+                                                        <!--                                                        </div>-->
+                                                        <button type="button" class="btn btn-white text-dark col-lg-12 col-sm-10 mb-4 my-4">Pay Now</button>
+
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -158,38 +338,10 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
-
-
-
-
-        <!--delete Modal-->
-        <div class="modal fade" id="delete_kpi_modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="pt-3">
-                        <div class="modal-body">
-                            <h5 id="sName"></h5>
-                            <p class="fw-light" style="font-size:14px;" >This item will delete immediately. You can't undo this action.</p>
-                        </div>
-                    </div>
-                    <div style="margin-left: auto; padding-right:15px;padding-bottom: 15px">
-                        <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button"  id="delete_kpi" class="btn btn-secondary" >Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-
     </div>
 
 
@@ -197,11 +349,31 @@
     "path": "../..",
     "classes": "text-dark"
     })
+
+
 </main>
+
 
 @@include('./_scripts.html', {
 "path": "../.."
 })
+<script>
+    function increaseValue(button, limit) {
+        const numberInput = button.parentElement.querySelector('.number');
+        var value = parseInt(numberInput.innerHTML, 10);
+        if (isNaN(value)) value = 0;
+        if (limit && value >= limit) return;
+        numberInput.innerHTML = value + 1;
+    }
 
+
+    function decreaseValue(button) {
+        const numberInput = button.parentElement.querySelector('.number');
+        var value = parseInt(numberInput.innerHTML, 10);
+        if (isNaN(value)) value = 0;
+        if (value < 1) return;
+        numberInput.innerHTML = value - 1;
+    }
+</script>
 </body>
 </html>

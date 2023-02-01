@@ -15,17 +15,18 @@
         white-space: normal;
     }
 
-    .title{
+    .title {
         background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #adadc3), color-stop(100, #d0d0dd));
         background: -moz-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
         background: -ms-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
         background: -o-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
         background: linear-gradient(to bottom right, #adadc3 0%, #d0d0dd 100%);
-        border-radius:5px 5px 0 0 ;
+        border-radius: 5px 5px 0 0;
         padding: 20px;
         color: #f6f6f6;
     }
-    h2{
+
+    h2 {
         margin: 0;
         padding-left: 15px;
     }
@@ -39,7 +40,7 @@
         margin: 0 auto;
     }
 
-    .quantity-field .value-button{
+    .quantity-field .value-button {
         border: 1px solid #ddd;
         margin: 0px;
         width: 40px;
@@ -54,7 +55,7 @@
         background: rgb(230, 230, 230);
     }
 
-    .quantity-field .value-button:active{
+    .quantity-field .value-button:active {
         background: rgb(210, 210, 210);
     }
 
@@ -68,7 +69,7 @@
         border-radius: 0 8px 8px 0;
     }
 
-    .quantity-field .number{
+    .quantity-field .number {
         display: inline-block;
         text-align: center;
         border: none;
@@ -84,7 +85,7 @@
         font-family: calibri;
     }
 
-    .quantity-field .number::selection{
+    .quantity-field .number::selection {
         background: none;
     }
 
@@ -95,12 +96,14 @@
         margin: 0;
     }
     */
-    table tr th,table tr td{
+    table tr th, table tr td {
         vertical-align: middle;
     }
-    table th{
+
+    table th {
         horiz-align: center;
     }
+
 
 </style>
 
@@ -149,7 +152,7 @@
             </div>
         </div>
 
-        <div class="card border-0 shadow">
+        <div id="all_data" class="card border-0 shadow">
             <div class="card-body">
                 <div class="title">
                     <h2>Purchase Order Form</h2>
@@ -157,7 +160,8 @@
                 <div class="container">
                     <div class="row my-5 ">
                         <div class="col-lg-5 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100" id="select_supplier" aria-label="Default select example">
+                            <select class="form-select bg-gray-100" id="select_supplier"
+                                    aria-label="Default select example">
                                 <option disabled selected>Select Supplier</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -165,7 +169,8 @@
                             </select>
                         </div>
                         <div class="col-lg-3 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100 align-content-center" id="select_branch" aria-label="Default select example">
+                            <select class="form-select bg-gray-100 align-content-center" id="select_branch"
+                                    aria-label="Default select example">
                                 <option disabled selected>Select Branch</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -173,9 +178,26 @@
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                            <input  type="date" class="form-control text-center">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20"
+                                         xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"
+                                                                                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                                                  clip-rule="evenodd"></path></svg>
+                                </span>
+                                <input data-datepicker="" class="form-control bg-gray-100" id="birthday" type="text"
+                                       placeholder="dd/mm/yyyy" required>
+                            </div>
 
-                            <button id="add_row" style="margin-left: 85%;margin-top: 10%"  value="add"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>
+                            <button id="add_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
+                                    title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none"
+                                    type="button">
+                                <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                            </button>
 
                         </div>
                     </div>
@@ -183,46 +205,40 @@
                 </div>
 
 
-
-
                 <div class="container">
-                    <table id="tab_logic" class="table table-hover table-condensed">
+                    <table class="table tab_logic table-hover table-condensed">
                         <thead>
                         <tr>
-                            <th class="th2" style="width:10%">#</th>
-                            <th style="width:40%">Product</th>
+                            <th class="th2" style="width:2%">#</th>
+                            <th style="width:35%">Product</th>
                             <th style="width:15%">Price</th>
                             <th style="width:15%">Discount</th>
-                            <th style="width:15%">Unit</th>
-                            <th style="width:20%">Unit Price</th>
+                            <th style="width:10%">Unit</th>
+                            <th style="width:29%">Unit Price</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr id="addr0">
-                            <td class="th2" >1</td>
+                            <td class="th2">1</td>
                             <td>
-                                <select class="form-select Name product_list" name='product[]' id="product_list" aria-label="Default select example ">
+                                <select class="form-select Name product_list" name='product[]' id="product_list"
+                                        aria-label="Default select example ">
                                     <option disabled selected>Select Product</option>
                                 </select>
                             </td>
-
                             <td>
-                                <input type="number" name='price[]' id="price" class="form-control text-center price" placeholder="price..........">
+                                <input type="number" name='price[]' class="form-control text-center price"
+                                       placeholder="price">
                             </td>
                             <td>
                                 <input type="number" name='discount[]' class="form-control text-center discount">
                             </td>
                             <td>
-                                <input type="number" name='qty[]' class="form-control text-center qty">
-                                <span id="Unit_size">sss</span>
+                                <input type="number" name='qty[]' class="form-control text-center qty ">
+                                <span class="Unit_size" style="margin-left: 74px!important;position: absolute;margin-top: -28px;"></span>
                             </td>
                             <td>
-                                <input type="number" name='total[]' class="form-control text-center total" >
-                            </td>
-                            <td>
-                                <button class="btn text-danger">
-                                    <i class="fa fa-trash-o"></i>-
-                                </button>
+                                <input type="number" name='total[]' class="form-control text-center total">
                             </td>
                         </tr>
                         <tr id='addr1'></tr>
@@ -234,23 +250,106 @@
 
                             </td>
                             <td data-th="Quantity">
-                               <p> 500 BDT</p>
+                                <p>TotalPrice =</p>
                             </td>
                             <td data-th="Quantity">
-                                <p> 100 BDT</p>
+                                <p  id="totalPrice"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p> 10 <span class="text-success">KG</span></p>
+                                <p id="totalDiscount"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p> 4000 BDT</p>
+                                <p id="totalUnit"></p>
+                            </td>
+                            <td data-th="Quantity">
+                                <p id="allTotal"></p>
                             </td>
                         </tr>
                         </tfoot>
                     </table>
                 </div>
 
-                <button class="btn btn-success" id="Submit_btn" >Submit</button>
+                <div style="margin-left: 13.50%; padding: 1%">
+                    <button class="btn btn-success" id="Submit_btn" data-bs-toggle="modal"
+                            data-bs-target="#payment_modal">Submit
+                    </button>
+                    <button class="btn btn-warning" id="delete_row">Delete Row</button>
+                </div>
+
+
+                <!--delete Modal-->
+                <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="pt-3 ">
+                                <div class="modal-body container">
+                                    <div class="row">
+
+                                        <p> Do You Want to Pay Now ?</p>
+
+                                        <select class="form-select Name product_list" id=""
+                                                aria-label="Default select example ">
+                                            <option disabled selected>Select Transaction Type</option>
+                                        </select>
+                                        <button type="button" id="delete_kpi" class="btn btn-secondary">Delete</button>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body p-0">
+                                <div class="card p-3 p-lg-4" style="background:#425374;">
+                                    <button type="button" class="btn-close ms-auto btn-danger text-white" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    <div class="text-center text-md-center mb-4 mt-md-0">
+                                        <h1 class="mb-0 h3 text-white">Do you want to pay now ?</h1>
+                                    </div>
+                                    <div class="col-12 mb-4">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-sm-6">
+                                                    <!-- Form -->
+                                                    <form id="add_product_raw_mateiral_from" method="POST">
+                                                        <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                            <label class="my-1 me-2 text-white my-3">Transaction type</label>
+                                                            <select class="form-select"
+                                                                    id="product_raw_material_unit_name"
+                                                                    aria-label="Default select example">
+                                                                <option disabled selected>select Transaction</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-12 col-sm-10 mb2 my-2">
+                                                            <label  class="my-1 me-2 text-white my-3">Amount paid</label>
+                                                            <input type="text" class="form-control" name="address"
+                                                                   id="product_raw_material_unit_size"
+                                                                   placeholder="123...">
+                                                        </div>
+<!--                                                        <div class="d-flex align-items-center justify-content-center">-->
+<!--                                                            <button type="button" class="btn btn-success text-dark my-4">Pay</button>-->
+<!--                                                        </div>-->
+                                                        <button type="button" class="btn btn-white text-dark col-lg-12 col-sm-10 mb-4 my-4">Pay Now</button>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         </div>
@@ -273,18 +372,18 @@
     function increaseValue(button, limit) {
         const numberInput = button.parentElement.querySelector('.number');
         var value = parseInt(numberInput.innerHTML, 10);
-        if(isNaN(value)) value = 0;
-        if(limit && value >= limit) return;
-        numberInput.innerHTML = value+1;
+        if (isNaN(value)) value = 0;
+        if (limit && value >= limit) return;
+        numberInput.innerHTML = value + 1;
     }
 
 
     function decreaseValue(button) {
         const numberInput = button.parentElement.querySelector('.number');
         var value = parseInt(numberInput.innerHTML, 10);
-        if(isNaN(value)) value = 0;
-        if(value < 1) return;
-        numberInput.innerHTML = value-1;
+        if (isNaN(value)) value = 0;
+        if (value < 1) return;
+        numberInput.innerHTML = value - 1;
     }
 </script>
 </body>
