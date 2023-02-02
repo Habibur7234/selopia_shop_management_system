@@ -70,27 +70,6 @@
             },
             {
                 extend: 'pdf',
-                exportOptions: {
-                    columns: [1, 2, 3],
-                    modifier: {
-                        page: 'current'
-                    }
-                },
-                pageSize: 'LEGAL',
-                title: 'Shop Information',
-                customize: function (doc) {
-                    doc.content[1].table.widths = [
-                        '20%',
-                        '35%',
-                        '45%',
-                    ]
-                    let rowCount = doc.content[1].table.body.length;
-                    for (let i = 1; i < rowCount; i++) {
-                        doc.content[1].table.body[i][0].alignment = 'center';
-                        doc.content[1].table.body[i][1].alignment = 'center';
-                        doc.content[1].table.body[i][2].alignment = 'center';
-                    }
-                }
             },
 
             '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
@@ -419,7 +398,6 @@
             location: $("#add_location").val(),
             shop_id: $("#selectShop").val(),
         };
-        console.log(addBranch)
         $.ajax({
             url: 'https://riyadshop.selopian.us/branch ',
             type: 'POST',
@@ -495,10 +473,8 @@
 
 
     // const a = () =>{
-    //     console.log(1)
     // }
     // const b = () =>{
-    //     console.log(2)
     // }
     // const submitForm = () =>{
     //     a()
@@ -836,7 +812,6 @@
         // updating button text
         $(this).text('Updating...');
 
-        console.log(rowData)
         // updating server row
         $.ajax({
             url: nafisa_domain + '/user/' + rowData.id,
@@ -941,7 +916,6 @@
                     rowData = undefined;
                     rowIndex = undefined;
                 } else {
-                    console.log("else" + data.status.message)
                     $("#delete_user").text('Delete');
                     const modal = bootstrap.Modal.getInstance($("#delete_user_modal"));
                     modal.hide();
@@ -1791,7 +1765,6 @@
                 rowIndex = undefined;
             },
             error: function (data) {
-                console.log(data + "delete")
                 $("#delete_supplier").text('Delete');
                 notyf.error({
                     message: "Cannot Delete This Supplier",
@@ -2320,7 +2293,6 @@
                 rowIndex = undefined;
             },
             error: function (data) {
-                console.log(data + "delete")
                 $("#delete_supplier").text('Delete');
                 notyf.error({
                     message: "Cannot Delete This Supplier",
@@ -2480,7 +2452,6 @@
             contentType: "application/json",
             success: function (data) {
 
-                console.log(data)
                 if (data.status.code === 1) {
                     $("#add_department").text('Add');
 
@@ -2620,7 +2591,6 @@
 
     // User DELETE Confirmation button
     $("#delete_department").click(function () {
-        console.log(rowData.id)
 
         $(this).text('Deleting...');
         $.ajax({
@@ -2880,7 +2850,6 @@
         // updating button text
         $(this).text('Updating...');
 
-        console.log(rowData)
         // updating server row
         $.ajax({
             url: nafisa_domain + '/category/' + rowData.id,
@@ -3007,7 +2976,6 @@
                 });
                 $("#delete_category").text('Delete');
 
-                console.log(data.responseJSON.status)
             }
 
 
@@ -3570,7 +3538,6 @@
             data: JSON.stringify(addKpiModal),
             contentType: "application/json",
             success: function (data) {
-                console.log(data)
 
                 if (data.status.code === 1) {
 
@@ -3660,12 +3627,10 @@
             user_id: $("#update_kpi_user").val(),
             target_sales_volume: $("#update_kpi_volume").val(),
         };
-console.log($("#update_kpi_user").val())
 
         // updating button text
         $(this).text('Updating...');
 
-        console.log(rowData)
         // updating server row
         $.ajax({
             url: riyad_domain + '/sales_kpi/' + rowData.id,
@@ -3674,8 +3639,6 @@ console.log($("#update_kpi_user").val())
             contentType: "application/json; charset=utf-8",
             success: function (data) {
 
-
-                console.log(data)
                 if (data.status.code === 1) {
                     // hide modal
                     const modal = bootstrap.Modal.getInstance($("#update_kpi_modal"));
@@ -4513,7 +4476,6 @@ console.log($("#update_kpi_user").val())
             data: JSON.stringify(addRawModal),
             contentType: "application/json",
             success: function (data) {
-                console.log(data)
 
                 if (data.status.code === 1) {
 
@@ -4592,7 +4554,6 @@ console.log($("#update_kpi_user").val())
         // updating button text
         $(this).text('Updating...');
 
-        console.log(rowData)
         // updating server row
         $.ajax({
             url: nafisa_domain + '/product_raw_material/' + rowData.id,
@@ -4854,6 +4815,17 @@ console.log($("#update_kpi_user").val())
                 var dis = $(this).find('.discount').val();
                 $(this).find('.total').val(qty*price-dis);
 
+
+                var arr = $('.total').map((i, e) => e.value).get();
+                var sum = arr.reduce(function(a, b){
+                    if(isNaN(a) || a=="")
+                        a=0;
+                    if(isNaN(b)  || b=="")
+                        b=0;
+                    return parseInt(a) + parseInt(b);
+                }, 0);
+                $('#allTotal').text(sum +" BDT");
+
             }
         });
     }
@@ -4891,8 +4863,6 @@ console.log($("#update_kpi_user").val())
 
     $(document).ready( function() {
         $(document).on("change", ".qty", function() {
-
-
             var arr = $('.qty').map((i, e) => e.value).get();
             var sum = arr.reduce(function(a, b){
                 if(isNaN(a) || a=="")
@@ -4901,40 +4871,19 @@ console.log($("#update_kpi_user").val())
                     b=0;
                 return parseInt(a) + parseInt(b);
             }, 0);
-            $('#totalUnit').text(sum +" BDT");
+            $('#totalUnit').text(sum);
 
         });
     });
 
 
-
-    $(document).ready( function() {
-        $(document).on("change", ".total", function() {
-
-            console.log("jjjjj")
-
-            //var arr = $('.total').map((i, e) => e.value).get();
-
-            //console.log(arr)
-
-            // var sum = arr.reduce(function(a, b){
-            //     if(isNaN(a) || a=="")
-            //         a=0;
-            //     if(isNaN(b)  || b=="")
-            //         b=0;
-            //     return parseInt(a) + parseInt(b);
-            // }, 0);
-            // $('#allTotal').text(sum +" BDT");
-
-        });
-    });
 
 
 
 
     //init Unit--------------------------------------------
   $.ajax({
-        url: riyad_domain + '/products',
+        url: nafisa_domain + '/products',
         type: 'GET',
         success: function (data) {
             let product_parents = data?.data.map(item => item)
@@ -4943,6 +4892,29 @@ console.log($("#update_kpi_user").val())
             });
         }
     });
+
+    $.ajax({
+        url: nafisa_domain + '/branch',
+        type: 'GET',
+        success: function (data) {
+            let purchase_branch = data?.data.map(item => item)
+            purchase_branch.forEach((element) => {
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#select_branch_purchase');
+            });
+        }
+    });
+
+    $.ajax({
+        url: nafisa_domain + '/supplier/all',
+        type: 'GET',
+        success: function (data) {
+            let purchase_branch = data?.data.map(item => item)
+            purchase_branch.forEach((element) => {
+                $('<option/>').val(element['id']).html(element['name']).appendTo('#select_supplier_purchase');
+            });
+        }
+    });
+
 
 
     $('.tab_logic').on('change', 'select', function() {
@@ -4953,21 +4925,89 @@ console.log($("#update_kpi_user").val())
 
 
 
+
+
     //
-    $(document).ready(function(){
-        $("#Submit_btn").click(function(){
-            var inputValues = $('#tab_logic :input').map(()=> {
-                var type = $(this).prop("type");
-                console.log('ok' + $(this).val())
-                // checked radios/checkboxes
-                if ((type == "checkbox" || type == "radio") && this.checked) {
-                    return $(this).val();
-                }
-                // all other fields, except buttons
-                else if (type != "button" && type != "submit") {
-                    return $(this).val();
-                }
-            })
-            console.log(inputValues)
+    //
+    // $(document).ready(function(){
+    //     $("#Submit_btn").click(function(){
+    //             var values = [];
+    //
+    //             $("table tr").each((_, row) => {
+    //                 var value = {};
+    //                 $(row).find(":input").each((__, e) =>
+    //                     value[e.name] = $(e).val()
+    //                 );
+    //                 values.push(value);
+    //             });
+    //
+    //         var addpurchaseorder = {
+    //             default_branch_id: $("#select_branch_purchase").val(),
+    //             supplier_id: $("#select_supplier_purchase").val(),
+    //             supply_schedule: $("#date_purchase").val(),
+    //             product_name_list :{values},
+    //
+    //         };
+    //             console.log(addpurchaseorder)
+    //
+    //         $.ajax({
+    //             url: nafisa_domain + '/purchase_order',
+    //             type: 'POST',
+    //             data: JSON.stringify(addpurchaseorder),
+    //             contentType: "application/json",
+    //             success: function (data) {
+    //
+    //
+    //
+    //             },
+    //             error: function (data) {
+    //
+    //
+    //
+    //             },
+    //         });
+    //
+    //         })
+    //     });
+    //
+    //
+
+
+
+
+    $("#Submit_btn").click(function () {
+
+        var values = [];
+
+        $("table tr").each((_, row) => {
+            var value = {};
+            $(row).find(":input").each((__, e) =>
+                value[e.name] = $(e).val()
+            );
+            values.push(value);
         });
-    });
+
+        var addpurchaseorder = {
+            default_branch_id: $("#select_branch_purchase").val(),
+            supplier_id: $("#select_supplier_purchase").val(),
+            supply_schedule: $("#date_purchase").val(),
+            product_name_list :{values},
+
+        };
+
+
+        $.ajax({
+            url: nafisa_domain + '/purchase_order',
+            type: 'POST',
+            data: JSON.stringify(addpurchaseorder),
+            contentType: "application/json",
+            success: function (data) {
+
+
+            },
+            error: function (data) {
+
+            }
+        });
+
+    })

@@ -160,33 +160,21 @@
                 <div class="container">
                     <div class="row my-5 ">
                         <div class="col-lg-5 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100" id="select_supplier"
-                                    aria-label="Default select example">
-                                <option disabled selected>Select Supplier</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select bg-gray-100" id="select_supplier_purchase"
+                                    aria-label="Default select example"><option disabled selected>Select Supplier</option>
                             </select>
                         </div>
                         <div class="col-lg-3 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100 align-content-center" id="select_branch"
-                                    aria-label="Default select example">
+                            <select class="form-select bg-gray-100 align-content-center" id="select_branch_purchase" aria-label="Default select example">
                                 <option disabled selected>Select Branch</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="input-group">
                                 <span class="input-group-text">
-                                    <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20"
-                                         xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"
-                                                                                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                                                  clip-rule="evenodd"></path></svg>
+                                    <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
                                 </span>
-                                <input data-datepicker="" class="form-control bg-gray-100" id="birthday" type="text"
-                                       placeholder="dd/mm/yyyy" required>
+                                <input data-datepicker="" class="form-control bg-gray-100" id="date_purchase" type="text" placeholder="dd/mm/yyyy" required>
                             </div>
 
                             <button id="add_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
@@ -213,32 +201,31 @@
                             <th style="width:35%">Product</th>
                             <th style="width:15%">Price</th>
                             <th style="width:15%">Discount</th>
-                            <th style="width:10%">Unit</th>
-                            <th style="width:29%">Unit Price</th>
+                            <th style="width:12%">Unit</th>
+                            <th style="width:25%">Unit Price</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr id="addr0">
                             <td class="th2">1</td>
                             <td>
-                                <select class="form-select Name product_list" name='product[]' id="product_list"
+                                <select class="form-select Name product_list" name='product_id' id="product_list"
                                         aria-label="Default select example ">
                                     <option disabled selected>Select Product</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" name='price[]' class="form-control text-center price"
-                                       placeholder="price">
+                                <input type="number" name='product_price'  class="form-control text-center price" placeholder="price">
                             </td>
                             <td>
-                                <input type="number" name='discount[]' class="form-control text-center discount">
+                                <input type="number" name='discount_amount' class="form-control text-center discount">
                             </td>
                             <td>
-                                <input type="number" name='qty[]' class="form-control text-center qty ">
-                                <span class="Unit_size" style="margin-left: 74px!important;position: absolute;margin-top: -28px;"></span>
+                                <input type="number" name='amount_unit' class="form-control text-center qty ">
+                                <span class="Unit_size" style="margin-left: 89px!important;position: absolute;margin-top: -28px;"></span>
                             </td>
                             <td>
-                                <input type="number" name='total[]' class="form-control text-center total">
+                                <input type="number" name='total_amount'  class="form-control text-center total">
                             </td>
                         </tr>
                         <tr id='addr1'></tr>
@@ -250,7 +237,7 @@
 
                             </td>
                             <td data-th="Quantity">
-                                <p>TotalPrice =</p>
+                                <p>Total Result  =</p>
                             </td>
                             <td data-th="Quantity">
                                 <p  id="totalPrice"></p>
