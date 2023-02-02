@@ -4883,7 +4883,7 @@
 
     //init Unit--------------------------------------------
   $.ajax({
-        url: nafisa_domain + '/products',
+        url: riyad_domain + '/products',
         type: 'GET',
         success: function (data) {
             let product_parents = data?.data.map(item => item)
@@ -4894,7 +4894,7 @@
     });
 
     $.ajax({
-        url: nafisa_domain + '/branch',
+        url: riyad_domain + '/branch',
         type: 'GET',
         success: function (data) {
             let purchase_branch = data?.data.map(item => item)
@@ -4905,7 +4905,7 @@
     });
 
     $.ajax({
-        url: nafisa_domain + '/supplier/all',
+        url: riyad_domain + '/supplier/all',
         type: 'GET',
         success: function (data) {
             let purchase_branch = data?.data.map(item => item)
@@ -4925,79 +4925,38 @@
 
 
 
-
-
-    //
-    //
-    // $(document).ready(function(){
-    //     $("#Submit_btn").click(function(){
-    //             var values = [];
-    //
-    //             $("table tr").each((_, row) => {
-    //                 var value = {};
-    //                 $(row).find(":input").each((__, e) =>
-    //                     value[e.name] = $(e).val()
-    //                 );
-    //                 values.push(value);
-    //             });
-    //
-    //         var addpurchaseorder = {
-    //             default_branch_id: $("#select_branch_purchase").val(),
-    //             supplier_id: $("#select_supplier_purchase").val(),
-    //             supply_schedule: $("#date_purchase").val(),
-    //             product_name_list :{values},
-    //
-    //         };
-    //             console.log(addpurchaseorder)
-    //
-    //         $.ajax({
-    //             url: nafisa_domain + '/purchase_order',
-    //             type: 'POST',
-    //             data: JSON.stringify(addpurchaseorder),
-    //             contentType: "application/json",
-    //             success: function (data) {
-    //
-    //
-    //
-    //             },
-    //             error: function (data) {
-    //
-    //
-    //
-    //             },
-    //         });
-    //
-    //         })
-    //     });
-    //
-    //
-
-
-
-
     $("#Submit_btn").click(function () {
-
         var values = [];
+        var value = {};
+        var i=0;
+        var field_name, field_value;
 
-        $("table tr").each((_, row) => {
-            var value = {};
-            $(row).find(":input").each((__, e) =>
-                value[e.name] = $(e).val()
-            );
-            values.push(value);
+        $('.tab_logic tr').find(':input').each(function() {
+
+            field_name = $(this).attr('name');
+            field_value = this.value;
+
+            if(field_name==="product_id" || field_name==="discount_amount" || field_name==="amount_unit")
+            {
+                value[$(this).attr('name')] = this.value;
+            }
+            i++;
+            if(i%5 === 0) {
+                values.push(value)
+                value = {}
+            }
         });
+
 
         var addpurchaseorder = {
             default_branch_id: $("#select_branch_purchase").val(),
             supplier_id: $("#select_supplier_purchase").val(),
             supply_schedule: $("#date_purchase").val(),
-            product_name_list :{values},
-
+            product_name_list :values,
         };
 
-
         $.ajax({
-            url: nafisa_domain + '/purchase_order',
+            url: riyad_domain + '/purchase_order',
             type: 'POST',
             data: JSON.stringify(addpurchaseorder),
             contentType: "application/json",
@@ -5007,7 +4966,164 @@
             },
             error: function (data) {
 
+
             }
         });
 
     })
+
+
+
+
+
+
+
+    //SALES ORDER FROM ==========================================================================================================
+
+
+
+    //
+    // $(document).ready(function(){
+    //     var i=1;
+    //     $("#add_sales_row").click(function(){
+    //         b=i-1;
+    //         $('#addr'+i).html($('#addr'+b).html()).find('td:first-child').html(i+1);
+    //         $('.tab_logic_sales').append('<tr id="addr'+(i+1)+'"></tr>');
+    //         i++;
+    //     });
+    //     $("#delete_row").click(function(){
+    //         if(i>1){
+    //             $("#addr"+(i-1)).html('');
+    //             i--;
+    //         }
+    //         calc();
+    //     });
+    //     $('.tab_logic_sales tbody').on('keyup change',function(){
+    //         calc();
+    //     });
+    // });
+    //
+    //
+    // function calc(){
+    //     $('.tab_logic_sales tbody tr').each(function(i, element) {
+    //         var html = $(this).html();
+    //         if(html!='')
+    //         {
+    //             var qty = $(this).find('.qty').val();
+    //             console.log(qty)
+    //             var price = $(this).find('.price').val();
+    //             console.log(price)
+    //
+    //             var dis = $(this).find('.discount').val();
+    //
+    //             $(this).find('.total').val(qty*price-dis);
+    //
+    //
+    //             var arr = $('.total').map((i, e) => e.value).get();
+    //             var sum = arr.reduce(function(a, b){
+    //                 if(isNaN(a) || a=="")
+    //                     a=0;
+    //                 if(isNaN(b)  || b=="")
+    //                     b=0;
+    //                 return parseInt(a) + parseInt(b);
+    //             }, 0);
+    //             $('#allTotal').text(sum +" BDT");
+    //
+    //         }
+    //     });
+    // }
+    //
+    //
+    // $(document).ready( function() {
+    //     $(document).on("change", ".price", function() {
+    //         var arr = $('.price').map((i, e) => e.value).get();
+    //         var sum = arr.reduce(function(a, b){
+    //             if(isNaN(a) || a=="")
+    //                 a=0;
+    //             if(isNaN(b)  || b=="")
+    //                 b=0;
+    //             return parseInt(a) + parseInt(b);
+    //         }, 0);
+    //         $('#totalPrice').text(sum +" BDT");
+    //
+    //     });
+    // });
+    //
+    // $(document).ready( function() {
+    //     $(document).on("change", ".discount", function() {
+    //         var arr = $('.discount').map((i, e) => e.value).get();
+    //         var sum = arr.reduce(function(a, b){
+    //             if(isNaN(a) || a=="")
+    //                 a=0;
+    //             if(isNaN(b)  || b=="")
+    //                 b=0;
+    //             return parseInt(a) + parseInt(b);
+    //         }, 0);
+    //         $('#totalDiscount').text(sum +" BDT");
+    //
+    //     });
+    // });
+    //
+    // $(document).ready( function() {
+    //     $(document).on("change", ".qty", function() {
+    //         var arr = $('.qty').map((i, e) => e.value).get();
+    //         var sum = arr.reduce(function(a, b){
+    //             if(isNaN(a) || a=="")
+    //                 a=0;
+    //             if(isNaN(b)  || b=="")
+    //                 b=0;
+    //             return parseInt(a) + parseInt(b);
+    //         }, 0);
+    //         $('#totalUnit').text(sum);
+    //
+    //     });
+    // });
+    //
+    //
+    //
+    //
+    //
+    //
+    // // //init Unit--------------------------------------------
+    // $.ajax({
+    //     url: riyad_domain + '/products',
+    //     type: 'GET',
+    //     success: function (data) {
+    //         let product_parents = data?.data.map(item => item)
+    //         product_parents.forEach((element) => {
+    //             $('<option/>').val(element['id']).html(element['name']).attr("data-price",element['cost_price'] ).attr("data-unit",element['unit_id']['name'] ).appendTo('.sales_order_list');
+    //         });
+    //     }
+    // });
+    //
+    // $('.tab_logic_sales').on('change', 'select', function() {
+    //     let matha = $(this).find(':selected').data('price');
+    //     $(this).closest('tr').find('.sales_price').val(matha);
+    //     $(this).closest('tr').find('.sales_unit_type').text($(this).find(':selected').data('unit'));
+    // });
+    //
+    //
+    // $.ajax({
+    //     url: riyad_domain + '/sales_order',
+    //     type: 'GET',
+    //     success: function (data) {
+    //         let purchase_branch = data?.data.map(item => item)
+    //         purchase_branch.forEach((element) => {
+    //             $('<option/>').val(element['sales_type_id']['id']).html(element['sales_type_id'] ['name']).appendTo('#select_sales_type');
+    //         });
+    //     }
+    // });
+    //
+    // $.ajax({
+    //     url: riyad_domain + '/sales_order',
+    //     type: 'GET',
+    //     success: function (data) {
+    //         let purchase_branch = data?.data.map(item => item)
+    //         purchase_branch.forEach((element) => {
+    //             $('<option/>').val(element['customer_id']['id']).html(element['customer_id']['name']).appendTo('#select_sales_customer');
+    //         });
+    //     }
+    // });
+    //
+
+

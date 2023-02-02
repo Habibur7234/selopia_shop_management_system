@@ -160,26 +160,20 @@
                 <div class="container">
                     <div class="row my-5 ">
                         <div class="col-lg-3 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100 align-content-center" id="select_branch"
-                                    aria-label="Default select example">
+                            <select class="form-select bg-gray-100 align-content-center" id="select_sales_type" aria-label="Default select example">
                                 <option disabled selected>Sales Type</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100 align-content-center" aria-label="Default select example">
+                            <select class="form-select bg-gray-100 align-content-center" id="select_sales_customer" aria-label="Default select example">
                                 <option disabled selected>Select Customer</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
                             </select>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
 
-                            <button id="add_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
+                            <button id="add_sales_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
                                     title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none"
                                     type="button">
                                 <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -195,41 +189,37 @@
 
 
                 <div class="container">
-                    <table id="tab_logic" class="table table-hover table-condensed">
+                    <table  class="table table-hover table-condensed tab_logic_sales">
                         <thead>
                         <tr>
                             <th class="th2" style="width:2%">#</th>
                             <th style="width:35%">Product</th>
                             <th style="width:15%">Buying Price</th>
-                            <th style="width:12%">Unit</th>
                             <th style="width:15%">Discount</th>
-                            <th style="width:29%">Totall Price</th>
-
+                            <th style="width:12%">Unit</th>
+                            <th style="width:29%">Total Price</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr id="addr0">
                             <td class="th2">1</td>
                             <td>
-                                <select class="form-select Name product_list" name='product[]' id="product_list"
-                                        aria-label="Default select example ">
+                                <select class="form-select Name sales_order_list" name='product[]' aria-label="Default select example ">
                                     <option disabled selected>Select Product</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" name='price[]' id="price" class="form-control text-center price"
-                                       placeholder="price..........">
+                                <input type="number" name='price[]' id="price" class="form-control text-center sales_price" >
                             </td>
                             <td>
                                 <input type="number" name='discount[]' class="form-control text-center discount">
                             </td>
                             <td>
                                 <input type="number" name='qty[]' class="form-control text-center qty">
-                                <span id="Unit_size"
-                                      style="margin-left: 74px!important;position: absolute;margin-top: -28px;">fff</span>
+                                <span class="sales_unit_type" style="margin-left: 74px!important;position: absolute;margin-top: -28px;"></span>
                             </td>
                             <td>
-                                <input type="number" name='total[]' class="form-control text-center total">
+                                <input type="number" class="form-control text-center total">
                             </td>
                         </tr>
                         <tr id='addr1'></tr>
@@ -340,6 +330,8 @@
                         </div>
                     </div>
                 </div>
+
+<button> kkkkkkkkkkk</button>
 
 
             </div>
