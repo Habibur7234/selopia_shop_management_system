@@ -16,7 +16,7 @@ jobs:
       with:
         server: 103.205.71.148
         username: ftp_shop_selopian_us
-        password: ${{ secrets.shop_key }}
+        password: ${{ secrets.SHOP_KEY }}
         local_dir: ./dist/
         exclude: |
           **/.git*
