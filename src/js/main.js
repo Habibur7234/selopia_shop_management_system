@@ -5047,6 +5047,9 @@
     //         $('#totalPrice').text(sum +" BDT");
     //
     //     });
+
+
+
     // });
     //
     // $(document).ready( function() {
