@@ -5210,3 +5210,94 @@ $("#sales_submit_btn").click(function () {
         }
     });
 })
+
+
+
+
+//FORMULA=========================================================================================================
+
+
+
+$.ajax({
+    url: riyad_domain + '/product_formula_ingredients',
+    type: 'GET',
+    success: function (data) {
+        let purchase_branch = data?.data.map(item => item)
+        purchase_branch.forEach((element) => {
+            $('<option/>').val(element ['raw_mat_id'] ['id']).html(element['raw_mat_id'] ['name']).appendTo('#select_product_raw');
+            $('<option/>').val(element ['formula_id'] ['id']).html(element['formula_id'] ['name']).appendTo('#select_formula_category');
+
+        });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+//INVENTORY================================================================================================================================
+
+
+
+$.ajax({
+    url: nafisa_domain + '/branch',
+    type: 'GET',
+    success: function (data) {
+        let purchase_branch = data?.data.map(item => item)
+        purchase_branch.forEach((element) => {
+            $('<option/>').val(element['id']).html(element ['name']).appendTo('#select_inventory_category');
+
+        });
+    }
+});
+
+
+
+//init shop & branch  datatable and load data
+ var inventory_table= $('#inventory_dataTable').DataTable({
+
+    ajax: {
+        url: nafisa_domain + '/inventory/2',
+        dataSrc: 'data',
+    },
+    dom: 'Blfrtip',
+    oLanguage: {
+        sLengthMenu: "Show _MENU_",
+    },
+    language: {
+        search: "",
+        searchPlaceholder: "Search..."
+    },
+
+    columns: [
+        {data: 'id'},
+
+        {data: 'product_name'},
+        {data: 'category'},
+        {data: 'branch_name'},
+        {data: 'quantity'},
+        {data: 'min_stock_alert'},
+
+
+    ]
+});
+
+
+
+$("#sub_bra_id").click(function () {
+
+    var abc = $("#select_inventory_category").val();
+    inventory_table.ajax.url( 'https://nafisa.selopian.us/inventory/'+ abc ).load();
+});
+
+
+
+

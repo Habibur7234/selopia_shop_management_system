@@ -3,7 +3,7 @@
 <head>
     @@include('./_head.html', {
     "path": "../..",
-    "title": "Shop"
+    "title": "Product Formula"
     })
 
 </head>
@@ -117,7 +117,7 @@
 
 @@include('./dashboard/_sidenav.html', {
 "path": "../..",
-"page": "purchase",
+"page": "productformula",
 "page_group": "dashboard"
 })
 
@@ -141,12 +141,12 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Purchase</a></li>
+                    <li class="breadcrumb-item"><a href="#">Formula</a></li>
                 </ol>
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Purchase Details</h1>
+                    <h1 class="h4">Formula Details</h1>
 
                 </div>
             </div>
@@ -155,26 +155,22 @@
         <div id="all_data" class="card border-0 shadow">
             <div class="card-body">
                 <div class="title">
-                    <h2>Purchase Order Form</h2>
+                    <h2>Formula Order Form</h2>
                 </div>
                 <div class="container">
-                    <div class="row my-5 ">
-                        <div class="col-lg-5 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100" id="select_supplier_purchase"
-                                    aria-label="Default select example"><option disabled selected>Select Supplier</option>
-                            </select>
-                        </div>
+                    <div class="row my-5">
                         <div class="col-lg-3 col-md-4 col-sm-12">
-                            <select class="form-select bg-gray-100 align-content-center" id="select_branch_purchase" aria-label="Default select example">
-                                <option disabled selected>Select Branch</option>
-                            </select>
+                           <input class="form-control" type="text" id="add_formula" placeholder="Add Formula">
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
-                            <div class="input-group">
-                                <input  class="form-control bg-gray-100" id="date_purchase" type="date" placeholder="dd/mm/yyyy" required>
-                            </div>
+                            <select class="form-select bg-gray-100 align-content-center" id="select_formula_category" aria-label="Default select example">
+                                <option disabled selected>Select Customer</option>
+                            </select>
+                        </div>
 
-                            <button id="add_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+
+                            <button id="add_sales_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
                                     title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none"
                                     type="button">
                                 <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -189,38 +185,34 @@
 
 
                 <div class="container">
-                    <table class="table tab_logic table-hover table-condensed">
+                    <table  class="table table-hover table-condensed tab_logic_sales">
                         <thead>
                         <tr>
                             <th class="th2" style="width:2%">#</th>
-                            <th style="width:35%">Product</th>
-                            <th style="width:15%">Price</th>
-                            <th style="width:15%">Discount</th>
-                            <th style="width:12%">Unit</th>
-                            <th style="width:25%">Unit Price</th>
+                            <th style="width:35%">Product Raw </th>
+                            <th style="width:20%">Percentages</th>
+                            <th style="width:20%">Unit Size</th>
+                            <th style="width:20%">Unit Level</th>
+
                         </tr>
                         </thead>
                         <tbody>
                         <tr id="addr0">
                             <td class="th2">1</td>
                             <td>
-                                <select class="form-select Name product_list" name='product_id' id="product_list"
-                                        aria-label="Default select example ">
+                                <select class="form-select" id="select_product_raw" name='product_id' aria-label="Default select example ">
                                     <option disabled selected>Select Product</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" name='product_price'  class=" form-control text-center price" placeholder="price" >
+                                <input type="number" name='Percentages'  class="form-control text-center" >
                             </td>
                             <td>
-                                <input type="number" name='discount_amount' class="form-control text-center discount">
+                                <input type="number" name='discount_amount' class="form-control text-center sales_discount">
                             </td>
+
                             <td>
-                                <input type="number" name='amount_unit' class="form-control text-center qty" min="0" >
-                                <span class="Unit_size" style="margin-left: 89px!important;position: absolute;margin-top: -28px;"></span>
-                            </td>
-                            <td>
-                                <input type="number" name='total_amount'  class="form-control text-center total">
+                                <input type="number" name="sales_totalcal" class="form-control text-center sales_totalcal">
                             </td>
                         </tr>
                         <tr id='addr1'></tr>
@@ -232,19 +224,19 @@
 
                             </td>
                             <td data-th="Quantity">
-                                <p>Total Result  =</p>
+                                <p>Total =</p>
                             </td>
                             <td data-th="Quantity">
-                                <p  id="totalPrice"></p>
+                                <p  id="total_sales_Price"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p id="totalDiscount"></p>
+                                <p id="sales_Discount"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p id="totalUnit"></p>
+                                <p id="sales_totalUnit"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p id="allTotal"></p>
+                                <p id="sales_allTotal"></p>
                             </td>
                         </tr>
                         </tfoot>
@@ -252,9 +244,10 @@
                 </div>
 
                 <div style="margin-left: 13.50%; padding: 1%">
-                    <button class="btn btn-success" id="Submit_btn" data-bs-toggle="modal"   data-bs-target="#purchase_payment" >Submit
+                    <button class="btn btn-success" id="sales_submit_btn" data-bs-toggle="modal"
+                            data-bs-target="#payment_modal">Submit
                     </button>
-                    <button class="btn btn-warning" id="delete_row">Delete Row</button>
+                    <button class="btn btn-warning" id="delete_rows">Delete Row</button>
                 </div>
 
 
@@ -265,12 +258,18 @@
                             <div class="pt-3 ">
                                 <div class="modal-body container">
                                     <div class="row">
+
                                         <p> Do You Want to Pay Now ?</p>
-                                        <select class="form-select Name product_list" aria-label="Default select example ">
+
+                                        <select class="form-select Name product_list" id=""
+                                                aria-label="Default select example ">
                                             <option disabled selected>Select Transaction Type</option>
                                         </select>
                                         <button type="button" id="delete_kpi" class="btn btn-secondary">Delete</button>
+
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -278,12 +277,14 @@
                 </div>
 
 
-                <div class="modal fade" id="purchase_payment" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                <div class="modal fade" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-body p-0">
                                 <div class="card p-3 p-lg-4" style="background:#425374;">
-                                    <button type="button" class="btn-close ms-auto btn-danger text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close ms-auto btn-danger text-white" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     <div class="text-center text-md-center mb-4 mt-md-0">
                                         <h1 class="mb-0 h3 text-white">Do you want to pay now ?</h1>
                                     </div>
@@ -292,34 +293,26 @@
                                             <div class="row">
                                                 <div class="col-lg-12 col-sm-6">
                                                     <!-- Form -->
-                                                    <form id="purchase_transaction_form" method="post" enctype="multipart/form-data">
+                                                    <form id="add_product_raw_mateiral_from" method="POST">
                                                         <div class="col-lg-12 col-sm-10 mb2 my-2">
                                                             <label class="my-1 me-2 text-white my-3">Transaction type</label>
-                                                            <select class="form-select" name="transaction_type_id" id="select_purchase_transaction_type" aria-label="Default select example">
-                                                                <option disabled selected>select transaction</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                            <label class="my-1 me-2 text-white my-3">Payment Status</label>
-                                                            <select class="form-select" name="payment_status_id" id="select_purchase_transaction_payment_status" aria-label="Default select example">
-                                                                <option disabled selected>select payment status</option>
+                                                            <select class="form-select"
+                                                                    id="product_raw_material_unit_name"
+                                                                    aria-label="Default select example">
+                                                                <option disabled selected>select Transaction</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-lg-12 col-sm-10 mb2 my-2">
                                                             <label  class="my-1 me-2 text-white my-3">Amount paid</label>
-                                                            <input type="text" class="form-control" name="amount_paid" id="purchase_transaction_amount" placeholder="123...">
+                                                            <input type="text" class="form-control" name="address"
+                                                                   id="product_raw_material_unit_size"
+                                                                   placeholder="123...">
                                                         </div>
-                                                        <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                            <label  class="my-1 me-2 text-white my-3">Comment</label>
-                                                            <textarea type="text" class="form-control" name="ref_comment" id="purchase_transaction_comment" ></textarea>
-                                                        </div>
-                                                        <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                            <label  class="my-1 me-2 text-white my-3">transaction document url</label>
-                                                            <input type="file" class="form-control" name="transaction_document_url" id="purchase_transaction_image" placeholder="123...">
-                                                        </div>
-                                                        <input type="hidden" value="true" class="form-control" id="create" name="create">
+                                                        <!--                                                        <div class="d-flex align-items-center justify-content-center">-->
+                                                        <!--                                                            <button type="button" class="btn btn-success text-dark my-4">Pay</button>-->
+                                                        <!--                                                        </div>-->
+                                                        <button type="button" class="btn btn-white text-dark col-lg-12 col-sm-10 mb-4 my-4">Pay Now</button>
 
-                                                        <input type="submit" class="btn btn-white text-dark col-lg-12 col-sm-10 mb-4 my-4" value="PAY">
                                                     </form>
                                                 </div>
                                             </div>
@@ -330,6 +323,7 @@
                         </div>
                     </div>
                 </div>
+
 
 
             </div>
