@@ -3191,7 +3191,7 @@
         var qty = $(this).find(".qty").val();
         var price = $(this).find(".price").val();
         var dis = $(this).find(".discount").val();
-        $(this).find(".total").val(qty * price - dis);
+        $(this).find(".total").val(qty * price - dis * qty);
         var arr = $(".total").map((i2, e) => e.value).get();
         var sum = arr.reduce(function(a, b2) {
           if (isNaN(a) || a == "")
@@ -3264,6 +3264,16 @@
     }
   });
   $.ajax({
+    url: riyad_domain + "/purchase_status",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["status"]).appendTo("#select_purchase_transaction_payment_status");
+      });
+    }
+  });
+  $.ajax({
     url: riyad_domain + "/supplier/all",
     type: "GET",
     success: function(data2) {
@@ -3274,10 +3284,11 @@
     }
   });
   $(".tab_logic").on("change", "select", function() {
-    let matha = $(this).find(":selected").data("price");
-    $(this).closest("tr").find(".price").val(matha);
+    let price_purchase = $(this).find(":selected").data("price");
+    $(this).closest("tr").find(".price").val(price_purchase);
     $(this).closest("tr").find(".Unit_size").text($(this).find(":selected").data("unit"));
   });
+  var purchase_order_id = "";
   $("#Submit_btn").click(function() {
     var values = [];
     var value = {};
@@ -3301,15 +3312,304 @@
       supply_schedule: $("#date_purchase").val(),
       product_name_list: values
     };
+    console.log(addpurchaseorder);
     $.ajax({
       url: riyad_domain + "/purchase_order",
       type: "POST",
       data: JSON.stringify(addpurchaseorder),
       contentType: "application/json",
       success: function(data2) {
+        if (data2.status.code === 1) {
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          purchase_order_id = data2.data.purchase_order_id;
+        } else if (data2.status.code === 0) {
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
       },
       error: function(data2) {
+        notyf.error({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
       }
     });
+  });
+  $.ajax({
+    url: riyad_domain + "/transaction_type",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#select_purchase_transaction_type");
+      });
+    }
+  });
+  $("#purchase_transaction_form").on("submit", function(e) {
+    var FormDataX = new FormData(this);
+    FormDataX.append("purchase_id", purchase_order_id);
+    e.preventDefault();
+    $.ajax({
+      url: riyad_domain + "/purchase_transaction",
+      type: "POST",
+      data: FormDataX,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        } else {
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      },
+      error: function(data2) {
+        if (data2.status.code === 0) {
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        } else {
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      }
+    });
+  });
+  $(document).ready(function() {
+    var i = 1;
+    $("#add_sales_row").click(function() {
+      c = i - 1;
+      $("#addr" + i).html($("#addr" + c).html()).find("td:first-child").html(i + 1);
+      $(".tab_logic_sales").append('<tr id="addr' + (i + 1) + '"></tr>');
+      i++;
+    });
+    $("#delete_rows").click(function() {
+      if (i > 1) {
+        $("#addr" + (i - 1)).html("");
+        i--;
+      }
+      calcs();
+    });
+    $(".tab_logic_sales tbody").on("keyup change", function() {
+      calcs();
+    });
+  });
+  function calcs() {
+    $(".tab_logic_sales tbody tr").each(function(i, element) {
+      var html = $(this).html();
+      if (html != "") {
+        var qty = $(this).find(".sales_qty").val();
+        console.log(qty);
+        var price = $(this).find(".sales_price").val();
+        console.log(price);
+        var dis = $(this).find(".sales_discount").val();
+        $(this).find(".sales_totalcal").val(qty * price - dis * qty);
+        var arry = $(".sales_totalcal").map((i2, e) => e.value).get();
+        var sums = arry.reduce(function(a, b2) {
+          if (isNaN(a) || a == "")
+            a = 0;
+          if (isNaN(b2) || b2 == "")
+            b2 = 0;
+          return parseInt(a) + parseInt(b2);
+        }, 0);
+        $("#sales_allTotal").text(sums + " BDT");
+      }
+    });
+  }
+  $(document).ready(function() {
+    $(document).on("change", ".sales_price", function() {
+      var arry = $(".sales_price").map((i, e) => e.value).get();
+      var sums = arry.reduce(function(a, b2) {
+        if (isNaN(a) || a == "")
+          a = 0;
+        if (isNaN(b2) || b2 == "")
+          b2 = 0;
+        return parseInt(a) + parseInt(b2);
+      }, 0);
+      $("#total_sales_Price").text(sums + " BDT");
+    });
+  });
+  $(document).ready(function() {
+    $(document).on("change", ".sales_discount", function() {
+      var arry = $(".sales_discount").map((i, e) => e.value).get();
+      var sums = arry.reduce(function(a, b2) {
+        if (isNaN(a) || a == "")
+          a = 0;
+        if (isNaN(b2) || b2 == "")
+          b2 = 0;
+        return parseInt(a) + parseInt(b2);
+      }, 0);
+      $("#sales_Discount").text(sums + " BDT");
+    });
+  });
+  $(document).ready(function() {
+    $(document).on("change", ".sales_qty", function() {
+      var arry = $(".sales_qty").map((i, e) => e.value).get();
+      var sums = arry.reduce(function(a, b2) {
+        if (isNaN(a) || a == "")
+          a = 0;
+        if (isNaN(b2) || b2 == "")
+          b2 = 0;
+        return parseInt(a) + parseInt(b2);
+      }, 0);
+      $("#sales_totalUnit").text(sums + "Units");
+    });
+  });
+  $.ajax({
+    url: riyad_domain + "/products",
+    type: "GET",
+    success: function(data2) {
+      let product_parents = data2?.data.map((item) => item);
+      product_parents.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["name"]).attr("data-price", element["cost_price"]).attr("data-unit", element["unit_id"]["name"]).appendTo(".sales_order_list");
+      });
+    }
+  });
+  $(".tab_logic_sales").on("change", "select", function() {
+    let sales_purchase = $(this).find(":selected").data("price");
+    $(this).closest("tr").find(".sales_price").val(sales_purchase);
+    $(this).closest("tr").find(".sales_unit_type").text($(this).find(":selected").data("unit"));
+  });
+  $.ajax({
+    url: riyad_domain + "/sales_order",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("<option/>").val(element["sales_type_id"]["id"]).html(element["sales_type_id"]["name"]).appendTo("#select_sales_type");
+      });
+    }
+  });
+  $.ajax({
+    url: riyad_domain + "/sales_order",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("<option/>").val(element["customer_id"]["id"]).html(element["customer_id"]["name"]).appendTo("#select_sales_customer");
+      });
+    }
+  });
+  var sales_order_id = "";
+  $("#sales_submit_btn").click(function() {
+    var values = [];
+    var value = {};
+    var i = 0;
+    var field_name, field_value;
+    $(".tab_logic_sales tr").find(":input").each(function() {
+      field_name = $(this).attr("name");
+      field_value = this.value;
+      if (field_name === "product_id" || field_name === "discount_amount" || field_name === "amount_unit") {
+        value[$(this).attr("name")] = this.value;
+      }
+      i++;
+      if (i % 5 === 0) {
+        values.push(value);
+        value = {};
+      }
+    });
+    var addsalesorder = {
+      sales_type_id: $("#select_sales_type").val(),
+      customer_id: $("#select_sales_customer").val(),
+      product_name_list: values
+    };
+    $.ajax({
+      url: riyad_domain + "/sales_order",
+      type: "POST",
+      data: JSON.stringify(addsalesorder),
+      contentType: "application/json",
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          sales_order_id = data2.data.purchase_order_id;
+          console.log("ok" + purchase_order_id);
+        } else if (data2.status.code === 0) {
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      },
+      error: function(data2) {
+        notyf.error({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
+  $.ajax({
+    url: riyad_domain + "/product_formula_ingredients",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("<option/>").val(element["raw_mat_id"]["id"]).html(element["raw_mat_id"]["name"]).appendTo("#select_product_raw");
+        $("<option/>").val(element["formula_id"]["id"]).html(element["formula_id"]["name"]).appendTo("#select_formula_category");
+      });
+    }
+  });
+  $.ajax({
+    url: nafisa_domain + "/branch",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#select_inventory_category");
+      });
+    }
+  });
+  var inventory_table = $("#inventory_dataTable").DataTable({
+    ajax: {
+      url: nafisa_domain + "/inventory/2",
+      dataSrc: "data"
+    },
+    dom: "Blfrtip",
+    oLanguage: {
+      sLengthMenu: "Show _MENU_"
+    },
+    language: {
+      search: "",
+      searchPlaceholder: "Search..."
+    },
+    columns: [
+      { data: "id" },
+      { data: "product_name" },
+      { data: "category" },
+      { data: "branch_name" },
+      { data: "quantity" },
+      { data: "min_stock_alert" }
+    ]
+  });
+  $("#sub_bra_id").click(function() {
+    var abc = $("#select_inventory_category").val();
+    inventory_table.ajax.url("https://nafisa.selopian.us/inventory/" + abc).load();
   });
 })();
