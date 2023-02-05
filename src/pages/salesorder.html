@@ -204,22 +204,22 @@
                         <tr id="addr0">
                             <td class="th2">1</td>
                             <td>
-                                <select class="form-select Name sales_order_list" name='product[]' aria-label="Default select example ">
+                                <select class="form-select Name sales_order_list" name='product_id' aria-label="Default select example ">
                                     <option disabled selected>Select Product</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" name='price[]' id="price" class="form-control text-center sales_price" >
+                                <input type="number" name='sales_price'  class="form-control text-center sales_price" >
                             </td>
                             <td>
-                                <input type="number" name='discount[]' class="form-control text-center discount">
+                                <input type="number" name='discount_amount' class="form-control text-center sales_discount">
                             </td>
                             <td>
-                                <input type="number" name='qty[]' class="form-control text-center qty">
-                                <span class="sales_unit_type" style="margin-left: 74px!important;position: absolute;margin-top: -28px;"></span>
+                                <input type="number" name='amount_unit' class="form-control text-center sales_qty">
+                                <span class="sales_unit_type" style="margin-left: 87px!important;position: absolute;margin-top: -28px;"></span>
                             </td>
                             <td>
-                                <input type="number" class="form-control text-center total">
+                                <input type="number" name="sales_totalcal" class="form-control text-center sales_totalcal">
                             </td>
                         </tr>
                         <tr id='addr1'></tr>
@@ -234,16 +234,16 @@
                                 <p>Total =</p>
                             </td>
                             <td data-th="Quantity">
-                                <p>100 BDT</p>
+                                <p  id="total_sales_Price"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p> 10 <span class="text-success">KG</span></p>
+                                <p id="sales_Discount"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p> 40 Gram</p>
+                                <p id="sales_totalUnit"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p> 4000 BDT</p>
+                                <p id="sales_allTotal"></p>
                             </td>
                         </tr>
                         </tfoot>
@@ -251,10 +251,10 @@
                 </div>
 
                 <div style="margin-left: 13.50%; padding: 1%">
-                    <button class="btn btn-success" id="Submit_btn" data-bs-toggle="modal"
+                    <button class="btn btn-success" id="sales_submit_btn" data-bs-toggle="modal"
                             data-bs-target="#payment_modal">Submit
                     </button>
-                    <button class="btn btn-warning" id="delete_row">Delete Row</button>
+                    <button class="btn btn-warning" id="delete_rows">Delete Row</button>
                 </div>
 
 
@@ -331,7 +331,6 @@
                     </div>
                 </div>
 
-<button> kkkkkkkkkkk</button>
 
 
             </div>
