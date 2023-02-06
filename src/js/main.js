@@ -5,8 +5,6 @@ const notyf = new Notyf();
 const nafisa_domain = 'https://nafisa.selopian.us'
 const riyad_domain = 'https://riyadshop.selopian.us'
 const shakila_domain = 'https://shakila.selopian.us'
-const active_domain = riyad_domain
-
 
 //SHOP================================================================================================
 //init shop & branch  datatable and load data
@@ -4576,7 +4574,6 @@ $("#delete_raw_product").click(function () {
 
 //SALES PRODUCT============================================================================================================================
 
-//init category  datatable and load data
 let sales_product_table = $('#sales_product_dataTable').DataTable({
 
     ajax: {
@@ -4772,7 +4769,7 @@ $(document).ready(function () {
 
 //init Unit--------------------------------------------
 $.ajax({
-    url: riyad_domain + '/products',
+    url: nafisa_domain + '/products',
     type: 'GET',
     success: function (data) {
         let product_parents = data?.data.map(item => item)
@@ -4783,7 +4780,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: riyad_domain + '/branch',
+    url: nafisa_domain + '/branch',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -4794,7 +4791,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: riyad_domain + '/purchase_status',
+    url: nafisa_domain + '/purchase_status',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -4805,7 +4802,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: riyad_domain + '/supplier/all',
+    url: nafisa_domain + '/supplier/all',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -4853,7 +4850,7 @@ $("#Submit_btn").click(function () {
 
     console.log(addpurchaseorder)
     $.ajax({
-        url: riyad_domain + '/purchase_order',
+        url: nafisa_domain + '/purchase_order',
         type: 'POST',
         data: JSON.stringify(addpurchaseorder),
         contentType: "application/json",
@@ -4890,7 +4887,7 @@ $("#Submit_btn").click(function () {
 
 
 $.ajax({
-    url: riyad_domain + '/transaction_type',
+    url: nafisa_domain + '/transaction_type',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -4901,57 +4898,6 @@ $.ajax({
 });
 
 
-// $("#purchase_pay").click(function () {
-//
-//     // var mypurchase_order_id = Object.assign({}, purchase_order_id);
-//
-//     var pay_transection = {
-//         transaction_type_id: $("#select_purchase_transaction_type").val(),
-//         amount_paid: $("#amount_paid").val(),
-//         // purchase_id:  `${purchase_order_id}`,
-//         purchase_id :"50",
-//     };
-//     console.log(pay_transection)
-//
-//
-//     $.ajax({
-//         url: riyad_domain + '/purchase_transaction',
-//         type: 'POST',
-//         data: JSON.stringify(pay_transection),
-//         contentType: "application/json",
-//         success: function (data) {
-//             if (data.status.code === 1) {
-//                 notyf.success({
-//                     message: data.status.message,
-//                     duration: 7000,
-//                     icon: false
-//                 });
-//
-//             } else if (data.status.code === 0){
-//
-//                 notyf.error({
-//                     message: data.status.message,
-//                     duration: 7000,
-//                     icon: false
-//                 });
-//             }
-//         },
-//         error: function (data) {
-//
-//             notyf.error({
-//                 message: data.status.message,
-//                 duration: 7000,
-//                 icon: false
-//             });
-//
-//
-//
-//         }
-//     });
-//
-// })
-
-
 $("#purchase_transaction_form").on('submit', (function (e) {
 
     var FormDataX = new FormData(this);
@@ -4959,7 +4905,7 @@ $("#purchase_transaction_form").on('submit', (function (e) {
 
     e.preventDefault();
     $.ajax({
-        url: riyad_domain + '/purchase_transaction',
+        url: nafisa_domain + '/purchase_transaction',
         type: "POST",
         data: FormDataX,
         contentType: false,
@@ -5004,8 +4950,151 @@ $("#purchase_transaction_form").on('submit', (function (e) {
 }));
 
 
-//SALES ORDER FROM ==========================================================================================================
 
+
+//PURCHASE TRANSACTION=============================================================================================================
+
+
+
+//init shop & branch  datatable and load data
+$('#purchase_transaction_dataTable').DataTable({
+
+    ajax: {
+        url: nafisa_domain + '/purchase_transaction',
+        dataSrc: 'data',
+    },
+    rowId: 'id',
+    dom: 'Blfrtip',
+    oLanguage: {
+        sLengthMenu: "Show _MENU_",
+    },
+    language: {
+        search: "",
+        searchPlaceholder: "Search..."
+    },
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Shop Information',
+            orientation: 'landscape',
+            exportOptions: {
+                columns: [1, 2, 3],
+                modifier: {
+                    page: 'current'
+                }
+            },
+            pageSize: 'LEGAL',
+            customize: function (win) {
+                $(win.document.body)
+                    .css('font-size', '15pt')
+                $(win.document.body).find('th')
+                    .css({
+                        "font-size": 'inherit',
+                        "text-align": 'center',
+                    })
+                    .addClass('compact')
+                $(win.document.body).find('table')
+                    .css('font-size', 'inherit')
+                    .css('text-align', 'center')
+
+            }
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Shop Information',
+            exportOptions: {
+                columns: [1, 2, 3]
+
+            },
+
+        },
+        {
+            extend: 'pdf',
+            exportOptions: {
+                columns: [1, 2, 3],
+                modifier: {
+                    page: 'current'
+                }
+            },
+            pageSize: 'LEGAL',
+            title: 'Shop Information',
+            customize: function (doc) {
+                doc.content[1].table.widths = [
+                    '20%',
+                    '35%',
+                    '45%',
+                ]
+                let rowCount = doc.content[1].table.body.length;
+                for (let i = 1; i < rowCount; i++) {
+                    doc.content[1].table.body[i][0].alignment = 'center';
+                    doc.content[1].table.body[i][1].alignment = 'center';
+                    doc.content[1].table.body[i][2].alignment = 'center';
+                }
+            }
+        },
+
+        '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_brand_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+    ],
+    columns: [
+        {data: 'transaction_type_id.name'},
+        {data: 'payment_status_id.status'},
+        {data: 'transaction_at'},
+        {data: 'amount_paid'},
+        {
+            data: 'transaction_document_url',
+            render: function () {
+                return '<button id="brand_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#brand_image_modal">View</button>'
+            }
+        },
+        {data: 'ref_comment'},
+        // {
+        //     data: '',
+        //     render: function () {
+        //         return '<button id="update_brandBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_brand_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+        //             + '<button   id="delete_shopBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+        //     }
+        // },
+    ]
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//SALES ORDER FROM ==========================================================================================================
 
 
 $(document).ready(function(){
@@ -5105,7 +5194,7 @@ $(document).ready( function() {
 
 //init Unit--------------------------------------------
 $.ajax({
-    url: riyad_domain + '/products',
+    url: nafisa_domain + '/products',
     type: 'GET',
     success: function (data) {
         let product_parents = data?.data.map(item => item)
@@ -5123,7 +5212,7 @@ $('.tab_logic_sales').on('change', 'select', function () {
 
 
 $.ajax({
-    url: riyad_domain + '/sales_order',
+    url: nafisa_domain + '/sales_order',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -5134,7 +5223,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: riyad_domain + '/sales_order',
+    url: nafisa_domain + '/sales_order',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -5175,7 +5264,7 @@ $("#sales_submit_btn").click(function () {
     };
 
     $.ajax({
-        url: riyad_domain + '/sales_order',
+        url: nafisa_domain + '/sales_order',
         type: 'POST',
         data: JSON.stringify(addsalesorder),
         contentType: "application/json",
@@ -5189,7 +5278,6 @@ $("#sales_submit_btn").click(function () {
 
                sales_order_id = data.data.purchase_order_id;
 
-                console.log('ok' + purchase_order_id);
 
             } else if (data.status.code === 0) {
 
@@ -5212,27 +5300,302 @@ $("#sales_submit_btn").click(function () {
 })
 
 
-
-
-//FORMULA=========================================================================================================
-
-
-
 $.ajax({
-    url: riyad_domain + '/product_formula_ingredients',
+    url: nafisa_domain + '/sales_status',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
-            $('<option/>').val(element ['raw_mat_id'] ['id']).html(element['raw_mat_id'] ['name']).appendTo('#select_product_raw');
-            $('<option/>').val(element ['formula_id'] ['id']).html(element['formula_id'] ['name']).appendTo('#select_formula_category');
-
+            $('<option/>').val(element['id']).html(element['status']).appendTo('#select_sales_transaction_payment_status');
         });
     }
 });
 
 
 
+$("#sales_transaction_form").on('submit', (function (e) {
+
+    var FormDataX = new FormData(this);
+    FormDataX.append("sales_order_id", sales_order_id)
+
+    e.preventDefault();
+    $.ajax({
+        url: nafisa_domain + '/sales_trasnsaction',
+        type: "POST",
+        data: FormDataX,
+        contentType: false,
+        cache: false,
+        processData: false,
+
+        success: function (data) {
+
+            if (data.status.code === 1) {
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            } else {
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        },
+        error: function (data) {
+            if (data.status.code === 0) {
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+            } else {
+
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        },
+
+    })
+}));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//FORMULA=========================================================================================================
+
+
+
+
+
+
+$(document).ready(function(){
+    var i=1;
+    $("#add_formula_row").click(function(){
+        c=i-1;
+        $('#addr'+i).html($('#addr'+c).html()).find('td:first-child').html(i+1);
+        $('.tab_logic_formula').append('<tr id="addr'+(i+1)+'"></tr>');
+        i++;
+    });
+    $("#delete_rowss").click(function(){
+        if(i>1){
+            $("#addr"+(i-1)).html('');
+            i--;
+        }
+        calcs();
+    });
+    $('.tab_logic_formula tbody').on('keyup change',function(){
+        calcs();
+    });
+});
+
+
+function calcs(){
+    $('.tab_logic_formula tbody tr').each(function(i, element) {
+        var html = $(this).html();
+        if(html!='')
+        {
+            var qty = $(this).find('.sales_qty').val();
+            console.log(qty)
+            var price = $(this).find('.sales_price').val();
+            console.log(price)
+            var dis = $(this).find('.sales_discount').val();
+            $(this).find('.sales_totalcal').val(qty*price-dis*qty);
+
+
+            var arry = $('.sales_totalcal').map((i, e) => e.value).get();
+            var sums = arry.reduce(function(a, b){
+                if(isNaN(a) || a=="")
+                    a=0;
+                if(isNaN(b)  || b=="")
+                    b=0;
+                return parseInt(a) + parseInt(b);
+            }, 0);
+            $('#sales_allTotal').text(sums +" BDT");
+
+        }
+    });
+}
+
+
+$(document).ready(function () {
+    $(document).on("change", ".sales_price", function () {
+        var arry = $('.sales_price').map((i, e) => e.value).get();
+        var sums = arry.reduce(function (a, b) {
+            if (isNaN(a) || a == "")
+                a = 0;
+            if (isNaN(b) || b == "")
+                b = 0;
+            return parseInt(a) + parseInt(b);
+        }, 0);
+        $('#total_sales_Price').text(sums + " BDT");
+
+    });
+});
+
+$(document).ready( function() {
+    $(document).on("change", ".sales_discount", function() {
+        var arry = $('.sales_discount').map((i, e) => e.value).get();
+        var sums = arry.reduce(function(a, b){
+            if(isNaN(a) || a=="")
+                a=0;
+            if(isNaN(b)  || b=="")
+                b=0;
+            return parseInt(a) + parseInt(b);
+        }, 0);
+        $('#sales_Discount').text(sums +" BDT");
+
+    });
+});
+
+$(document).ready( function() {
+    $(document).on("change", ".sales_qty", function() {
+        var arry = $('.sales_qty').map((i, e) => e.value).get();
+        var sums = arry.reduce(function(a, b){
+            if(isNaN(a) || a=="")
+                a=0;
+            if(isNaN(b)  || b=="")
+                b=0;
+            return parseInt(a) + parseInt(b);
+        }, 0);
+        $('#sales_totalUnit').text(sums +"Units");
+
+    });
+});
+
+
+
+
+
+
+
+
+
+$.ajax({
+    url: riyad_domain + '/category',
+    type: 'GET',
+    success: function (data) {
+        let purchase_branch = data?.data.map(item => item)
+        purchase_branch.forEach((element) => {
+            $('<option/>').val(element ['id']).html(element['name']).appendTo('#select_formula_category');
+        });
+    }
+});
+
+
+
+//init Unit--------------------------------------------
+$.ajax({
+    url: riyad_domain + '/product_raw_material',
+    type: 'GET',
+    success: function (data) {
+        let product_parents = data?.data.map(item => item)
+        product_parents.forEach((element) => {
+            $('<option/>').val(element['id']).html(element['name']).attr("data-unit", element['unit_id']['name']).appendTo('.select_product_raw');
+
+        });
+    }
+})
+
+$('.tab_logic_formula').on('change', 'select', function () {
+    $(this).closest('tr').find('.unit_level').val($(this).find(':selected').data('unit'));
+});
+
+
+
+$("#formula_submit_btn").click(function () {
+    var values = [];
+    var value = {};
+    var i = 0;
+    var field_name, field_value;
+
+    $('.tab_logic_formula tr').find(':input').each(function () {
+
+        field_name = $(this).attr('name');
+        field_value = this.value;
+
+
+        if (field_name === "raw_mat_id" || field_name === "percentage" || field_name === "no_of_unit") {
+            value[$(this).attr('name')] = this.value;
+        }
+        i++;
+        if (i % 4 === 0) {
+            values.push(value)
+            value = {}
+        }
+    });
+
+    var addformula = {
+        name: $("#add_formula").val(),
+        category_id: $("#select_formula_category").val(),
+        raw_mat_list: values,
+    };
+
+    $.ajax({
+        url: riyad_domain + '/product_formula',
+        type: 'POST',
+        data: JSON.stringify(addformula),
+        contentType: "application/json",
+        success: function (data) {
+
+            if (data.status.code === 1) {
+                notyf.success({
+                    message: 'Formula Added Successfully',
+                    duration: 7000,
+                    icon: false
+                });
+
+            } else{
+
+
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        },
+        error: function (data) {
+            console.log(data)
+
+            if (data.status.code === 0){
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+            else {
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+
+        }
+    });
+})
 
 
 
@@ -5248,7 +5611,7 @@ $.ajax({
 
 
 $.ajax({
-    url: nafisa_domain + '/branch',
+    url: riyad_domain + '/branch',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -5265,7 +5628,7 @@ $.ajax({
  var inventory_table= $('#inventory_dataTable').DataTable({
 
     ajax: {
-        url: nafisa_domain + '/inventory/2',
+        url: riyad_domain + '/inventory/2',
         dataSrc: 'data',
     },
     dom: 'Blfrtip',
@@ -5295,7 +5658,7 @@ $.ajax({
 $("#sub_bra_id").click(function () {
 
     var abc = $("#select_inventory_category").val();
-    inventory_table.ajax.url( 'https://nafisa.selopian.us/inventory/'+ abc ).load();
+    inventory_table.ajax.url( 'https://riyadshop.selopian.us/inventory/'+ abc ).load();
 });
 
 

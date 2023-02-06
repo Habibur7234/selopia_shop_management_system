@@ -152,7 +152,7 @@
             </div>
         </div>
 
-        <div id="all_data" class="card border-0 shadow">
+        <div  class="card border-0 shadow">
             <div class="card-body">
                 <div class="title">
                     <h2>Formula Order Form</h2>
@@ -164,20 +164,14 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <select class="form-select bg-gray-100 align-content-center" id="select_formula_category" aria-label="Default select example">
-                                <option disabled selected>Select Customer</option>
+                                <option disabled selected>Select Category</option>
                             </select>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12">
 
-                            <button id="add_sales_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip"
-                                    title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none"
-                                    type="button">
-                                <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
+                            <button id="add_formula_row" style="margin-left: 85%;margin-top: 10%" value="add" toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button">
+                                <svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                             </button>
                         </div>
                     </div>
@@ -185,7 +179,7 @@
 
 
                 <div class="container">
-                    <table  class="table table-hover table-condensed tab_logic_sales">
+                    <table  class="table table-hover table-condensed tab_logic_formula">
                         <thead>
                         <tr>
                             <th class="th2" style="width:2%">#</th>
@@ -200,19 +194,19 @@
                         <tr id="addr0">
                             <td class="th2">1</td>
                             <td>
-                                <select class="form-select" id="select_product_raw" name='product_id' aria-label="Default select example ">
-                                    <option disabled selected>Select Product</option>
+                                <select class="form-select select_product_raw"  name='raw_mat_id' aria-label="Default select example ">
+                                    <option disabled selected>Select Product Raw</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" name='Percentages'  class="form-control text-center" >
+                                <input type="number" name='percentage'  class="form-control text-center formula_percentage" >
                             </td>
                             <td>
-                                <input type="number" name='discount_amount' class="form-control text-center sales_discount">
+                                <input type="number" name='no_of_unit' class="form-control text-center formula_discount">
                             </td>
 
                             <td>
-                                <input type="number" name="sales_totalcal" class="form-control text-center sales_totalcal">
+                                <input type="text"  class="form-control text-center unit_level">
                             </td>
                         </tr>
                         <tr id='addr1'></tr>
@@ -220,23 +214,18 @@
                         <tfoot>
 
                         <tr>
-                            <td data-th="Quantity">
-
-                            </td>
+                            <td data-th="Quantity"></td>
                             <td data-th="Quantity">
                                 <p>Total =</p>
                             </td>
                             <td data-th="Quantity">
-                                <p  id="total_sales_Price"></p>
+                                <p  id="total_formula_Price"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p id="sales_Discount"></p>
+                                <p id="formula_Discount"></p>
                             </td>
                             <td data-th="Quantity">
-                                <p id="sales_totalUnit"></p>
-                            </td>
-                            <td data-th="Quantity">
-                                <p id="sales_allTotal"></p>
+                                <p id="formula_totalUnit"></p>
                             </td>
                         </tr>
                         </tfoot>
@@ -244,10 +233,8 @@
                 </div>
 
                 <div style="margin-left: 13.50%; padding: 1%">
-                    <button class="btn btn-success" id="sales_submit_btn" data-bs-toggle="modal"
-                            data-bs-target="#payment_modal">Submit
-                    </button>
-                    <button class="btn btn-warning" id="delete_rows">Delete Row</button>
+                    <button class="btn btn-success" id="formula_submit_btn" data-bs-toggle="modal" data-bs-target="">Submit</button>
+                    <button class="btn btn-warning" id="delete_rowss">Delete Row</button>
                 </div>
 
 
