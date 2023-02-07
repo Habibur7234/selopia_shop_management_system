@@ -129,76 +129,98 @@
 
 
     <div>
-        <div class="py-4">
-            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                    <li class="breadcrumb-item">
-                        <a href="#">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item"><a href="#">Inventory</a></li>
-                </ol>
-            </nav>
-            <div class="d-flex justify-content-between w-100 flex-wrap">
-                <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Inventory Details</h1>
-
-                </div>
-            </div>
-        </div>
 
         <div id="all_data" class="card border-0 shadow">
             <div class="card-body">
                 <div class="title">
                     <h2>Inventory</h2>
                 </div>
-                <div class="row my-5">
-                    <div class="col-lg-4 col-md-6 col-sm-12 ms-5">
-                        <label>Select Branch </label>
-                        <select class="form-select bg-gray-100 align-content-center" id="select_inventory_category"
-                                aria-label="Default select example">
-                            <option disabled selected>Select Branch For Product Details</option>
-                        </select>
+                <div class="row my-3">
+                    <div class="d-flex gap-3">
+                        <div class="col-lg-3 col-md-8 col-sm-7 ms-5">
+                            <label>Select Branch For Details</label>
+                            <select class="form-select align-content-center" id="select_inventory_category"
+                                    aria-label="Default select example">
+                                <option disabled selected>Select here</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-success" style="margin-top: 32px" id="sub_bra_id">Submit Branch</button>
+                        </div>
 
-                        <button  class="btn btn-success" id="sub_bra_id">Submit Branch</button>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+            <!-- Data Table-->
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <table class="table table-flush wrap hover" id="inventory_dataTable"
+                           style="width: 100%; table-layout: fixed">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category Name</th>
+                            <th>Branch Name</th>
+                            <th>Quantity</th>
+                            <th>Stock Alert</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!--Update kpi modal-->
+        <div class="modal fade " id="Update_Stock_Alert_Modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content w-75">
+                    <div class="modal-body p-0">
+                        <div class="card p-3 p-lg-4">
+                            <button type="button" class="btn-close ms-auto btn-sm" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            <div class="text-center text-md-center mb-4 mt-md-0">
+                                <h1 class="mb-0 h4">Update Stock Alert</h1>
+                            </div>
+                            <div class="col-12 mb-4">
+                                <div class="card border shadow components-section">
+                                    <div class="card-body">
+                                        <div class="row ">
+                                            <div class="col-lg-12 col-sm-6">
+                                                <div class="col-lg-12 col-sm-10 my-2">
+                                                    <label>Stock Alert</label>
+                                                    <input type="text" class="form-control" id="update_stock_alert">
+                                                </div>
+                                                <button type="button" id="update_stock"
+                                                        class="btn btn-success text-dark col-lg-12 col-sm-10 my-4">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
 
-
-
-
-
-        <!-- Data Table-->
-        <div class="card border-0 shadow">
-            <div class="card-body">
-                <table class="table table-flush wrap hover" id="inventory_dataTable" style="width: 100%; table-layout: fixed">
-                    <thead class="thead-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Category Name</th>
-                        <th>Branch Name</th>
-                        <th>Quantity</th>
-                        <th>Min Stock</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-
-
-
     </div>
 
 
 </main>
-
 
 
 @@include('./_scripts.html', {
