@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @@include('./_head.html', {
+    "path": "../..",
+    "title": "Product Sales Report "
+    })
+
+</head>
+
+
+<style>
+    .table td {
+        word-break: break-word !important;
+        white-space: normal;
+    }
+
+    .title {
+        background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #adadc3), color-stop(100, #d0d0dd));
+        background: -moz-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -ms-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -o-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: linear-gradient(to bottom right, #adadc3 0%, #d0d0dd 100%);
+        border-radius: 5px 5px 0 0;
+        padding: 20px;
+        color: #f6f6f6;
+    }
+
+    h2 {
+        margin: 0;
+        padding-left: 15px;
+    }
+
+    .quantity-field {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 40px;
+        margin: 0 auto;
+    }
+
+    .quantity-field .value-button {
+        border: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        padding: 0;
+        background: #eee;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .quantity-field .value-button:hover {
+        background: rgb(230, 230, 230);
+    }
+
+    .quantity-field .value-button:active {
+        background: rgb(210, 210, 210);
+    }
+
+    .quantity-field .decrease-button {
+        margin-right: -4px;
+        border-radius: 8px 0 0 8px;
+    }
+
+    .quantity-field .increase-button {
+        margin-left: -4px;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .quantity-field .number {
+        display: inline-block;
+        text-align: center;
+        border: none;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        line-height: 40px;
+        font-size: 11pt;
+        box-sizing: border-box;
+        background: white;
+        font-family: calibri;
+    }
+
+    .quantity-field .number::selection {
+        background: none;
+    }
+
+    /*
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    */
+    table tr th, table tr td {
+        vertical-align: middle;
+    }
+
+    table th {
+        horiz-align: center;
+    }
+
+
+</style>
+
+
+<body>
+<!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+@@include('./dashboard/_nav.html', {
+"path": "../.."
+})
+
+@@include('./dashboard/_sidenav.html', {
+"path": "../..",
+"page": "product_sales_report",
+"page_group": "dashboard"
+})
+
+<main class="content">
+
+    @@include('./dashboard/_topbar.html', {
+    "path": "../.."
+    })
+
+
+    <div>
+
+
+        <div class="py-4">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between w-100 flex-wrap">
+                <div class="mb-3 mb-lg-0">
+                    <h1 class="h4">Customer Due Report</h1>
+                </div>
+            </div>
+        </div>
+
+
+        <form id="customer_due_from">
+            <div class="row my-5 ">
+
+
+                <div class="col-lg-3 col-md-3 col-sm-12 ps-6">
+                    <label>Select Customer</label>
+                    <select class="form-select" id="select_customer_due" aria-label="Default select example">
+                        <option disabled selected>Select here</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12">
+                    <label>From Date</label>
+                    <input  class="form-control" id="customer_from_date" type="date" placeholder="Click here" required>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12">
+                    <label>To Date</label>
+                    <input class="form-control" id="customer_to_date" type="date" placeholder="Click here" required>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-12">
+                    <button class="btn btn-success" id="purchase_customer_submit_button" type="button" style="margin-top: 32px"
+                    >Submit</button>
+                </div>
+            </div>
+        </form>
+
+
+
+
+
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <table class="table table-flush wrap hover" id="customer_purchase_datatable" style="width: 100%; table-layout: fixed">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Formula Name</th>
+                        <th>Formula Details</th>
+                        <th>Category</th>
+                        <th>Unit</th>
+                        <th>Action</th>
+                        <th>Category</th>
+                        <th>Unit</th>
+                        <th>Action</th>
+                        <th>Unit</th>
+
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+</main>
+
+<script>
+
+    new Date().toISOString().slice(0, 19).replace('T', ' ');
+</script>
+
+@@include('./_scripts.html', {
+"path": "../.."
+})
+
+</body>
+</html>

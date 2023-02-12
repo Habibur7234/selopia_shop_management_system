@@ -106,6 +106,10 @@ table.dataTable tbody tr.selected>* {
   background-color: #ffffff;
 }
 
-.red {
-  background-color: red !important;
+td.details-control {
+  cursor: pointer;
+}
+
+.my_class{
+  font-weight: bold;
 }

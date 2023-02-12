@@ -6,6 +6,7 @@ const nafisa_domain = 'https://nafisa.selopian.us'
 const riyad_domain = 'https://riyadshop.selopian.us'
 const shakila_domain = 'https://shakila.selopian.us'
 
+
 //SHOP================================================================================================
 //init shop & branch  datatable and load data
 let shop_table = $('#shop_dataTable').DataTable({
@@ -369,11 +370,8 @@ $.ajax({
 });
 
 
-//Add Branch
-/* ### Add Data Start ### */
 $("#add_Branch").click(function () {
 
-    $(this).text('Submitting..');
     let addBranch = {
         name: $("#branch_name").val(),
         location: $("#add_location").val(),
@@ -387,47 +385,67 @@ $("#add_Branch").click(function () {
         success: function (data) {
 
 
-            let newRowIndex = branch_table.row.add(addBranch).draw();
+            if (data.status.code === 0){
+                let newRowIndex = branch_table.row.add(addBranch).draw();
 
-            const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
-            modal.hide();
+                const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
+                modal.hide();
+                //Success Notification
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
 
-            //reset input Field
-            $('form :input').val('');
-            $('.input').val('');
+                $('form :input').val('');
 
-            // reset search
-            branch_table.search('');
+                $('.input').val('');
 
-            // re-ordering to default
-            branch_table.order([0, 'desc']).draw();
+                branch_table.search('');
 
-            // highlighting newly added row
-            $(branch_table.row(newRowIndex.index()).nodes()).addClass('selected');
-            setTimeout(function () {
-                $(branch_table.row(newRowIndex.index()).nodes()).removeClass('selected');
-            }, 2000);
+                branch_table.order([0, 'desc']).draw();
 
-            //Success Notification
-            notyf.success({
-                message: data.status.message,
-                duration: 7000,
-                icon: false
-            });
+                // highlighting newly added row
+                $(branch_table.row(newRowIndex.index()).nodes()).addClass('selected');
+                setTimeout(function () {
+                    $(branch_table.row(newRowIndex.index()).nodes()).removeClass('selected');
+                }, 2000);
+            }else {
+                const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
+                modal.hide();
+                //Success Notification
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
         },
         error: function (data) {
-            //Set default button text again
-            const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
-            modal.hide();
-            //Notification
-            notyf.error({
-                message: data.status.message,
-                duration: 7000,
-                icon: false
-            });
+            if (data.status.code===0){
+
+                //Set default button text again
+                const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
+                modal.hide();
+                //Notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }else {
+                //Set default button text again
+                const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
+                modal.hide();
+                //Notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
         }
     });
-
 })
 
 
@@ -440,15 +458,6 @@ $('#update_shop_modal').on('hidden.bs.modal', function () {
 });
 
 
-// const a = () =>{
-// }
-// const b = () =>{
-// }
-// const submitForm = () =>{
-//     a()
-//     b()
-// }
-//
 
 /* ### Update Data End ### */
 
@@ -4347,17 +4356,13 @@ $.ajax({
             $('<option/>').val(element['id']).html(element['name']).appendTo('#product_raw_material_unit_name');
             $('<option/>').val(element['id']).html(element['name']).appendTo('#update_product_raw_material_unit_name');
 
-
         });
     }
 
 });
 
-//Post Category-------------------------------------------
 
 $("#add_product_raw_material").click(function () {
-
-    $(this).text('Submitting..');
     let addRawModal = {
         name: $("#product_raw_material_name").val(),
         product_unit_id: $("#product_raw_material_unit_name").val(),
@@ -4370,9 +4375,7 @@ $("#add_product_raw_material").click(function () {
         data: JSON.stringify(addRawModal),
         contentType: "application/json",
         success: function (data) {
-
             if (data.status.code === 1) {
-
                 const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
                 modal.hide();
                 notyf.success({
@@ -4382,10 +4385,6 @@ $("#add_product_raw_material").click(function () {
                 });
                 let newRowIndex = raw_material_table.row.add(addRawModal).draw();
 
-                //Success Notification
-
-                $("#add_product_raw_material").text('Submit');
-
                 //reset input Field
                 $('form :input').val('');
                 $('.input').val('');
@@ -4394,12 +4393,11 @@ $("#add_product_raw_material").click(function () {
                 raw_material_table.order([0, 'desc']).draw();
                 // highlighting newly added row
                 $(raw_material_table.row(newRowIndex.index()).nodes()).addClass('selected');
+
             } else {
-                //Set default button text again
-                $("#add_product_raw_material").text('Submit');
+
                 const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
                 modal.hide();
-                //Notification
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
@@ -4408,16 +4406,37 @@ $("#add_product_raw_material").click(function () {
             }
         },
         error: function (data) {
-            const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
-            modal.hide();
-            //Set default button text again
-            $("#add_kpi").text('Submit');
-            // notification
-            notyf.error({
-                message: data.status.message,
-                duration: 7000,
-                icon: false
-            });
+            if (data.status.code===0){
+
+                const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
+                modal.hide();
+                //Set default button text again
+                $("#add_kpi").text('Submit');
+                // notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+            }else {
+
+                const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
+                modal.hide();
+                //Set default button text again
+                $("#add_kpi").text('Submit');
+                // notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+
+            }
+
+
+
         }
     });
 
@@ -4848,7 +4867,6 @@ $("#Submit_btn").click(function () {
         product_name_list: values,
     };
 
-    console.log(addpurchaseorder)
     $.ajax({
         url: nafisa_domain + '/purchase_order',
         type: 'POST',
@@ -5233,7 +5251,6 @@ $("#sales_submit_btn").click(function () {
                     icon: false
                 });
 
-                console.log(data.data.sales_order_id)
                 sales_order_id = data.data.sales_order_id;
 
 
@@ -5351,9 +5368,7 @@ function calcs() {
         var html = $(this).html();
         if (html != '') {
             var qty = $(this).find('.sales_qty').val();
-            console.log(qty)
             var price = $(this).find('.sales_price').val();
-            console.log(price)
             var dis = $(this).find('.sales_discount').val();
             $(this).find('.sales_totalcal').val(qty * price - dis * qty);
 
@@ -5420,7 +5435,7 @@ $(document).ready(function () {
 
 
 $.ajax({
-    url: nafisa_domain + '/category',
+    url: riyad_domain + '/category',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -5433,7 +5448,7 @@ $.ajax({
 
 //init Unit--------------------------------------------
 $.ajax({
-    url: nafisa_domain + '/product_raw_material',
+    url: riyad_domain + '/product_raw_material',
     type: 'GET',
     success: function (data) {
         let product_parents = data?.data.map(item => item)
@@ -5472,13 +5487,13 @@ $("#formula_submit_btn").click(function () {
     });
 
     var addformula = {
-        formula_name: $("#add_formula").val(),
+        name: $("#add_formula").val(),
         category_id: $("#select_formula_category").val(),
         formula_ingredients_list: values,
     };
 
     $.ajax({
-        url: nafisa_domain + '/product_formula',
+        url: riyad_domain + '/product_formula',
         type: 'POST',
         data: JSON.stringify(addformula),
         contentType: "application/json",
@@ -5499,7 +5514,6 @@ $("#formula_submit_btn").click(function () {
             }
         },
         error: function (data) {
-            console.log(data)
 
             if (data.status.code === 0) {
                 notyf.error({
@@ -5522,34 +5536,38 @@ $("#formula_submit_btn").click(function () {
 
 //INVENTORY================================================================================================================================
 
-
 $.ajax({
-    url: nafisa_domain + '/branch',
+    url: nafisa_domain + '/inventory',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
-            $('<option/>').val(element['id']).html(element ['name']).appendTo('#select_inventory_category');
+            $('<option/>').val(element ['branch_id'] ['id']).html(element ['branch_id'] ['name']).appendTo('#select_inventory_category');
 
         });
     }
 });
 
 
-//init shop & branch  datatable and load data
 var inventory_table = $('#inventory_dataTable').DataTable({
+    "columnDefs": [
+        {"width": "15%", "targets": 0},
+        {"width": "15%", "targets": 1},
+        {'visible': false, 'targets': 2},
+        {"width": "10%", "targets": 3},
+        {"width": "10%", "targets": 4},
+        {"width": "10%", "targets": 5},
 
-    ajax: {
-        url: nafisa_domain + '/inventory',
-        dataSrc: 'data',
-    },
-    dom: 'Blfrtip',
+
+    ],
+
     oLanguage: {
         sLengthMenu: "Show _MENU_",
     },
     language: {
         search: "",
-        searchPlaceholder: "Search..."
+        searchPlaceholder: "Search...",
+        emptyTable : "You Need To Selected A Branch"
     },
 
     columns: [
@@ -5562,18 +5580,25 @@ var inventory_table = $('#inventory_dataTable').DataTable({
         {
             data: '',
             render: function () {
-                return '<button id="update_stockBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#Update_Stock_Alert_Modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>'
+                return '<button id="update_stockBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#Update_Stock_Alert_Modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button> '
+                    +' <button id="transferStockBtn"  class="btn btn-primary" toggle="tooltip" title="Transfrt Product" type="button" data-bs-toggle="modal"   data-bs-target="#transfer_inventory_modal" >Transfer</button> '
             }
         },
 
     ],
-
-    "createdRow": function (row, data, dataIndex) {
+    "createdRow": function (row, data, ) {
         if (data['min_stock_alert'] >= data['stock_amount']) {
-            $(row).css("background-color", "rgb(250,218,119)");
+            $(row).css("background-color", "rgb(245,222,179)");
         }
     }
+});
 
+
+
+$("#sub_bra_id").click(function () {
+    var abc = $("#select_inventory_category").val();
+    inventory_table.ajax.url('https://nafisa.selopian.us/inventory/' + abc).load();
+    $.fn.dataTable.ext.errMode = 'throw';
 
 });
 
@@ -5665,29 +5690,344 @@ $('#inventory_dataTable tbody').on('click', '#update_stockBtn', function () {
                         duration: 7000,
                         icon: false
                     });
+                }
+            }
+        });
+
+    });
+})
+
+$.ajax({
+    url: nafisa_domain + '/branch',
+    type: 'GET',
+    success: function (data) {
+        let purchase_branch = data?.data.map(item => item)
+        purchase_branch.forEach((element) => {
+            $('<option/>').val(element['id']).html(element ['name']).appendTo('#transfer_to_branch');
+
+        });
+    }
+});
 
 
+$('#inventory_dataTable tbody').on('click', '#transferStockBtn', function () {
+    rowIndex = inventory_table.row($(this).parents('tr')).index();
+    rowData = inventory_table.row($(this).parents('tr')).data();
+
+
+    $("#transfer_product_name").val(rowData.product_id.name)
+    $("#from_branch").val(rowData.branch_id.name)
+    $("#transfer_quantity").val(rowData.stock_amount)
+
+
+    $("#post_transfer").click(function () {
+
+        let transferModal = {
+            product_id: `${rowData.product_id.id}`,
+            from_branch: `${rowData.branch_id.id}`,
+            to_branch:  $("#transfer_to_branch").val(),
+            purchase_id: "0",
+            product_quantity: $("#transfer_quantity").val(),
+
+        };
+        var upData={
+            product_id: rowData.product_id,
+            category_id: rowData.category_id,
+            branch_id:  rowData.branch_id,
+            stock_amount: rowData.stock_amount-$("#transfer_quantity").val(),
+            min_stock_alert:  rowData.min_stock_alert,
+        }
+
+
+
+        $.ajax({
+            url: nafisa_domain + '/inventory/transfer',
+            type: 'POST',
+            data: JSON.stringify(transferModal),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                if (data.status.code === 1) {
+                    const modal = bootstrap.Modal.getInstance($("#transfer_inventory_modal"));
+                    modal.hide();
+                    let currentPage = inventory_table.page();
+
+
+                    inventory_table.row(rowIndex).data(upData).draw();
+                    inventory_table.page(currentPage).draw('page');
+
+                    // highlighting newly added row
+                    $(inventory_table.row(rowIndex).nodes()).addClass('selected');
+
+
+                    setTimeout(function () {
+                        $(inventory_table.row(rowIndex).nodes()).removeClass('selected');
+                    }, 2000);
+
+                    // notification
+                    notyf.success({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
                 }
 
+                else {
+                    const modal = bootstrap.Modal.getInstance($("#transfer_inventory_modal"));
+                    modal.hide();
+                    notyf.error({
+                        message: data.status.message,
+                        duration: 7000,
+                        icon: false
+                    });
+                }
 
+            },
+            error: function () {
+
+                const modal = bootstrap.Modal.getInstance($("#transfer_inventory_modal"));
+                modal.hide();
 
             }
         });
 
     });
 
-
-
-
-})
-
-
-$("#sub_bra_id").click(function () {
-
-    var abc = $("#select_inventory_category").val();
-    inventory_table.ajax.url('https://nafisa.selopian.us/inventory/' + abc).load();
 });
 
 
+
+
+//INVENTORY TRACE===========================================================================================================================================
+
+$('#inventory_trace_dataTable').DataTable({
+    ajax: {
+        url: nafisa_domain + '/inventory_trace',
+        dataSrc: 'data',
+    },
+    rowId: 'id',
+    dom: 'Blfrtip',
+    oLanguage: {
+        sLengthMenu: "Show _MENU_",
+    },
+    language: {
+        search: "",
+        searchPlaceholder: "Search..."
+    },
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Inventory Trace',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+        },
+        {extend: 'excelHtml5'},
+        {
+            extend: 'pdf',
+            pageSize: 'LEGAL',
+            title: 'Inventory Trace',
+        },
+    ],
+    columns: [
+        {data: 'transfer_type_id.name'},
+        {data: 'product_id.name'},
+        {data: 'product_quantity'},
+        {data: 'from_branch_id.name',
+            render: function (data) {
+                if (!data) {
+                    return 'N/A';
+                } else {
+                    return data;
+                }
+            }
+        },
+        {data: 'to_branch_id.name',
+            render: function (data) {
+                if (!data) {
+                    return 'N/A';
+                } else {
+                    return data;
+                }
+            }
+        },
+        {data: 'from_supplier_id.name',
+            render: function (data) {
+                if (!data) {
+                    return 'N/A';
+                } else {
+                    return data;
+                }
+            }
+        },
+        {data: 'to_supplier_id.name',
+            render: function (data) {
+                if (!data) {
+                    return 'N/A';
+                } else {
+                    return data;
+                }
+            }
+        },
+        {data: 'event_time'},
+    ]
+});
+
+
+
+// Formula Ingredients=================================================================================================================================
+
+function format(d) {
+    let str = '';
+    d.formula_ingredients.forEach(item=>{
+       str +=  '<table class="table mb-0" style="background: #E5E7EB">' +
+           '<tr>' +
+           "<td class='ps-6'>Raw Material:</td>" +
+           "<td class='pe-12'>" +
+           item.raw_mat_id.name +
+           "</td>" +
+           "</tr>" +
+
+           "<td class='ps-6'>Percentage:</td>" +
+           "<td>" +
+           item.percentage +
+           "</td>" +
+           "</tr>" +
+
+           "<td class='ps-6'>Unit:</td>" +
+           "<td>" +
+           item.no_of_unit +
+           "</td>" +
+           "</tr>" +
+           "</table>"
+    })
+    return str
+}
+
+
+$(document).ready(function() {
+
+
+    var table = $("#formula_ingredients_datatable").DataTable({
+        ajax: {
+            url: riyad_domain + '/product_formula',
+            dataSrc: 'data',
+        },
+        "columnDefs": [
+            {"width": "15%", "targets": 0},
+            {"width": "15%", "targets": 1},
+        ],
+
+        columns: [
+            { data: "name"},
+            {
+                className: "details-control",
+                orderable: false,
+                data: null,
+                defaultContent: '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>\n'
+            },
+            { data: "formula_ingredients[].raw_mat_id.name", visible: false},
+            { data: "formula_ingredients[].percentage", visible: false},
+            { data: "formula_ingredients[].no_of_unit", visible: false},
+        ],
+        "columnDefs": [
+            { className: "my_class", "targets": [ 0 ] }
+        ],
+
+        order: [[1, "asc"]]
+    });
+
+    $("#formula_ingredients_datatable tbody").on("click", "td.details-control", function() {
+        var tr = $(this).closest("tr");
+        var row = table.row(tr);
+
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass("shown");
+        } else {
+            row.child(format(row.data()), "p-0").show();
+            tr.addClass("shown");
+        }
+    });
+});
+
+
+
+
+
+//REPORT================================================================================================================================================================================
+// =====================================================================================================================================================================================
+
+
+
+
+//CUSTOMER DUE REPORT-----------------------------------------------------------------------------------
+
+
+$.ajax({
+    url: nafisa_domain + '/customer/all',
+    type: 'GET',
+    success: function (data) {
+        let purchase_branch = data?.data.map(item => item)
+        purchase_branch.forEach((element) => {
+            $('<option/>').val(element['id']).html(element ['name']).appendTo('#select_customer_due');
+
+        });
+    }
+});
+
+ var due_data_table=$('#customer_due_datatable').DataTable({
+
+    columns: [
+        {data: 'name'},
+        {data: 'total_ordered'},
+        {data: 'total_paid'},
+        {data: 'total_due'},
+        {data: 'total_number_of_orders'},
+        {data: 'total_completed_orders'},
+        {data: 'total_pending_orders'},
+        {data: 'from'},
+        {data: 'to'},
+
+    ],
+});
+
+$("#due_customer_submit_button").click(function () {
+   var id = $("#select_customer_due").val();
+
+
+    due_data_table.ajax.url(`https://nafisa.selopian.us/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
+        $.fn.dataTable.ext.errMode = 'throw';
+
+
+});
+
+
+//CUSTOMER PURCHASE REPORT-----------------------------------------------------------------------------------------
+
+var purchase_data_table=$('#customer_purchase_datatable').DataTable({
+
+    columns: [
+        {data: 'name'},
+        {data: 'total_ordered'},
+        {data: 'total_paid'},
+        {data: 'total_due'},
+        {data: 'total_number_of_orders'},
+        {data: 'total_completed_orders'},
+        {data: 'total_pending_orders'},
+        {data: 'from'},
+        {data: 'to'},
+
+    ],
+});
+
+$("#due_customer_submit_button").click(function () {
+    var id = $("#select_customer_due").val();
+
+
+    purchase_data_table.ajax.url(`https://riyadshop.selopian.us/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
+    $.fn.dataTable.ext.errMode = 'throw';
+
+
+});
 
 

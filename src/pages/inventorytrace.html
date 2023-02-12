@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @@include('./_head.html', {
+    "path": "../..",
+    "title": "Inventory Trace"
+    })
+
+</head>
+
+
+<style>
+    .table td {
+        word-break: break-word !important;
+        white-space: normal;
+    }
+
+    .title {
+        background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #adadc3), color-stop(100, #d0d0dd));
+        background: -moz-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -ms-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: -o-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
+        background: linear-gradient(to bottom right, #adadc3 0%, #d0d0dd 100%);
+        border-radius: 5px 5px 0 0;
+        padding: 20px;
+        color: #f6f6f6;
+    }
+
+    h2 {
+        margin: 0;
+        padding-left: 15px;
+    }
+
+    .quantity-field {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 40px;
+        margin: 0 auto;
+    }
+
+    .quantity-field .value-button {
+        border: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        padding: 0;
+        background: #eee;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .quantity-field .value-button:hover {
+        background: rgb(230, 230, 230);
+    }
+
+    .quantity-field .value-button:active {
+        background: rgb(210, 210, 210);
+    }
+
+    .quantity-field .decrease-button {
+        margin-right: -4px;
+        border-radius: 8px 0 0 8px;
+    }
+
+    .quantity-field .increase-button {
+        margin-left: -4px;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .quantity-field .number {
+        display: inline-block;
+        text-align: center;
+        border: none;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        margin: 0px;
+        width: 40px;
+        height: 100%;
+        line-height: 40px;
+        font-size: 11pt;
+        box-sizing: border-box;
+        background: white;
+        font-family: calibri;
+    }
+
+    .quantity-field .number::selection {
+        background: none;
+    }
+
+    /*
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    */
+    table tr th, table tr td {
+        vertical-align: middle;
+    }
+
+    table th {
+        horiz-align: center;
+    }
+
+
+</style>
+
+
+<body>
+<!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+@@include('./dashboard/_nav.html', {
+"path": "../.."
+})
+
+@@include('./dashboard/_sidenav.html', {
+"path": "../..",
+"page": "inventorytrace",
+"page_group": "dashboard"
+})
+
+<main class="content">
+
+    @@include('./dashboard/_topbar.html', {
+    "path": "../.."
+    })
+
+
+    <div>
+
+        <div id="all_data" class="card border-0 shadow">
+            <div class="card-body">
+                <div class="title">
+                    <h2>Inventory Trace</h2>
+                </div>
+
+            </div>
+
+
+            <!-- Data Table-->
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <table class="table table-flush wrap hover" id="inventory_trace_dataTable"
+                           style="width: 100%; table-layout: fixed">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>Transfer Type</th>
+                            <th>Product Name</th>
+                            <th>Product Quantity</th>
+                            <th>From Branch</th>
+                            <th>To Branch</th>
+                            <th>From Supplier</th>
+                            <th>To Supplier</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+</main>
+
+
+@@include('./_scripts.html', {
+"path": "../.."
+})
+
+</body>
+</html>
