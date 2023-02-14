@@ -148,7 +148,7 @@
       </nav>
       <div class="d-flex justify-content-between w-100 flex-wrap">
         <div class="mb-3 mb-lg-0">
-          <h1 class="h4">Customer Due Report</h1>
+          <h1 class="h4">Customer Purchase Report</h1>
         </div>
       </div>
     </div>
@@ -160,27 +160,25 @@
 
         <div class="col-lg-3 col-md-3 col-sm-12 ps-6">
           <label>Select Customer</label>
-          <select class="form-select" id="select_customer_due" aria-label="Default select example">
+          <select class="form-select" id="select_customer_due_report" aria-label="Default select example">
             <option disabled selected>Select here</option>
+            <option value="all">All</option>
           </select>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-12">
           <label>From Date</label>
-          <input  class="form-control" id="customer_from_date" type="date" placeholder="Click here" required>
+          <input  class="form-control" id="customer_from_date1" type="date" placeholder="Click here" required>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-12">
           <label>To Date</label>
-          <input class="form-control" id="customer_to_date" type="date" placeholder="Click here" required>
+          <input class="form-control" id="customer_to_date2" type="date" placeholder="Click here" required>
         </div>
         <div class="col-lg-2 col-md-4 col-sm-12">
-          <button class="btn btn-success" id="purchase_customer_submit_button" type="button" style="margin-top: 32px"
+          <button class="btn btn-success" id="customer_purchase_report" type="button" style="margin-top: 32px"
           >Submit</button>
         </div>
       </div>
     </form>
-
-
-
 
 
     <div class="card border-0 shadow">
@@ -188,16 +186,12 @@
         <table class="table table-flush wrap hover" id="customer_purchase_datatable" style="width: 100%; table-layout: fixed">
           <thead class="thead-light">
           <tr>
-            <th>Formula Name</th>
-            <th>Formula Details</th>
-            <th>Category</th>
-            <th>Unit</th>
-            <th>Action</th>
-            <th>Category</th>
-            <th>Unit</th>
-            <th>Action</th>
-            <th>Unit</th>
-
+            <th>Name</th>
+            <th>Total Order (BDT)</th>
+            <th>Total Discount (BDT)</th>
+            <th>Product List</th>
+            <th>From</th>
+            <th>To</th>
           </tr>
           </thead>
         </table>
@@ -205,6 +199,34 @@
     </div>
 
 
+    <div class="modal fade" id="details_product_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body p-0">
+            <div class="card p-3 p-lg-4">
+              <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+              <div class="text-center text-md-center mb-4 mt-md-0">
+                <h1 class="mb-0 h3 text-info">Product List</h1>
+              </div>
+              <div class="col-12 mb-4">
+                <div class="card border shadow components-section">
+                  <div class="card-body">
+                    <div class="row mb-4">
+                      <div class="col-lg-12 col-sm-6 ">
+                        <div class="text-dark bg my-1  customer_product_list">
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 

@@ -143,12 +143,12 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                    <li class="breadcrumb-item"><a href="#">Report</a></li>
                 </ol>
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Customer Due Report</h1>
+                    <h1 class="h4">Product Sales Report</h1>
                 </div>
             </div>
         </div>
@@ -159,22 +159,22 @@
 
 
                 <div class="col-lg-3 col-md-3 col-sm-12 ps-6">
-                    <label>Select Customer</label>
-                    <select class="form-select" id="select_customer_due" aria-label="Default select example">
+                    <label>Select Branch</label>
+                    <select class="form-select" id="select_branch_report_product_sales" aria-label="Default select example">
                         <option disabled selected>Select here</option>
+                        <option value="all">All</option>
                     </select>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-12">
                     <label>From Date</label>
-                    <input  class="form-control" id="customer_from_date" type="date" placeholder="Click here" required>
+                    <input  class="form-control" id="product_sales_report_from_date" type="date" placeholder="Click here" required>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-12">
                     <label>To Date</label>
-                    <input class="form-control" id="customer_to_date" type="date" placeholder="Click here" required>
+                    <input class="form-control" id="product_sales_report_customer_to_date" type="date" placeholder="Click here" required>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-12">
-                    <button class="btn btn-success" id="purchase_customer_submit_button" type="button" style="margin-top: 32px"
-                    >Submit</button>
+                    <button class="btn btn-success" id="submit_product_sales_report" type="button" style="margin-top: 32px">Submit</button>
                 </div>
             </div>
         </form>
@@ -185,7 +185,7 @@
 
         <div class="card border-0 shadow">
             <div class="card-body">
-                <table class="table table-flush wrap hover" id="customer_purchase_datatable" style="width: 100%; table-layout: fixed">
+                <table class="table table-flush wrap hover" id="product_sales_report_customer_datatable" style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
                         <th>Formula Name</th>
@@ -196,8 +196,6 @@
                         <th>Category</th>
                         <th>Unit</th>
                         <th>Action</th>
-                        <th>Unit</th>
-
                     </tr>
                     </thead>
                 </table>
