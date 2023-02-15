@@ -486,11 +486,15 @@
                              xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                       </span>
                     </span>
-                <div class="multi-level collapse @@if (context.page === 'customer_due' ||  context.page === 'customerpurchase'  ||  context.page === 'salesmanperformance' ||  context.page === 'supplier_sales_report' || context.page === 'supplier_due_report' || context.page === 'product_sales_report') { show }"
+                <div class="multi-level collapse @@if (  context.page === 'revenue' ||      context.page === 'customer_due' ||  context.page === 'customerpurchase'  ||  context.page === 'salesmanperformance' ||  context.page === 'supplier_sales_report' || context.page === 'supplier_due_report' || context.page === 'product_sales_report'   || context.page === 'category_wise_product_sales_report') { show }"
                      role="list" id="report_submenu" aria-expanded="false">
                     <ul class="flex-column nav">
 
-
+                        <li class="nav-item @@if (context.page === 'revenue') { active }">
+                            <a href="@@path/pages/revenue.html" class="nav-link">
+                                <span class="sidebar-text">Revenue</span>
+                            </a>
+                        </li>
 
                         <li class="nav-item @@if (context.page === 'customer_due') { active }">
                             <a href="@@path/pages/customerdue.html" class="nav-link">
@@ -510,13 +514,11 @@
                             </a>
                         </li>
 
-
                         <li class="nav-item @@if (context.page === 'supplier_sales_report') { active }">
                             <a href="@@path/pages/suppliersales.html" class="nav-link">
                                 <span class="sidebar-text">Supplier Sales</span>
                             </a>
                         </li>
-
 
 
                         <li class="nav-item @@if (context.page === 'supplier_due_report') { active }">
@@ -530,14 +532,11 @@
                             </a>
                         </li>
 
-
-
-
-
-
-
-
-
+                        <li class="nav-item @@if (context.page === 'category_wise_product_sales_report') { active }">
+                            <a href="@@path/pages/category_wise_product_sales_report.html" class="nav-link">
+                                <span class="sidebar-text">Category Sales</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </div>

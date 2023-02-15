@@ -105,6 +105,13 @@
     }
 
 
+    tr.shown td.details-control svg {
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
 </style>
 
 
@@ -126,7 +133,6 @@
     @@include('./dashboard/_topbar.html', {
     "path": "../.."
     })
-
 
     <div>
 
@@ -155,12 +161,10 @@
 
 
         <form id="customer_due_from">
-            <div class="row my-5 ">
-
-
-                <div class="col-lg-3 col-md-3 col-sm-12 ps-6">
+            <div class="row my-4">
+                <div class="col-lg-3 col-md-3 col-sm-12">
                     <label>Select Branch</label>
-                    <select class="form-select" id="select_branch_report_product_sales" aria-label="Default select example">
+                    <select class="form-select" id="select_branch_report_product_sales" aria-label="Default select example" required>
                         <option disabled selected>Select here</option>
                         <option value="all">All</option>
                     </select>
@@ -181,17 +185,15 @@
 
 
 
-
-
         <div class="card border-0 shadow">
             <div class="card-body">
                 <table class="table table-flush wrap hover" id="product_sales_report_customer_datatable" style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
-                        <th>Formula Name</th>
-                        <th>Formula Details</th>
-                        <th>Category</th>
-                        <th>Unit</th>
+                        <th>Branch Name</th>
+                        <th>From(DATE)</th>
+                        <th>TO(DATE)</th>
+                        <th>PRODUCT DETAILS</th>
                         <th>Action</th>
                         <th>Category</th>
                         <th>Unit</th>

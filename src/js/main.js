@@ -18,7 +18,7 @@ let shop_table = $('#shop_dataTable').DataTable({
 
     ],
     ajax: {
-        url: 'https://riyadshop.selopian.us/shop',
+        url:nafisa_domain + '/shop',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -36,7 +36,7 @@ let shop_table = $('#shop_dataTable').DataTable({
             title: 'Shop Information',
             orientation: 'landscape',
             exportOptions: {
-                columns: [1, 2, 3],
+                columns: [0],
                 modifier: {
                     page: 'current'
                 }
@@ -61,7 +61,7 @@ let shop_table = $('#shop_dataTable').DataTable({
             extend: 'excelHtml5',
             title: 'Shop Information',
             exportOptions: {
-                columns: [1, 2, 3]
+                columns: [0]
 
             },
 
@@ -90,50 +90,55 @@ let shop_table = $('#shop_dataTable').DataTable({
 
 /* ### Add Data Start ### */
 $("#add_shop").click(function () {
-
-    $(this).text('Submitting..');
     let addShopModal = {
         name: $("#shopName").val(),
 
     };
     $.ajax({
-        url: 'https://riyadshop.selopian.us/shop',
+        url: nafisa_domain + '/shop',
         type: 'POST',
         data: JSON.stringify(addShopModal),
         contentType: "application/json",
         success: function (data) {
 
-            const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
-            modal.hide();
-            let newRowIndex = shop_table.row.add(addShopModal).draw();
-            //reset input Field
-            $('form :input').val('');
-            $('.input').val('');
-            // reset search
-            shop_table.search('');
-            // re-ordering to default
-            shop_table.order([0, 'desc']).draw();
-            // highlighting newly added row
-            $(shop_table.row(newRowIndex.index()).nodes()).addClass('selected');
-            setTimeout(function () {
-                $(shop_table.row(newRowIndex.index()).nodes()).removeClass('selected');
-            }, 2000);
 
-            //Success Notification
-            notyf.success({
-                message: 'New Shop Added  <strong>Successfully !</strong>',
-                duration: 7000,
-                icon: false
-            });
+            if (data.status.code=== 1){
+
+                const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
+                modal.hide();
+                let newRowIndex = shop_table.row.add(addShopModal).draw();
+                //reset input Field
+                $('form :input').val('');
+                $('.input').val('');
+                // reset search
+                shop_table.search('');
+                // re-ordering to default
+                shop_table.order([0, 'desc']).draw();
+                // highlighting newly added row
+                $(shop_table.row(newRowIndex.index()).nodes()).addClass('selected');
+                setTimeout(function () {
+                    $(shop_table.row(newRowIndex.index()).nodes()).removeClass('selected');
+                }, 2000);
+
+                //Success Notification
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+            }else {
+
+                const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
+                modal.hide();
+
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
         },
-        error: function () {
-            //Notification
-            notyf.error({
-                message: "<strong>Warning !</strong> Can't Added shop.",
-                duration: 7000,
-                icon: false
-            });
-        }
     });
 
 })
@@ -147,11 +152,16 @@ $('#shop_dataTable tbody').on('click', '#update_shopBtn', function () {
 
     $("#update_shopName").val(rowData.name);
 
+    console.log(rowData.id)
+
 })
 
 
 // Update Button
 $("#update_shop").click(function () {
+
+    console.log(rowData.id)
+
 
     let updateShopModal = {
         name: $("#update_shopName").val(),
@@ -159,16 +169,13 @@ $("#update_shop").click(function () {
 
     // updating server row
     $.ajax({
-        url: 'https://riyadshop.selopian.us/shop/' + rowData.id,
+        url:nafisa_domain + '/shop/' + rowData.id,
         type: 'PUT',
         data: JSON.stringify(updateShopModal),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
 
             if (data.status.code === 1) {
-                //Set default button text again
-                $("#update_shop").text('Update Info');
-
                 // hide modal
                 const modal = bootstrap.Modal.getInstance($("#update_shop_modal"));
                 modal.hide();
@@ -191,18 +198,19 @@ $("#update_shop").click(function () {
                     $(shop_table.row(rowIndex).nodes()).removeClass('selected');
                 }, 2000);
             }
-        },
-        error: function () {
-            //Set default button text again
-            $("#update_shop").text('Update Info');
 
-            //Notification
-            notyf.success({
-                message: data.status.message,
-                duration: 7000,
-                icon: false
-            });
-        }
+            else {
+                //Set default button text again
+                $("#update_shop").text('Update Info');
+
+                //Notification
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        },
     });
 })
 
@@ -218,7 +226,6 @@ $('#shop_dataTable tbody').on('click', '#delete_shopBtn', function () {
 
 $("#delete_shop").click(function () {
 
-    $(this).text('Deleting...');
     $.ajax({
         url: 'https://riyadshop.selopian.us/shop/' + rowData.id,
         type: 'DELETE',
@@ -5879,7 +5886,7 @@ $('#inventory_trace_dataTable').DataTable({
 function format(d) {
     let str = '';
     d.formula_ingredients.forEach(item=>{
-       str +=  '<table class="table mb-0" style="background: #ead4c1">' +
+       str +=  '<table class="table mb-0" style="background: #ead4c136">' +
            '<tr>' +
            "<td class='ps-6'>Raw Material:</td>" +
            "<td class='pe-12'>" +
@@ -5898,6 +5905,9 @@ function format(d) {
            item.no_of_unit +
            "</td>" +
            "</tr>" +
+           "<td>" +
+           "<hr/>"+
+           "</td>" +
            "</table>"
     })
     return str
@@ -5939,10 +5949,18 @@ $(document).ready(function() {
     $("#formula_ingredients_datatable tbody").on("click", "td.details-control", function() {
         var tr = $(this).closest("tr");
         var row = table.row(tr);
+        rowData = table.row($(this).parents('tr')).data();
 
+        var rowArray=rowData.formula_ingredients;
         if (row.child.isShown()) {
             row.child.hide();
             tr.removeClass("shown");
+        }
+        else if (!rowArray.length){
+            notyf.error({
+                message: 'Sorry There have no Products',
+                duration: 7000,
+                icon: false})
         } else {
             row.child(format(row.data()), "p-0").show();
             tr.addClass("shown");
@@ -6318,6 +6336,10 @@ $("#supplier_due_submit_button").click(function () {
 //PRODUCT SALES REPORT---------------------------------------------------------------
 
 
+
+
+
+
 $.ajax({
     url: nafisa_domain + '/branch',
     type: 'GET',
@@ -6332,60 +6354,83 @@ $.ajax({
 
 
 
-
-
-
-
-
-
-
-
 function formatData(d) {
     let str = '';
     d.products.forEach(item=>{
-        str +=  '<table class="table mb-0" style="background: #ead4c1">' +
+
+        str +=  '<table class="table mb-0" style="background: #ead4c136">' +
             '<tr>' +
-            "<td class='ps-6'>Name:</td>" +
+            "<td class='ps-6'>Product Name:</td>" +
             "<td class='pe-12'>" +
-            item.name +
+            item.product_name +
             "</td>" +
             "</tr>" +
 
             "<td class='ps-6'>Buying Price:</td>" +
             "<td>" +
-            item.percentage +
+            item.buying_price +
             "</td>" +
             "</tr>" +
 
             "<td class='ps-6'>Total Units:</td>" +
             "<td>" +
-            item.no_of_unit +
+            item.total_units_sold +
             "</td>" +
             "</tr>" +
+
+            "<td class='ps-6'>Selling Price:</td>" +
+            "<td>" +
+            item.total_selling_price +
+            "</td>" +
+            "</tr>" +
+
+            "<td class='ps-6'>Total Profit:</td>" +
+            "<td>" +
+            item.total_profit +
+            "</td>" +
+            "</tr>" +
+            "<td>" +
+            "<hr/>"+
+            "</td>" +
             "</table>"
     })
     return str
 }
 
 
-$(document).ready(function() {
 
 
     var sales_report_table = $("#product_sales_report_customer_datatable").DataTable({
 
-        ajax: {
-            url: 'https://nafisa.selopian.us/product_sales_report/1/2022-10-12/2023-02-08',
-            dataSrc: 'data',
-        },
+        dom: 'Blfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                title: 'Branch Sales Information',
+                orientation: 'landscape',
+
+                pageSize: 'LEGAL',
+
+            },
+            {
+                extend: 'excelHtml5',
+                title: 'Branch Sales Information',
+            },
+            {
+                extend: 'pdf',
+                pageSize: 'LEGAL',
+                title: 'Branch Sales Information',
+            },
+
+        ],
 
         "columnDefs": [
             {"width": "15%", "targets": 0},
             {"width": "15%", "targets": 1},
             {"width": "15%", "targets": 3},
         ],
-
         columns: [
-            { data: "name"},
+            { data: "branch_name"},
             { data: "from"},
             { data: "to"},
 
@@ -6407,32 +6452,149 @@ $(document).ready(function() {
         order: [[1, "asc"]]
     });
 
-    // $("#product_sales_report_customer_datatable tbody").on("click", "td.details-control", function() {
-    //     var tr = $(this).closest("tr");
-    //     var row = sales_report_table.row(tr);
-    //
-    //     if (row.child.isShown()) {
-    //         row.child.hide();
-    //         tr.removeClass("shown");
-    //     } else {
-    //         row.child(formatData(row.data()), "p-0").show();
-    //         tr.addClass("shown");
-    //     }
-    // });
+    $("#product_sales_report_customer_datatable tbody").on("click", "td.details-control", function() {
+        var tr = $(this).closest("tr");
+        var row = sales_report_table.row(tr);
+        rowData = sales_report_table.row($(this).parents('tr')).data();
+        var rowArray=rowData.products;
+
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass("shown");
+        }
+        else if (!rowArray.length){
+            notyf.error({
+                message: 'Sorry There have no Products',
+                duration: 7000,
+                icon: false})
+        }
+        else {
+            row.child(formatData(row.data()), "p-0").show();
+            tr.addClass("shown");
+        }
+    });
+
+    $("#submit_product_sales_report").click(function () {
+        var id = $("#select_branch_report_product_sales").val();
+        sales_report_table.ajax.url(`https://nafisa.selopian.us/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
+        $.fn.dataTable.ext.errMode = 'throw';
+    });
 
 
+//category wise_product_sales_report-------------------------------------------------------
 
 
+var category_wise_product_sales_report_table =$('#category_wise_product_sales_report_datatable').DataTable({
 
-    // $("#submit_product_sales_report").click(function () {
-    //     var id = $("#select_branch_report_product_sales").val();
-    //
-    //     sales_report_table.ajax.url(`https://nafisa.selopian.us/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
-    //     $.fn.dataTable.ext.errMode = 'throw';
-    //
-    // });
-    //
+    dom: 'Blfrtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Sales Information',
+            orientation: 'landscape',
+
+            pageSize: 'LEGAL',
+
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Sales Information',
+        },
+        {
+            extend: 'pdf',
+            pageSize: 'LEGAL',
+            title: 'Sales Information',
+        },
+
+    ],
+
+    columns: [
+        {data: 'name'},
+        {data: 'total_products'},
+        {data: 'sold_count'},
+        {data: 'sold_amount'},
+    ],
+});
+
+$("#submit_category_wise_product_sales_report").click(function () {
+    category_wise_product_sales_report_table.ajax.url(`https://nafisa.selopian.us/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
+    $.fn.dataTable.ext.errMode = 'throw';
 
 });
 
 
+
+
+//REVENUE============================================================================================================================
+
+
+
+$.ajax({
+    url: nafisa_domain + '/shop',
+    type: 'GET',
+    success: function (data) {
+        let category_parents = data?.data.map(item => item)
+        category_parents.forEach((element) => {
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#shop_select_value');
+        });
+    }
+
+});
+
+
+
+var revenue_table =$('#revenue_datatable').DataTable({
+
+    dom: 'Blfrtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Revenue',
+            orientation: 'landscape',
+
+            pageSize: 'LEGAL',
+
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Revenue',
+        },
+        {
+            extend: 'pdf',
+            pageSize: 'LEGAL',
+            title: 'Revenue',
+        },
+
+    ],
+
+    columns: [
+        {data: 'revenue.total_number_of_products_sold'},
+        {data: 'revenue.total_cost'},
+        {data: 'revenue.net_revenue'},
+        {data: 'revenue.net_profit'},
+        {data: 'from'},
+        {data: 'to'},
+
+    ],
+});
+
+
+
+$("#company_revenue_submit_button").click(function () {
+    revenue_table.ajax.url(`https://nafisa.selopian.us/revenue/${$("#company_select_length").val()}`).load();
+    $.fn.dataTable.ext.errMode = 'throw';
+
+});
+
+
+$("#branch_revenue_submit_button").click(function () {
+    revenue_table.ajax.url(`https://nafisa.selopian.us/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
+    $.fn.dataTable.ext.errMode = 'throw';
+
+});
+
+$("#shop_revenue_submit_button").click(function () {
+    revenue_table.ajax.url(`https://nafisa.selopian.us/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
+    $.fn.dataTable.ext.errMode = 'throw';
+
+});
