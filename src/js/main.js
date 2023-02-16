@@ -138,6 +138,9 @@ $("#add_shop").click(function () {
                     icon: false
                 });
             }
+
+            rowData = undefined;
+
         },
     });
 
@@ -4336,15 +4339,12 @@ let raw_material_table = $('#product_raw_material_dataTable').DataTable({
     ],
 
     columns: [
-        {data: 'id'},
-
         {data: 'name'},
-        {data: 'product_unit_id.name'},
+        {data: 'unit_id.name'},
         {data: 'unit_size'},
         {data: 'cost_price'},
-
         {
-            data: 'id',
+            data: '',
             render: function () {
                 return '<button id="update_rawBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
                     + '<button   id="delete_rawBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_raw_material_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
@@ -4372,10 +4372,20 @@ $.ajax({
 $("#add_product_raw_material").click(function () {
     let addRawModal = {
         name: $("#product_raw_material_name").val(),
-        product_unit_id: $("#product_raw_material_unit_name").val(),
+        unit_id: $("#product_raw_material_unit_name").val(),
         unit_size: $("#product_raw_material_unit_size").val(),
         cost_price: $("#product_raw_material_cost_price").val(),
     };
+    let addRawModal2 = {
+        name: $("#product_raw_material_name").val(),
+        unit_id: {
+            id:10,
+            name: $('#product_raw_material_unit_name option:selected').text()
+        },
+        unit_size: $("#product_raw_material_unit_size").val(),
+        cost_price: $("#product_raw_material_cost_price").val(),
+    };
+
     $.ajax({
         url: nafisa_domain + '/product_raw_material',
         type: 'POST',
@@ -4390,7 +4400,7 @@ $("#add_product_raw_material").click(function () {
                     duration: 7000,
                     icon: false
                 });
-                let newRowIndex = raw_material_table.row.add(addRawModal).draw();
+                let newRowIndex = raw_material_table.row.add(addRawModal2).draw();
 
                 //reset input Field
                 $('form :input').val('');
@@ -4458,21 +4468,36 @@ $('#product_raw_material_dataTable tbody').on('click', '#update_rawBtn', functio
     rowIndex = raw_material_table.row($(this).parents('tr')).index();
 
     $("#update_product_raw_material_name").val(rowData.name);
-    $("#update_product_raw_material_unit_name :selected").text(rowData.product_unit_id.name);
+    $("#update_product_raw_material_unit_name :selected").text(rowData.unit_id.name);
     $("#update_product_raw_material_unit_size").val(rowData.unit_size);
     $("#update_product_raw_material_cost_price").val(rowData.cost_price);
 })
 
 // Update Button
 $("#update_product_raw_material").click(function () {
+
     let updateRawModal = {
         name: $("#update_product_raw_material_name").val(),
         product_unit_id: $("#update_product_raw_material_unit_name").val(),
         unit_size: $("#update_product_raw_material_unit_size").val(),
         cost_price: $("#update_product_raw_material_cost_price").val(),
     };
-    // updating button text
+
+
+    let updateRawModal2 = {
+        name: $("#update_product_raw_material_name").val(),
+        unit_id: {
+            id:10,
+            name: $('#update_product_raw_material_unit_name option:selected').text()
+        },
+        unit_size: $("#update_product_raw_material_unit_size").val(),
+        cost_price: $("#update_product_raw_material_cost_price").val(),
+    };
+
+
     $(this).text('Updating...');
+
+    console.log(rowData.id)
 
     // updating server row
     $.ajax({
@@ -4497,7 +4522,7 @@ $("#update_product_raw_material").click(function () {
                 let currentPage = raw_material_table.page();
 
                 // update datatable
-                raw_material_table.row(rowIndex).data(data.data).draw();
+                raw_material_table.row(rowIndex).data(updateRawModal2).draw();
 
                 // redrawing to original page
                 raw_material_table.page(currentPage).draw('page');
@@ -4531,7 +4556,6 @@ $("#update_product_raw_material").click(function () {
             });
         }
     });
-
 });
 
 /* ### Update Data End ### */
@@ -4618,10 +4642,10 @@ let sales_product_table = $('#sales_product_dataTable').DataTable({
     buttons: [
         {
             extend: 'print',
-            title: 'Shop Information',
+            title: 'Sales Product Information',
             orientation: 'landscape',
             exportOptions: {
-                columns: [1, 2, 3],
+                columns: [ 0, 1, 2, 3, 4],
                 modifier: {
                     page: 'current'
                 }
@@ -4644,7 +4668,7 @@ let sales_product_table = $('#sales_product_dataTable').DataTable({
         },
         {
             extend: 'excelHtml5',
-            title: 'Shop Information',
+            title: 'Sales Product Information',
             exportOptions: {
                 columns: [1, 2, 3]
 
@@ -4660,42 +4684,105 @@ let sales_product_table = $('#sales_product_dataTable').DataTable({
                 }
             },
             pageSize: 'LEGAL',
-            title: 'Shop Information',
+            title: 'Sales Product Information',
             customize: function (doc) {
                 doc.content[1].table.widths = [
                     '20%',
-                    '35%',
-                    '45%',
+                    '20%',
+                    '20%',
+                    '20%',
                 ]
                 let rowCount = doc.content[1].table.body.length;
                 for (let i = 1; i < rowCount; i++) {
                     doc.content[1].table.body[i][0].alignment = 'center';
                     doc.content[1].table.body[i][1].alignment = 'center';
                     doc.content[1].table.body[i][2].alignment = 'center';
+                    doc.content[1].table.body[i][3].alignment = 'center';
+                    doc.content[1].table.body[i][4].alignment = 'center';
                 }
             }
         },
 
-        '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
-
     ],
 
     columns: [
-        {data: 'id'},
-        {data: 'name'},
-        {data: 'product_unit_id.name'},
-        {data: 'unit_size'},
-        {data: 'cost_price'},
-
+        {data: 'product_id.name'},
+        {data: 'buying_price'},
+        {data: 'discount_amount'},
+        {data: 'selling_price'},
+        {data: 'amount_unit'},
         {
-            data: 'id',
+            data: '',
             render: function () {
-                return '<button id="update_rawBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                    + '<button   id="delete_rawBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_raw_material_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button   id="delete_sales_Product_Btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_sales_product_raw_material_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
 });
+
+
+
+$('#sales_product_dataTable tbody').on('click', '#delete_sales_Product_Btn', function () {
+    rowData = sales_product_table.row($(this).parents('tr')).data();
+    rowIndex = sales_product_table.row($(this).parents('tr')).index();
+});
+
+// DELETE Confirmation button
+$("#delete_sales_product").click(function () {
+    $.ajax({
+        url: nafisa_domain + '/sales_product/' + rowData.id,
+        type: 'DELETE',
+        dataType: "json",
+        success: function (data) {
+
+            if (data.status.code === 1) {
+                $("#delete_raw_product").text('Delete');
+                let currentPage = sales_product_table.page();
+                sales_product_table.row(rowIndex).remove().draw();
+                const modal = bootstrap.Modal.getInstance($("#delete_sales_product_raw_material_modal"));
+                modal.hide();
+                // redrawing to original page
+                sales_product_table.page(currentPage).draw('page');
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+                rowData = undefined;
+                rowIndex = undefined;
+            } else {
+                const modal = bootstrap.Modal.getInstance($("#delete_sales_product_raw_material_modal"));
+                modal.hide();
+                $("#delete_raw_product").text('Delete');
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+                rowData = undefined;
+                rowIndex = undefined;
+            }
+
+        },
+        error: function (data) {
+            const modal = bootstrap.Modal.getInstance($("#delete_sales_product_raw_material_modal"));
+            modal.hide();
+            $("#delete_raw_product").text('Delete');
+            notyf.error({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
+        }
+
+
+    });
+});
+
+
+
+
 
 
 //PURCHASE ORDER FROM ==========================================================================================================
@@ -4729,7 +4816,7 @@ function calc() {
             var qty = $(this).find('.qty').val();
             var price = $(this).find('.price').val();
             var dis = $(this).find('.discount').val();
-            $(this).find('.total').val(qty * price - dis * qty);
+            $(this).find('.total').val(qty * price - dis);
 
 
             var arr = $('.total').map((i, e) => e.value).get();
@@ -4996,10 +5083,10 @@ $('#purchase_transaction_dataTable').DataTable({
     buttons: [
         {
             extend: 'print',
-            title: 'Shop Information',
+            title: 'Purchase Transaction',
             orientation: 'landscape',
             exportOptions: {
-                columns: [1, 2, 3],
+                columns: [0,1, 2, 3,5],
                 modifier: {
                     page: 'current'
                 }
@@ -5022,9 +5109,9 @@ $('#purchase_transaction_dataTable').DataTable({
         },
         {
             extend: 'excelHtml5',
-            title: 'Shop Information',
+            title: 'Purchase Transaction',
             exportOptions: {
-                columns: [1, 2, 3]
+                columns: [0,1,2,3,5],
 
             },
 
@@ -5032,29 +5119,32 @@ $('#purchase_transaction_dataTable').DataTable({
         {
             extend: 'pdf',
             exportOptions: {
-                columns: [1, 2, 3],
+                columns: [0,1,2,3,5],
                 modifier: {
                     page: 'current'
                 }
             },
             pageSize: 'LEGAL',
-            title: 'Shop Information',
+            title: 'Purchase Transaction',
             customize: function (doc) {
                 doc.content[1].table.widths = [
                     '20%',
-                    '35%',
-                    '45%',
+                    '20%',
+                    '20%',
+                    '20%',
+                    '20%',
                 ]
                 let rowCount = doc.content[1].table.body.length;
                 for (let i = 1; i < rowCount; i++) {
                     doc.content[1].table.body[i][0].alignment = 'center';
                     doc.content[1].table.body[i][1].alignment = 'center';
                     doc.content[1].table.body[i][2].alignment = 'center';
+                    doc.content[1].table.body[i][3].alignment = 'center';
+                    doc.content[1].table.body[i][5].alignment = 'center';
+
                 }
             }
         },
-
-        '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_brand_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
     ],
     columns: [
         {data: 'transaction_type_id.name'},
@@ -5068,13 +5158,7 @@ $('#purchase_transaction_dataTable').DataTable({
             }
         },
         {data: 'ref_comment'},
-        // {
-        //     data: '',
-        //     render: function () {
-        //         return '<button id="update_brandBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_brand_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-        //             + '<button   id="delete_shopBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
-        //     }
-        // },
+
     ]
 });
 
@@ -5110,7 +5194,7 @@ function sales() {
             var qty = $(this).find('.sales_qty').val();
             var price = $(this).find('.sales_price').val();
             var dis = $(this).find('.sales_discount').val();
-            $(this).find('.salesTotal').val(qty * price - dis * qty);
+            $(this).find('.salesTotal').val(qty * price - dis);
 
             var arry = $('.salesTotal').map((i, e) => e.value).get();
             var sums = arry.reduce(function (a, b) {
@@ -5301,7 +5385,7 @@ $("#sales_transaction_form").on('submit', (function (e) {
 
     e.preventDefault();
     $.ajax({
-        url: nafisa_domain + '/sales_trasnsaction',
+        url: nafisa_domain + '/sales_transaction',
         type: "POST",
         data: FormDataX,
         contentType: false,
@@ -5310,13 +5394,23 @@ $("#sales_transaction_form").on('submit', (function (e) {
 
         success: function (data) {
 
+            sales_payment_modal
+
+
+
             if (data.status.code === 1) {
+
+                const modal = bootstrap.Modal.getInstance($("#sales_payment_modal"));
+                modal.hide();
+
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
             } else {
+                const modal = bootstrap.Modal.getInstance($("#sales_payment_modal"));
+                modal.hide();
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
@@ -5325,25 +5419,143 @@ $("#sales_transaction_form").on('submit', (function (e) {
             }
         },
         error: function (data) {
-            if (data.status.code === 0) {
-                notyf.error({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-
-            } else {
+            const modal = bootstrap.Modal.getInstance($("#sales_payment_modal"));
+            modal.hide();
 
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
-            }
         },
 
     })
 }));
+
+//SALES TRANSACTION====================================================================================================================================================
+
+
+
+//init shop & branch  datatable and load data
+$('#sales_transaction_dataTable').DataTable({
+
+    ajax: {
+        url: nafisa_domain + '/sales_transaction',
+        dataSrc: 'data',
+    },
+    rowId: 'id',
+    dom: 'Blfrtip',
+    oLanguage: {
+        sLengthMenu: "Show _MENU_",
+    },
+    language: {
+        search: "",
+        searchPlaceholder: "Search..."
+    },
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Sales Transaction',
+            orientation: 'landscape',
+            exportOptions: {
+                columns: [0,1, 2, 3,5],
+                modifier: {
+                    page: 'current'
+                }
+            },
+            pageSize: 'LEGAL',
+            customize: function (win) {
+                $(win.document.body)
+                    .css('font-size', '15pt')
+                $(win.document.body).find('th')
+                    .css({
+                        "font-size": 'inherit',
+                        "text-align": 'center',
+                    })
+                    .addClass('compact')
+                $(win.document.body).find('table')
+                    .css('font-size', 'inherit')
+                    .css('text-align', 'center')
+
+            }
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Sales Transaction',
+            exportOptions: {
+                columns: [0,1,2,3,5],
+
+            },
+
+        },
+        {
+            extend: 'pdf',
+            exportOptions: {
+                columns: [0,1,2,3,5],
+                modifier: {
+                    page: 'current'
+                }
+            },
+            pageSize: 'LEGAL',
+            title: 'Sales Transaction',
+            customize: function (doc) {
+                doc.content[1].table.widths = [
+                    '20%',
+                    '20%',
+                    '20%',
+                    '20%',
+                    '20%',
+                ]
+                let rowCount = doc.content[1].table.body.length;
+                for (let i = 1; i < rowCount; i++) {
+                    doc.content[1].table.body[i][0].alignment = 'center';
+                    doc.content[1].table.body[i][1].alignment = 'center';
+                    doc.content[1].table.body[i][2].alignment = 'center';
+                    doc.content[1].table.body[i][3].alignment = 'center';
+                    doc.content[1].table.body[i][5].alignment = 'center';
+
+                }
+            }
+        },
+    ],
+    columns: [
+        {data: 'transaction_type_id.name'},
+        {data: 'sales_status_id.status'},
+        {data: 'transaction_at'},
+        {data: 'amount_paid'},
+        {
+            data: 'transaction_document_url',
+            render: function () {
+                return '<button id="brand_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#brand_image_modal">View</button>'
+            }
+        },
+        {data: 'ref_comment'},
+
+    ]
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //FORMULA=========================================================================================================
@@ -5377,7 +5589,7 @@ function calcs() {
             var qty = $(this).find('.sales_qty').val();
             var price = $(this).find('.sales_price').val();
             var dis = $(this).find('.sales_discount').val();
-            $(this).find('.sales_totalcal').val(qty * price - dis * qty);
+            $(this).find('.sales_totalcal').val(qty * price - dis);
 
 
             var arry = $('.sales_totalcal').map((i, e) => e.value).get();
@@ -6358,7 +6570,7 @@ function formatData(d) {
     let str = '';
     d.products.forEach(item=>{
 
-        str +=  '<table class="table mb-0" style="background: #ead4c136">' +
+        str +=  '<table class="table mb-0" style="background: #ead4c136; transition: .5s" >' +
             '<tr>' +
             "<td class='ps-6'>Product Name:</td>" +
             "<td class='pe-12'>" +
@@ -6543,6 +6755,7 @@ $.ajax({
 
 
 
+
 var revenue_table =$('#revenue_datatable').DataTable({
 
     dom: 'Blfrtip',
@@ -6568,12 +6781,80 @@ var revenue_table =$('#revenue_datatable').DataTable({
     ],
 
     columns: [
+        {data: 'year'},
+        {data: 'time'},
+        {data: 'total_number_of_products_sold'},
+        {data: 'total_cost'},
+        {data: 'net_revenue'},
+        {data: 'net_profit'},
+
+    ],
+});
+
+var revenue_table_by_branch =$('#revenue_By_branch_datatable').DataTable({
+
+    dom: 'Blfrtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Revenue By Branch',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Revenue By Branch',
+        },
+        {
+            extend: 'pdf',
+            pageSize: 'LEGAL',
+            title: 'Revenue By Branch',
+        },
+
+    ],
+
+    columns: [
+        {data: 'branch_name'},
+        {data: 'from'},
+        {data: 'to'},
         {data: 'revenue.total_number_of_products_sold'},
         {data: 'revenue.total_cost'},
         {data: 'revenue.net_revenue'},
         {data: 'revenue.net_profit'},
+
+    ],
+});
+
+var revenue_table_by_shop =$('#revenue_By_shop_datatable').DataTable({
+
+    dom: 'Blfrtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Revenue By Shop',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Revenue By Shop',
+        },
+        {
+            extend: 'pdf',
+            pageSize: 'LEGAL',
+            title: 'Revenue By Shop',
+        },
+
+    ],
+
+    columns: [
+        {data: 'shop_name'},
         {data: 'from'},
         {data: 'to'},
+        {data: 'revenue.total_number_of_products_sold'},
+        {data: 'revenue.total_cost'},
+        {data: 'revenue.net_revenue'},
+        {data: 'revenue.net_profit'},
 
     ],
 });
@@ -6581,20 +6862,55 @@ var revenue_table =$('#revenue_datatable').DataTable({
 
 
 $("#company_revenue_submit_button").click(function () {
-    revenue_table.ajax.url(`https://nafisa.selopian.us/revenue/${$("#company_select_length").val()}`).load();
-    $.fn.dataTable.ext.errMode = 'throw';
 
+    if (!$("#company_select_length").val()){
+        notyf.error({
+            message:"Select The Length",
+            duration: 7000,
+            icon: false
+        });
+
+    }else {
+        $('.revenue_datatable').css('display','block');
+        revenue_table.ajax.url(`https://nafisa.selopian.us/revenue/${$("#company_select_length").val()}`).load();
+        $.fn.dataTable.ext.errMode = 'throw';
+
+    }
 });
 
 
 $("#branch_revenue_submit_button").click(function () {
-    revenue_table.ajax.url(`https://nafisa.selopian.us/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
-    $.fn.dataTable.ext.errMode = 'throw';
+    var id = $("#select_branch_report_product_sales").val();
+
+
+
+    if (!$("#branch_select_length").val() || id==null){
+        notyf.error({
+            message:"Select The Length & Branch",
+            duration: 7000,
+            icon: false
+        });
+    }else {
+        $('.revenue_datatable_by_branch').css('display','block');
+        revenue_table_by_branch.ajax.url(`https://nafisa.selopian.us/revenue/byBranch/${id}/${$("#branch_select_length").val()}`).load();
+        $.fn.dataTable.ext.errMode = 'throw';
+    }
 
 });
 
-$("#shop_revenue_submit_button").click(function () {
-    revenue_table.ajax.url(`https://nafisa.selopian.us/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
-    $.fn.dataTable.ext.errMode = 'throw';
 
+$("#shop_revenue_submit_button").click(function () {
+    var id = $("#shop_select_value").val();
+
+    if (!$("#shop_select_length").val() || id==null){
+        notyf.error({
+            message:"Select The Length & Shop",
+            duration: 7000,
+            icon: false
+        });
+    }else {
+        $('.revenue_By_shop_datatable').css('display','block');
+        revenue_table_by_shop.ajax.url(`https://nafisa.selopian.us/revenue/byShop/${id}/${$("#shop_select_length").val()}`).load();
+        $.fn.dataTable.ext.errMode = 'throw';
+    }
 });

@@ -126,11 +126,11 @@
                 <table class="table table-flush wrap hover" id="sales_product_dataTable" style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
-                        <th>ID</th>
                         <th>Name</th>
-                        <th>Unit Name</th>
-                        <th>Unit Size</th>
-                        <th>Cost Price</th>
+                        <th>Buying Price</th>
+                        <th>discount amount</th>
+                        <th>Selling Price</th>
+                        <th>Unit</th>
                         <th>Action </th>
                     </tr>
                     </thead>
@@ -142,64 +142,11 @@
 
 
 
-        <!--Update Category modal-->
-        <div class="modal fade" id="update_product_raw_material_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body p-0">
-                        <div class="card p-3 p-lg-4">
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                            <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3">Update Raw Material</h1>
-                            </div>
-                            <div class="col-12 mb-4">
-                                <div class="card border shadow components-section">
-                                    <div class="card-body">
-                                        <div class="row mb-4">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <!-- Form -->
-                                                <form id="update_product_raw_mateiral_from" method="POST">
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label>Name</label>
-                                                        <input type="text" class="form-control" name="address" id="update_product_raw_material_name"  placeholder="ABC...">
-                                                    </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label class="my-1 me-2" >Unit Name</label>
-                                                        <select class="form-select" id="update_product_raw_material_unit_name" aria-label="Default select example">
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label>Unit Size</label>
-                                                        <input type="text" class="form-control" name="address" id="update_product_raw_material_unit_size" placeholder="123..." >
-                                                    </div>
-                                                    <div class="col-lg-12 col-sm-10 mb2 my-2">
-                                                        <label>Cost Price</label>
-                                                        <input type="text" class="form-control" name="address" id="update_product_raw_material_cost_price"  placeholder="123..." >
-                                                    </div>
-                                                    <button type="button" id="update_product_raw_material" class="btn btn-success text-dark col-lg-12 col-sm-10 mb-4 my-4">
-                                                        Submit
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
 
 
 
         <!--delete Modal-->
-        <div class="modal fade" id="delete_product_raw_material_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="delete_sales_product_raw_material_modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="pt-3">
@@ -210,7 +157,7 @@
                     </div>
                     <div style="margin-left: auto; padding-right:15px;padding-bottom: 15px">
                         <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button"  id="delete_raw_product" class="btn btn-secondary" >Delete</button>
+                        <button type="button"  id="delete_sales_product" class="btn btn-secondary" >Delete</button>
                     </div>
                 </div>
             </div>

@@ -15,87 +15,6 @@
         white-space: normal;
     }
 
-    .title {
-        background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #adadc3), color-stop(100, #d0d0dd));
-        background: -moz-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
-        background: -ms-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
-        background: -o-linear-gradient(top left, #adadc3 0%, #d0d0dd 100%);
-        background: linear-gradient(to bottom right, #adadc3 0%, #d0d0dd 100%);
-        border-radius: 5px 5px 0 0;
-        padding: 20px;
-        color: #f6f6f6;
-    }
-
-    h2 {
-        margin: 0;
-        padding-left: 15px;
-    }
-
-    .quantity-field {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 120px;
-        height: 40px;
-        margin: 0 auto;
-    }
-
-    .quantity-field .value-button {
-        border: 1px solid #ddd;
-        margin: 0px;
-        width: 40px;
-        height: 100%;
-        padding: 0;
-        background: #eee;
-        outline: none;
-        cursor: pointer;
-    }
-
-    .quantity-field .value-button:hover {
-        background: rgb(230, 230, 230);
-    }
-
-    .quantity-field .value-button:active {
-        background: rgb(210, 210, 210);
-    }
-
-    .quantity-field .decrease-button {
-        margin-right: -4px;
-        border-radius: 8px 0 0 8px;
-    }
-
-    .quantity-field .increase-button {
-        margin-left: -4px;
-        border-radius: 0 8px 8px 0;
-    }
-
-    .quantity-field .number {
-        display: inline-block;
-        text-align: center;
-        border: none;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-        margin: 0px;
-        width: 40px;
-        height: 100%;
-        line-height: 40px;
-        font-size: 11pt;
-        box-sizing: border-box;
-        background: white;
-        font-family: calibri;
-    }
-
-    .quantity-field .number::selection {
-        background: none;
-    }
-
-    /*
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    */
     table tr th, table tr td {
         vertical-align: middle;
     }
@@ -103,10 +22,23 @@
     table th {
         horiz-align: center;
     }
-.text-sm-start{
 
-   font-size: 16px;
-}
+    .text-sm-start {
+        font-size: 16px;
+    }
+
+    .revenue_datatable {
+        display: none;
+    }
+
+    .revenue_datatable_by_branch {
+        display: none;
+    }
+
+    .revenue_By_shop_datatable {
+        display: none;
+    }
+
 
 </style>
 
@@ -133,7 +65,7 @@
 
     <div>
 
-        <div class="py-2">
+        <div>
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
@@ -158,13 +90,13 @@
 
         <div class="row mx-1 my-5 gap-3">
 
-            <div class="card border-1 shadow col-lg-3 col-md-6 col-sm-12 mx-1 row" >
+            <div class="card border-1 shadow col-lg-3 col-md-6 col-sm-12 mx-1 row">
                 <h5 class="my-3">Company Revenue</h5>
 
                 <div class="row mb-5">
                     <div class="col-lg-7 col-md-7 col-sm-7 ">
                         <label class="text-sm-start">Select Length</label>
-                        <select class="form-select"  aria-label="Default select example" id="company_select_length">
+                        <select class="form-select" aria-label="Default select example" id="company_select_length">
                             <option disabled selected>Select here</option>
                             <option value="3">Daily</option>
                             <option value="2">Monthly</option>
@@ -173,7 +105,9 @@
                     </div>
 
                     <div class="col-lg-2 col-md-4 col-sm-12">
-                        <button class="btn btn-success" id="company_revenue_submit_button" type="button" style="margin-top: 32px">Submit</button>
+                        <button class="btn btn-success" id="company_revenue_submit_button" type="button"
+                                style="margin-top: 32px">Submit
+                        </button>
                     </div>
                 </div>
 
@@ -186,7 +120,7 @@
                 <div class="row mb-5">
                     <div class="col-lg-4 col-md-7 col-sm-7 ">
                         <label class="text-sm-start">Select Length</label>
-                        <select class="form-select"  aria-label="Default select example" id="branch_select_length">
+                        <select class="form-select" aria-label="Default select example" id="branch_select_length">
                             <option disabled selected>Select here</option>
                             <option value="3">Daily</option>
                             <option value="2">Monthly</option>
@@ -196,13 +130,16 @@
 
                     <div class="col-lg-5 col-md-7 col-sm-7 ">
                         <label class="text-sm-start">Select Branch</label>
-                        <select class="form-select"  aria-label="Default select example" id="select_branch_report_product_sales">
+                        <select class="form-select" aria-label="Default select example"
+                                id="select_branch_report_product_sales">
                             <option disabled selected>Select here</option>
                             <option value="all">All</option>
                         </select>
                     </div>
                     <div class="col-lg-2 col-md-4 col-sm-12 pe-2">
-                        <button class="btn btn-success" id="branch_revenue_submit_button" type="button" style="margin-top: 32px">Submit</button>
+                        <button class="btn btn-success" id="branch_revenue_submit_button" type="button"
+                                style="margin-top: 32px">Submit
+                        </button>
                     </div>
                 </div>
 
@@ -215,7 +152,7 @@
                 <div class="row mb-5">
                     <div class="col-lg-4 col-md-7 col-sm-7 ">
                         <label class="text-sm-start">Select Length</label>
-                        <select class="form-select"  aria-label="Default select example" id="shop_select_length">
+                        <select class="form-select" aria-label="Default select example" id="shop_select_length">
                             <option disabled selected>Select here</option>
                             <option value="3">Daily</option>
                             <option value="2">Monthly</option>
@@ -226,13 +163,15 @@
 
                     <div class="col-lg-5 col-md-7 col-sm-7 ">
                         <label class="text-sm-start">Select Shop</label>
-                        <select class="form-select"  aria-label="Default select example" id="shop_select_value">
+                        <select class="form-select" aria-label="Default select example" id="shop_select_value">
                             <option disabled selected>Select here</option>
                             <option value="all">All</option>
                         </select>
                     </div>
                     <div class="col-lg-2 col-md-4 col-sm-12 pe-2">
-                        <button class="btn btn-success" id="shop_revenue_submit_button" type="button" style="margin-top: 32px">Submit</button>
+                        <button class="btn btn-success" id="shop_revenue_submit_button" type="button"
+                                style="margin-top: 32px">Submit
+                        </button>
                     </div>
                 </div>
 
@@ -243,22 +182,19 @@
         </div>
 
 
-
-
-
-
-
-        <div class="card border-0 shadow">
+        <div class="card border-0 shadow revenue_datatable my-5">
             <div class="card-body">
-                <table class="table table-flush wrap hover" id="revenue_datatable" style="width: 100%; table-layout: fixed">
+                <h5 class="mb-3">Company Revenue Table</h5>
+                <table class="table table-flush wrap hover" id="revenue_datatable"
+                       style="width: 100%; table-layout: fixed">
                     <thead class="thead-light">
                     <tr>
-                        <th>total Products Sold</th>
-                        <th>Total Cost</th>
+                        <th>Year</th>
+                        <th>Time</th>
+                        <th>Sold Product</th>
+                        <th>Total cost</th>
                         <th>Revenue</th>
                         <th>Profit</th>
-                        <th>FROM(DATE)</th>
-                        <th>TO(DATE)</th>
                     </tr>
                     </thead>
                 </table>
@@ -266,8 +202,48 @@
         </div>
 
 
+        <div class="card border-0 shadow revenue_datatable_by_branch my-5">
+            <div class="card-body">
+                <h5 class="mb-3">Branch Revenue Table</h5>
+                <table class="table table-flush wrap hover" id="revenue_By_branch_datatable"
+                       style="width: 100%; table-layout: fixed">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Branch</th>
+                        <th>From</th>
+                        <th>TO</th>
+                        <th>Sold Product</th>
+                        <th>Total cost</th>
+                        <th>Revenue</th>
+                        <th>Profit</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="card border-0 shadow revenue_By_shop_datatable my-5">
+            <div class="card-body">
+                <h5 class="mb-3">Shop Revenue Table</h5>
+                <table class="table table-flush wrap hover" id="revenue_By_shop_datatable"
+                       style="width: 100%; table-layout: fixed">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Shop</th>
+                        <th>From</th>
+                        <th>TO</th>
+                        <th>Sold Product</th>
+                        <th>Total cost</th>
+                        <th>Revenue</th>
+                        <th>Profit</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
 
-        <div class="modal fade" id="details_supplier_modal_report" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+
+        <div class="modal fade" id="details_supplier_modal_report" tabindex="-1" role="dialog"
+             aria-labelledby="modal-form" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body p-0">
@@ -295,14 +271,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
 
 
     </div>
