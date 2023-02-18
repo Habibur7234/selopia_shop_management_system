@@ -155,7 +155,7 @@ $('#shop_dataTable tbody').on('click', '#update_shopBtn', function () {
 
     $("#update_shopName").val(rowData.name);
 
-    console.log(rowData.id)
+    //console.log(rowData.id)
 
 })
 
@@ -163,12 +163,18 @@ $('#shop_dataTable tbody').on('click', '#update_shopBtn', function () {
 // Update Button
 $("#update_shop").click(function () {
 
-    console.log(rowData.id)
-
+    //console.log(rowData.id)
 
     let updateShopModal = {
         name: $("#update_shopName").val(),
     };
+
+    let updateShopModal2 = {
+        name: $("#update_shopName").val(),
+        id: rowData.id
+    };
+
+
 
     // updating server row
     $.ajax({
@@ -190,7 +196,12 @@ $("#update_shop").click(function () {
                 });
                 let currentPage = shop_table.page();
                 // update datatable
-                shop_table.row(rowIndex).data(updateShopModal).draw();
+                //console.log(updateShopModal2)
+
+
+                console.log(rowIndex)
+                console.log(updateShopModal2)
+                shop_table.row(rowIndex).data(updateShopModal2).draw();
 
                 // redrawing to original page
                 shop_table.page(currentPage).draw('page');
@@ -203,6 +214,9 @@ $("#update_shop").click(function () {
             }
 
             else {
+
+                //console.log(rowData.id+"sss")
+
                 //Set default button text again
                 $("#update_shop").text('Update Info');
 
@@ -533,9 +547,7 @@ $('#update_shop_modal').on('hidden.bs.modal', function () {
 //         });
 //
 //     } else {
-//
 //         $('#shop_form')[0].reportValidity();
-//
 //     }
 // })
 /* ### Add Data End ### */
@@ -3000,7 +3012,6 @@ let designation_table = $('#Designation_dataTable').DataTable({
         },
 
         '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_designation_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
-
     ],
 
     columns: [
@@ -3022,14 +3033,11 @@ $("#add_kpi").click(function () {
     $(this).text('Submitting');
     let addKpiModal = {
         user_id: $("#kpi_user").val(),
-        target_sales_volume: $("#sales_kpi_volume").val(),
+
     };
-    let d = {
-        name: $("#kpi_user").text(),
-        target_sales_volume: $("#sales_kpi_volume").val(),
-    }
+
     $.ajax({
-        url: riyad_domain + '/sales_kpi',
+        url: riyad_domain + '/user_designation',
         type: 'POST',
         data: JSON.stringify(addKpiModal),
         contentType: "application/json",
@@ -4828,7 +4836,7 @@ $("#update_product_raw_material").click(function () {
 
     $(this).text('Updating...');
 
-    console.log(rowData.id)
+   // console.log(rowData.id)
 
     // updating server row
     $.ajax({
@@ -6813,7 +6821,7 @@ $("#supplier_sales_submit_button").click(function () {
 $('#supplier_sales_datatable tbody').on('click', '#details_supplier_modal_btn', function () {
     rowData = supplier_sales_table.row($(this).parents('tr')).data();
 
-    console.log(rowData)
+    //console.log(rowData)
     let i = 1
     rowData.product_list.forEach(item=>{
         $(".details_supplier_modal_list").append("<p>"+i+". "+item.name+"</p>");
