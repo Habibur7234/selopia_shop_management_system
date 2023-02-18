@@ -2301,10 +2301,10 @@ let department_table = $('#department_dataTable').DataTable({
     buttons: [
         {
             extend: 'print',
-            title: 'Shop Information',
+            title: 'Department Information',
             orientation: 'landscape',
             exportOptions: {
-                columns: [1],
+                columns: [0],
                 modifier: {
                     page: 'current'
                 }
@@ -2327,9 +2327,9 @@ let department_table = $('#department_dataTable').DataTable({
         },
         {
             extend: 'excelHtml5',
-            title: 'Shop Information',
+            title: 'Department Information',
             exportOptions: {
-                columns: [1, 2, 3]
+                columns: [0]
 
             },
 
@@ -2337,13 +2337,13 @@ let department_table = $('#department_dataTable').DataTable({
         {
             extend: 'pdf',
             exportOptions: {
-                columns: [1, 2, 3],
+                columns: [0],
                 modifier: {
                     page: 'current'
                 }
             },
             pageSize: 'LEGAL',
-            title: 'Shop Information',
+            title: 'Department Information',
             customize: function (doc) {
                 doc.content[1].table.widths = [
                     '20%',
@@ -2353,13 +2353,12 @@ let department_table = $('#department_dataTable').DataTable({
                 let rowCount = doc.content[1].table.body.length;
                 for (let i = 1; i < rowCount; i++) {
                     doc.content[1].table.body[i][0].alignment = 'center';
-                    doc.content[1].table.body[i][1].alignment = 'center';
-                    doc.content[1].table.body[i][2].alignment = 'center';
+
                 }
             }
         },
 
-        '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_department_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+        '<button  toggle="tooltip" title="Add New Department" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_department_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
 
     ],
 
@@ -2521,7 +2520,6 @@ $("#update_department").click(function () {
 //Delete Department----------------------------------------
 
 
-// Delete User button----------
 
 $('#department_dataTable tbody').on('click', '#delete_department_btn', function () {
     rowData = department_table.row($(this).parents('tr')).data();
@@ -2583,6 +2581,8 @@ $("#delete_department").click(function () {
         },
     });
 });
+
+
 
 
 //Category=========================================================================================================================================
@@ -2890,7 +2890,6 @@ $("#delete_category").click(function () {
                     duration: 7000,
                     icon: false
                 });
-
                 rowData = undefined;
                 rowIndex = undefined;
             } else {
@@ -2905,10 +2904,8 @@ $("#delete_category").click(function () {
                 rowData = undefined;
                 rowIndex = undefined;
             }
-
         },
         error: function (data) {
-
             notyf.error({
                 message: data.responseJSON.message,
                 duration: 7000,
@@ -2921,9 +2918,200 @@ $("#delete_category").click(function () {
 
     });
 });
-/* ### Delete Data End ### */
+
+
+
+//Designation+==================================================================================================================
+
+
+//init category  datatable and load data
+let designation_table = $('#Designation_dataTable').DataTable({
+
+    ajax: {
+        url: nafisa_domain + '/user_designation',
+        dataSrc: 'data',
+    },
+    rowId: 'id',
+    dom: 'Blfrtip',
+    oLanguage: {
+        sLengthMenu: "Show _MENU_",
+    },
+    language: {
+        search: "",
+        searchPlaceholder: "Search..."
+    },
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Designation Information',
+            orientation: 'landscape',
+            exportOptions: {
+                columns: [0],
+                modifier: {
+                    page: 'current'
+                }
+            },
+            pageSize: 'LEGAL',
+            customize: function (win) {
+                $(win.document.body)
+                    .css('font-size', '15pt')
+                $(win.document.body).find('th')
+                    .css({
+                        "font-size": 'inherit',
+                        "text-align": 'center',
+                    })
+                    .addClass('compact')
+                $(win.document.body).find('table')
+                    .css('font-size', 'inherit')
+                    .css('text-align', 'center')
+
+            }
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Designation Information',
+            exportOptions: {
+                columns: [0]
+
+            },
+
+        },
+        {
+            extend: 'pdf',
+            exportOptions: {
+                columns: [0],
+                modifier: {
+                    page: 'current'
+                }
+            },
+            pageSize: 'LEGAL',
+            title: 'Designation Information',
+            customize: function (doc) {
+                doc.content[1].table.widths = [
+                    '100%',
+
+                ]
+                let rowCount = doc.content[1].table.body.length;
+                for (let i = 1; i < rowCount; i++) {
+                    doc.content[1].table.body[i][0].alignment = 'center';
+
+                }
+            }
+        },
+
+        '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_designation_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+
+    ],
+
+    columns: [
+        {data: 'name'},
+
+        {
+            data: '',
+            render: function () {
+                 return  '<button   id="delete_categorybtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+            }
+        },
+    ]
+});
+
+
+
+$("#add_kpi").click(function () {
+
+    $(this).text('Submitting');
+    let addKpiModal = {
+        user_id: $("#kpi_user").val(),
+        target_sales_volume: $("#sales_kpi_volume").val(),
+    };
+    let d = {
+        name: $("#kpi_user").text(),
+        target_sales_volume: $("#sales_kpi_volume").val(),
+    }
+    $.ajax({
+        url: riyad_domain + '/sales_kpi',
+        type: 'POST',
+        data: JSON.stringify(addKpiModal),
+        contentType: "application/json",
+        success: function (data) {
+
+            if (data.status.code === 1) {
+
+                const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+                modal.hide();
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+                let newRowIndex = kpi_table.row.add(d).draw();
+
+                //Success Notification
+
+                $("#add_kpi").text('Submit');
+
+                //reset input Field
+                $('form :input').val('');
+                $('.input').val('');
+                kpi_table.search('');
+                // re-ordering to default
+                kpi_table.order([0, 'desc']).draw();
+                // highlighting newly added row
+                $(kpi_table.row(newRowIndex.index()).nodes()).addClass('selected');
+            } else {
+                //Set default button text again
+                $("#add_kpi").text('Submit');
+                const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+                modal.hide();
+                //Notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        },
+        error: function (data) {
+            const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+            modal.hide();
+            //Set default button text again
+            $("#add_kpi").text('Submit');
+            // notification
+            notyf.error({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
+        }
+    });
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //User Profile================================================================================================================
+
 
 //init Salesman datatable and load data
 let userProfile_table = $('#userProfile_datatable').DataTable({
@@ -3074,6 +3262,22 @@ let userProfile_table = $('#userProfile_datatable').DataTable({
 $(document).ready(function () {
     $("#customer_image_url").cropzee();
 });
+
+
+$.ajax({
+    url: nafisa_domain +'/department',
+    type: 'GET',
+    success: function (data) {
+        let category_parents = data?.data.map(item => item)
+        category_parents.forEach((element) => {
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#user_profile_department');
+
+        });
+    }
+
+});
+
+
 
 
 // Details Button
@@ -4161,7 +4365,7 @@ $("#delete_product").click(function () {
 let unit_table = $('#product_unit_datatable').DataTable({
 
     ajax: {
-        url: riyad_domain + '/product_unit',
+        url: nafisa_domain + '/product_unit',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -4176,10 +4380,10 @@ let unit_table = $('#product_unit_datatable').DataTable({
     buttons: [
         {
             extend: 'print',
-            title: 'Shop Information',
+            title: 'Unit Information',
             orientation: 'landscape',
             exportOptions: {
-                columns: [1, 2, 3],
+                columns: [0],
                 modifier: {
                     page: 'current'
                 }
@@ -4202,9 +4406,9 @@ let unit_table = $('#product_unit_datatable').DataTable({
         },
         {
             extend: 'excelHtml5',
-            title: 'Shop Information',
+            title: 'Unit Information',
             exportOptions: {
-                columns: [1, 2, 3]
+                columns: [0]
 
             },
 
@@ -4212,7 +4416,7 @@ let unit_table = $('#product_unit_datatable').DataTable({
         {
             extend: 'pdf',
             exportOptions: {
-                columns: [1, 2, 3],
+                columns: [0],
                 modifier: {
                     page: 'current'
                 }
@@ -4221,38 +4425,165 @@ let unit_table = $('#product_unit_datatable').DataTable({
             title: 'Shop Information',
             customize: function (doc) {
                 doc.content[1].table.widths = [
-                    '20%',
-                    '35%',
-                    '45%',
+                    '100%',
+
                 ]
                 let rowCount = doc.content[1].table.body.length;
                 for (let i = 1; i < rowCount; i++) {
                     doc.content[1].table.body[i][0].alignment = 'center';
-                    doc.content[1].table.body[i][1].alignment = 'center';
-                    doc.content[1].table.body[i][2].alignment = 'center';
                 }
             }
         },
 
-        '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+        '<button id="productUnit_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#product_unit_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
 
     ],
 
     columns: [
-        {data: 'id'},
         {data: 'name'},
-        {data: 'product_raw_material_product_unit_id'},
-
-
         {
-            data: 'id',
+            data: '',
             render: function () {
-                return '<button id="update_rawBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                    + '<button   id="delete_rawBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_raw_material_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                  return  '<button   id="delete_UnitBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_unit_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
 });
+
+
+$("#add_product_unit").click(function () {
+    let addProduct = {
+        name: $("#product_unit_name").val(),
+    };
+    $("#add_product_unit").text('Submiting....');
+    $.ajax({
+        url: nafisa_domain + '/product_unit',
+        type: 'POST',
+        data: JSON.stringify(addProduct),
+        contentType: "application/json",
+        success: function (data) {
+            if (data.status.code === 1) {
+                const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
+                modal.hide();
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+                let newRowIndex = unit_table.row.add(addProduct).draw();
+
+                //reset input Field
+                $('form :input').val('');
+                $('.input').val('');
+                unit_table.search('');
+                // re-ordering to default
+                unit_table.order([0, 'desc']).draw();
+                // highlighting newly added row
+                $(unit_table.row(newRowIndex.index()).nodes()).addClass('selected');
+                $("#add_product_unit").text('Submit');
+            } else {
+
+                const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
+                modal.hide();
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        },
+        error: function (data) {
+                const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
+                modal.hide();
+                //Set default button text again
+                $("#add_product_unit").text('Submit');
+                // notification
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+        }
+    });
+
+})
+
+
+//    DELETE button ------------------------------------------------
+$('#product_unit_datatable tbody').on('click', '#delete_UnitBtn', function () {
+    rowData = unit_table.row($(this).parents('tr')).data();
+    rowIndex = unit_table.row($(this).parents('tr')).index();
+});
+
+// DELETE Confirmation button
+$("#delete_product_unit").click(function () {
+    $("#delete_product_unit").text('Deleting....');
+    $.ajax({
+        url: nafisa_domain + '/product_unit/' + rowData.id,
+        type: 'DELETE',
+        dataType: "json",
+        success: function (data) {
+
+            if (data.status.code === 1) {
+                $("#delete_raw_product").text('Delete');
+                let currentPage = unit_table.page();
+                unit_table.row(rowIndex).remove().draw();
+                const modal = bootstrap.Modal.getInstance($("#delete_product_unit_modal"));
+                modal.hide();
+                // redrawing to original page
+                unit_table.page(currentPage).draw('page');
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+                $("#delete_product_unit").text('Delete');
+
+                rowData = undefined;
+                rowIndex = undefined;
+            } else {
+                const modal = bootstrap.Modal.getInstance($("#delete_product_unit_modal"));
+                modal.hide();
+                $("#delete_raw_product").text('Delete');
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+                $("#delete_product_unit").text('Delete');
+
+                rowData = undefined;
+                rowIndex = undefined;
+            }
+
+        },
+        error: function (data) {
+            const modal = bootstrap.Modal.getInstance($("#delete_product_unit_modal"));
+            modal.hide();
+            $("#delete_product_unit").text('Delete');
+            notyf.error({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
+
+
+        }
+
+
+    });
+});
+
+
+
+
+
+
+
+
+
+
 
 
 //    PRODUCT RAW MATERIAL ================================================================================================================================

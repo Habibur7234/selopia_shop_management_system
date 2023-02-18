@@ -1429,10 +1429,10 @@
     buttons: [
       {
         extend: "print",
-        title: "Shop Information",
+        title: "Department Information",
         orientation: "landscape",
         exportOptions: {
-          columns: [1],
+          columns: [0],
           modifier: {
             page: "current"
           }
@@ -1449,21 +1449,21 @@
       },
       {
         extend: "excelHtml5",
-        title: "Shop Information",
+        title: "Department Information",
         exportOptions: {
-          columns: [1, 2, 3]
+          columns: [0]
         }
       },
       {
         extend: "pdf",
         exportOptions: {
-          columns: [1, 2, 3],
+          columns: [0],
           modifier: {
             page: "current"
           }
         },
         pageSize: "LEGAL",
-        title: "Shop Information",
+        title: "Department Information",
         customize: function(doc) {
           doc.content[1].table.widths = [
             "20%",
@@ -1473,12 +1473,10 @@
           let rowCount = doc.content[1].table.body.length;
           for (let i = 1; i < rowCount; i++) {
             doc.content[1].table.body[i][0].alignment = "center";
-            doc.content[1].table.body[i][1].alignment = "center";
-            doc.content[1].table.body[i][2].alignment = "center";
           }
         }
       },
-      '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_department_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+      '<button  toggle="tooltip" title="Add New Department" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_department_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
     ],
     columns: [
       { data: "name" },
@@ -1874,6 +1872,134 @@
       }
     });
   });
+  var designation_table = $("#Designation_dataTable").DataTable({
+    ajax: {
+      url: nafisa_domain + "/user_designation",
+      dataSrc: "data"
+    },
+    rowId: "id",
+    dom: "Blfrtip",
+    oLanguage: {
+      sLengthMenu: "Show _MENU_"
+    },
+    language: {
+      search: "",
+      searchPlaceholder: "Search..."
+    },
+    buttons: [
+      {
+        extend: "print",
+        title: "Designation Information",
+        orientation: "landscape",
+        exportOptions: {
+          columns: [0],
+          modifier: {
+            page: "current"
+          }
+        },
+        pageSize: "LEGAL",
+        customize: function(win) {
+          $(win.document.body).css("font-size", "15pt");
+          $(win.document.body).find("th").css({
+            "font-size": "inherit",
+            "text-align": "center"
+          }).addClass("compact");
+          $(win.document.body).find("table").css("font-size", "inherit").css("text-align", "center");
+        }
+      },
+      {
+        extend: "excelHtml5",
+        title: "Designation Information",
+        exportOptions: {
+          columns: [0]
+        }
+      },
+      {
+        extend: "pdf",
+        exportOptions: {
+          columns: [0],
+          modifier: {
+            page: "current"
+          }
+        },
+        pageSize: "LEGAL",
+        title: "Designation Information",
+        customize: function(doc) {
+          doc.content[1].table.widths = [
+            "100%"
+          ];
+          let rowCount = doc.content[1].table.body.length;
+          for (let i = 1; i < rowCount; i++) {
+            doc.content[1].table.body[i][0].alignment = "center";
+          }
+        }
+      },
+      '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_designation_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+    ],
+    columns: [
+      { data: "name" },
+      {
+        data: "",
+        render: function() {
+          return '<button   id="delete_categorybtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
+        }
+      }
+    ]
+  });
+  $("#add_kpi").click(function() {
+    $(this).text("Submitting");
+    let addKpiModal = {
+      user_id: $("#kpi_user").val(),
+      target_sales_volume: $("#sales_kpi_volume").val()
+    };
+    let d = {
+      name: $("#kpi_user").text(),
+      target_sales_volume: $("#sales_kpi_volume").val()
+    };
+    $.ajax({
+      url: riyad_domain + "/sales_kpi",
+      type: "POST",
+      data: JSON.stringify(addKpiModal),
+      contentType: "application/json",
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+          modal.hide();
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          let newRowIndex = kpi_table.row.add(d).draw();
+          $("#add_kpi").text("Submit");
+          $("form :input").val("");
+          $(".input").val("");
+          kpi_table.search("");
+          kpi_table.order([0, "desc"]).draw();
+          $(kpi_table.row(newRowIndex.index()).nodes()).addClass("selected");
+        } else {
+          $("#add_kpi").text("Submit");
+          const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+          modal.hide();
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      },
+      error: function(data2) {
+        const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+        modal.hide();
+        $("#add_kpi").text("Submit");
+        notyf.error({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
   var userProfile_table = $("#userProfile_datatable").DataTable({
     ajax: {
       url: nafisa_domain + "/user_profile",
@@ -1952,6 +2078,16 @@
   });
   $(document).ready(function() {
     $("#customer_image_url").cropzee();
+  });
+  $.ajax({
+    url: nafisa_domain + "/department",
+    type: "GET",
+    success: function(data2) {
+      let category_parents = data2?.data.map((item) => item);
+      category_parents.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#user_profile_department");
+      });
+    }
   });
   $("#salesman_dataTable tbody").on("click", "#salesman_details", function() {
     rowData = salesman_table.row($(this).parents("tr")).data();
@@ -2770,7 +2906,7 @@
   });
   var unit_table = $("#product_unit_datatable").DataTable({
     ajax: {
-      url: riyad_domain + "/product_unit",
+      url: nafisa_domain + "/product_unit",
       dataSrc: "data"
     },
     rowId: "id",
@@ -2785,10 +2921,10 @@
     buttons: [
       {
         extend: "print",
-        title: "Shop Information",
+        title: "Unit Information",
         orientation: "landscape",
         exportOptions: {
-          columns: [1, 2, 3],
+          columns: [0],
           modifier: {
             page: "current"
           }
@@ -2805,15 +2941,15 @@
       },
       {
         extend: "excelHtml5",
-        title: "Shop Information",
+        title: "Unit Information",
         exportOptions: {
-          columns: [1, 2, 3]
+          columns: [0]
         }
       },
       {
         extend: "pdf",
         exportOptions: {
-          columns: [1, 2, 3],
+          columns: [0],
           modifier: {
             page: "current"
           }
@@ -2822,31 +2958,125 @@
         title: "Shop Information",
         customize: function(doc) {
           doc.content[1].table.widths = [
-            "20%",
-            "35%",
-            "45%"
+            "100%"
           ];
           let rowCount = doc.content[1].table.body.length;
           for (let i = 1; i < rowCount; i++) {
             doc.content[1].table.body[i][0].alignment = "center";
-            doc.content[1].table.body[i][1].alignment = "center";
-            doc.content[1].table.body[i][2].alignment = "center";
           }
         }
       },
-      '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+      '<button id="productUnit_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#product_unit_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
     ],
     columns: [
-      { data: "id" },
       { data: "name" },
-      { data: "product_raw_material_product_unit_id" },
       {
-        data: "id",
+        data: "",
         render: function() {
-          return '<button id="update_rawBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_product_raw_material_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_rawBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_raw_material_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
+          return '<button   id="delete_UnitBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_unit_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }
       }
     ]
+  });
+  $("#add_product_unit").click(function() {
+    let addProduct = {
+      name: $("#product_unit_name").val()
+    };
+    $("#add_product_unit").text("Submiting....");
+    $.ajax({
+      url: nafisa_domain + "/product_unit",
+      type: "POST",
+      data: JSON.stringify(addProduct),
+      contentType: "application/json",
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
+          modal.hide();
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          let newRowIndex = unit_table.row.add(addProduct).draw();
+          $("form :input").val("");
+          $(".input").val("");
+          unit_table.search("");
+          unit_table.order([0, "desc"]).draw();
+          $(unit_table.row(newRowIndex.index()).nodes()).addClass("selected");
+          $("#add_product_unit").text("Submit");
+        } else {
+          const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
+          modal.hide();
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      },
+      error: function(data2) {
+        const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
+        modal.hide();
+        $("#add_product_unit").text("Submit");
+        notyf.error({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
+  $("#product_unit_datatable tbody").on("click", "#delete_UnitBtn", function() {
+    rowData = unit_table.row($(this).parents("tr")).data();
+    rowIndex = unit_table.row($(this).parents("tr")).index();
+  });
+  $("#delete_product_unit").click(function() {
+    $("#delete_product_unit").text("Deleting....");
+    $.ajax({
+      url: nafisa_domain + "/product_unit/" + rowData.id,
+      type: "DELETE",
+      dataType: "json",
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          $("#delete_raw_product").text("Delete");
+          let currentPage = unit_table.page();
+          unit_table.row(rowIndex).remove().draw();
+          const modal = bootstrap.Modal.getInstance($("#delete_product_unit_modal"));
+          modal.hide();
+          unit_table.page(currentPage).draw("page");
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          $("#delete_product_unit").text("Delete");
+          rowData = void 0;
+          rowIndex = void 0;
+        } else {
+          const modal = bootstrap.Modal.getInstance($("#delete_product_unit_modal"));
+          modal.hide();
+          $("#delete_raw_product").text("Delete");
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          $("#delete_product_unit").text("Delete");
+          rowData = void 0;
+          rowIndex = void 0;
+        }
+      },
+      error: function(data2) {
+        const modal = bootstrap.Modal.getInstance($("#delete_product_unit_modal"));
+        modal.hide();
+        $("#delete_product_unit").text("Delete");
+        notyf.error({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
   });
   var raw_material_table = $("#product_raw_material_dataTable").DataTable({
     ajax: {
