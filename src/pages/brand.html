@@ -85,7 +85,7 @@
                                                         <label>Image Upload</label>
                                                         <div class="modal-content" style="width:40%">
                                                             <div class="modal-body align-items-center-center" data-cropzee="brand_image_url">
-                                                                <img src=" ">
+                                                                <img id="brand_img" src=" ">
                                                             </div>
                                                         </div>
                                                         <input type="file" class="form-control" id="brand_image_url" name="image_url">
@@ -181,7 +181,7 @@
                                                         <label>Image Upload</label>
                                                         <div class="modal-content" style="width:40%">
                                                             <div class="modal-body align-items-center-center" data-cropzee="update_brand_image_url">
-                                                                <img src="">
+                                                                <img id="s_profile_img" src="">
                                                             </div>
                                                         </div>
                                                         <input type="file" class="form-control" id="update_brand_image_url" name="image_url">
@@ -203,6 +203,26 @@
 
 
 
+        <!--delete Modal-->
+        <div class="modal fade" id="delete_brand_modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="pt-3">
+                        <div class="modal-body">
+                            <h5 id="supplier_Delete_name"></h5>
+                            <p class="fw-light" style="font-size:14px;">This item will delete immediately. You can't
+                                undo this action.</p>
+                        </div>
+                    </div>
+                    <div style="margin-left: auto; padding-right:15px;padding-bottom: 15px">
+                        <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200"
+                                data-bs-dismiss="modal">Cancel
+                        </button>
+                        <button type="button" id="delete_brand" class="btn btn-secondary">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 

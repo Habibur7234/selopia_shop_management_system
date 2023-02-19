@@ -102,7 +102,7 @@
                             </div>
                             <div class="col-lg-10 col-sm-10 mb-2 offset-lg-1 ">
                                 <label class="my-1 me-2" >Product Unit</label>
-                                <select class="form-select" id="product_unit_type" aria-label="Default select example" name="unit_type">
+                                <select class="form-select" id="product_unit_type" aria-label="Default select example" name="unit_id">
                                     <option disabled selected>Open this select menu</option>
                                 </select>
                             </div>
@@ -178,7 +178,7 @@
         </div>
 
 
-        <div class="modal fade" id="details_supplier_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+        <div class="modal fade" id="details_product_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -187,7 +187,7 @@
                             <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             <div class="text-center text-md-center mb-4 mt-md-0">
-                                <h1 class="mb-0 h3 text-info">Salesman Details</h1>
+                                <h1 class="mb-0 h3 text-info">Products Details</h1>
                             </div>
                             <div class="col-12 mb-4">
                                 <div class="card border shadow components-section">
@@ -195,44 +195,36 @@
                                         <div class="row mb-4">
                                             <div class="col-lg-12 col-sm-6 ">
                                                 <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Name :</h5>
-                                                    <p class="d-inline" id="sup_name"></p>
+                                                    <h5 class="d-inline">Description :</h5>
+                                                    <p class="d-inline" id="d_description"></p>
                                                 </div>
                                                 <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Email :</h5>
-                                                    <p class="d-inline" id="sup_email"></p>
+                                                    <h5 class="d-inline">Unit Type :</h5>
+                                                    <p class="d-inline" id="d_unit"></p>
                                                 </div>
                                                 <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Age :</h5>
-                                                    <p class="d-inline" id="sup_pn"></p>
+                                                    <h5 class="d-inline">Unit Size :</h5>
+                                                    <p class="d-inline" id="d_unit_size"></p>
                                                 </div>
                                                 <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Address :</h5>
-                                                    <p class="d-inline" id="sup_address"></p>
+                                                    <h5 class="d-inline">Cost Price :</h5>
+                                                    <p class="d-inline" id="d_cost_price"></p>
                                                 </div>
                                                 <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Company Name :</h5>
-                                                    <p class="d-inline" id="sup_companyN"></p>
+                                                    <h5 class="d-inline">Mrp :</h5>
+                                                    <p class="d-inline" id="d_mrp"></p>
                                                 </div>
                                                 <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Company Phone :</h5>
-                                                    <p class="d-inline" id="sup_phone"></p>
+                                                    <h5 class="d-inline">Wholesale :</h5>
+                                                    <p class="d-inline" id="d_wholesale"></p>
                                                 </div>
                                                 <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Company Address :</h5>
-                                                    <p class="d-inline" id="sup_com_address"></p>
+                                                    <h5 class="d-inline">Retail Price:</h5>
+                                                    <p class="d-inline" id="d_retails"></p>
                                                 </div>
                                                 <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Bank Info :</h5>
-                                                    <p class="d-inline" id="sup_bank_info"></p>
-                                                </div>
-                                                <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Ref Comment :</h5>
-                                                    <p class="d-inline" id="sup_ref_comm"></p>
-                                                </div>
-                                                <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Blacklist :</h5>
-                                                    <p class="d-inline" id="sup_blacklist"></p>
+                                                    <h5 class="d-inline">Discount :</h5>
+                                                    <p class="d-inline" id="d_discount"></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -268,22 +260,21 @@
                                 <label >Description</label>
                                 <input type="tetx" class="form-control" id="update_product_description" name="description">
                             </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-2 offset-lg-1 ">
+                                <label>Category</label>
+                                <label class="my-1 me-2" >Category</label>
+                                <select class="form-select" id="update_product_category_id" aria-label="Default select example" name="category_id">
+                                </select>
+                            </div>
                             <div class="col-lg-10 col-sm-10 mb-2 offset-lg-1 ">
                                 <label class="my-1 me-2" >Brand</label>
                                 <select class="form-select" id="update_product_brand_id" aria-label="Default select example" name="brand_id">
                                 </select>
                             </div>
                             <div class="col-lg-10 col-sm-10 mb-2 offset-lg-1 ">
-                                <label>Category</label>
-                                <label class="my-1 me-2" >Category</label>
-                                <select class="form-select" id="update_product_category_id" aria-label="Default select example" name="category_id">
-                                    <option disabled selected>Open this select menu</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-10 col-sm-10 mb-2 offset-lg-1 ">
                                 <label class="my-1 me-2" >Product Unit</label>
-                                <select class="form-select" id="update_product_unit_type" aria-label="Default select example" name="unit_type">
-                                    <option disabled selected>Open this select menu</option>
+                                <select class="form-select" id="update_product_unit_type" aria-label="Default select example" name="unit_id">
                                 </select>
                             </div>
                             <div class="col-lg-10 col-sm-10 mb-2 offset-lg-1 ">
@@ -313,17 +304,17 @@
                             <div class="col-lg-10 col-sm-10 mb-2 offset-lg-1 ">
                                 <label >Product Image</label>
                                 <div class="modal-content" style="width:40%">
-                                    <div class="modal-body align-items-center-center" data-cropzee="product_image_url">
-                                        <img src=" ">
+                                    <div class="modal-body align-items-center-center" data-cropzee="update_product_image_url">
+                                        <img id="update_product_image" src=" ">
                                     </div>
                                 </div>
                                 <input type="file" class="form-control" id="update_product_image_url" name="product_image_url">
                             </div>
                             <input type="hidden" value="true" class="form-control" id="update_create" name="create">
                         </div>
-                        <div class="modal-footer"><input
-                                class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit"
-                                value="Update Product"></div>
+                        <div class="modal-footer">
+                            <input class="btn btn-success text-dark col-lg-10 col-sm-10 my-4 mx-auto" type="submit" value="Update Product">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -355,12 +346,12 @@
         </div>
 
 
-        <!--Supplier Photo Modal-->
-        <div class="modal img-fluid" id="supplier_image_modal">
+        <!--product_image Photo Modal-->
+        <div class="modal img-fluid" id="product_image_modal">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content" style="width:70%">
                     <div class="modal-body align-items-center-center ">
-                        <img id="supplier_image" src="">
+                        <img id="product_image" src="">
                         <button type="button" class="modal-footer ms-auto btn-outline-dark border-0 btn btn-outline-light text-primary"
                                 data-bs-dismiss="modal">Close
                         </button>
@@ -368,12 +359,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
 
 
     </div>

@@ -3,8 +3,6 @@ let rowIndex, rowData;
 // init notification instance
 const notyf = new Notyf();
 const nafisa_domain = 'https://nafisa.selopian.us'
-const riyad_domain = 'https://riyadshop.selopian.us'
-const shakila_domain = 'https://shakila.selopian.us'
 
 
 //SHOP================================================================================================
@@ -18,7 +16,7 @@ let shop_table = $('#shop_dataTable').DataTable({
 
     ],
     ajax: {
-        url:nafisa_domain + '/shop',
+        url: nafisa_domain + '/shop',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -102,7 +100,7 @@ $("#add_shop").click(function () {
         success: function (data) {
 
 
-            if (data.status.code=== 1){
+            if (data.status.code === 1) {
 
                 const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
                 modal.hide();
@@ -127,7 +125,7 @@ $("#add_shop").click(function () {
                     icon: false
                 });
 
-            }else {
+            } else {
 
                 const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
                 modal.hide();
@@ -175,10 +173,9 @@ $("#update_shop").click(function () {
     };
 
 
-
     // updating server row
     $.ajax({
-        url:nafisa_domain + '/shop/' + rowData.id,
+        url: nafisa_domain + '/shop/' + rowData.id,
         type: 'PUT',
         data: JSON.stringify(updateShopModal),
         contentType: "application/json; charset=utf-8",
@@ -211,9 +208,7 @@ $("#update_shop").click(function () {
                 setTimeout(function () {
                     $(shop_table.row(rowIndex).nodes()).removeClass('selected');
                 }, 2000);
-            }
-
-            else {
+            } else {
 
                 //console.log(rowData.id+"sss")
 
@@ -409,7 +404,7 @@ $("#add_Branch").click(function () {
         success: function (data) {
 
 
-            if (data.status.code === 0){
+            if (data.status.code === 0) {
                 let newRowIndex = branch_table.row.add(addBranch).draw();
 
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
@@ -434,7 +429,7 @@ $("#add_Branch").click(function () {
                 setTimeout(function () {
                     $(branch_table.row(newRowIndex.index()).nodes()).removeClass('selected');
                 }, 2000);
-            }else {
+            } else {
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
                 modal.hide();
                 //Success Notification
@@ -446,7 +441,7 @@ $("#add_Branch").click(function () {
             }
         },
         error: function (data) {
-            if (data.status.code===0){
+            if (data.status.code === 0) {
 
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
@@ -457,7 +452,7 @@ $("#add_Branch").click(function () {
                     duration: 7000,
                     icon: false
                 });
-            }else {
+            } else {
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
                 modal.hide();
@@ -480,7 +475,6 @@ $('#add_shop_modal').on('hidden.bs.modal', function () {
 $('#update_shop_modal').on('hidden.bs.modal', function () {
     $(this).find('#update_shop_form').trigger('reset');
 });
-
 
 
 /* ### Update Data End ### */
@@ -893,7 +887,7 @@ $("#delete_user").click(function () {
 
     $(this).text('Deleting...');
     $.ajax({
-        url: shakila_domain + '/user/' + rowData.id,
+        url: nafisa_domain + '/user/' + rowData.id,
         type: 'DELETE',
         success: function (data) {
 
@@ -1378,7 +1372,7 @@ let shop_supplier_table = $('#supplier_dataTable').DataTable({
         {"width": "10%", "targets": 13},
     ],
     ajax: {
-        url: riyad_domain + '/supplier/all',
+        url: nafisa_domain + '/supplier/all',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -1573,7 +1567,7 @@ $('#supplier_dataTable tbody').on('click', '#supplier_details', function () {
 $('#supplier_dataTable tbody').on('click', '#supplier_photo', function () {
     rowData = shop_supplier_table.row($(this).parents('tr')).data();
 
-    $("#supplier_image").attr("src", riyad_domain + rowData.image_url);
+    $("#supplier_image").attr("src", nafisa_domain + rowData.image_url);
 });
 
 //cropzee-----------------
@@ -1586,7 +1580,7 @@ $(document).ready(function () {
 $("#Supplier_post_form").on('submit', (function (e) {
     e.preventDefault();
     $.ajax({
-        url: riyad_domain + '/supplier',
+        url: nafisa_domain + '/supplier',
         type: "POST",
         data: new FormData(this),
         contentType: false,
@@ -1662,7 +1656,7 @@ $('#supplier_dataTable tbody').on('click', '#update_supplierBtn', function () {
 $("#Supplier_update_post_form").on('submit', (function (e) {
     e.preventDefault();
     $.ajax({
-        url: riyad_domain + '/supplier/' + rowData.id,
+        url: nafisa_domain + '/supplier/' + rowData.id,
         type: "PUT",
         data: new FormData(this),
         contentType: false,
@@ -1734,7 +1728,7 @@ $("#delete_supplier").click(function () {
 
     $(this).text('Deleting...');
     $.ajax({
-        url: riyad_domain + '/supplier/' + rowData.id,
+        url: nafisa_domain + '/supplier/' + rowData.id,
         type: 'DELETE',
         dataType: "json",
         success: function (data) {
@@ -1993,8 +1987,6 @@ $("#delete_supplier").click(function () {
 
 //BRAND=================================================================================================================================================
 
-
-//init shop & branch  datatable and load data
 let brand_table = $('#Brand_dataTable').DataTable({
 
     ajax: {
@@ -2086,7 +2078,7 @@ let brand_table = $('#Brand_dataTable').DataTable({
             data: '',
             render: function () {
                 return '<button id="update_brandBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_brand_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                    + '<button   id="delete_shopBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                    + '<button   id="delete_brandBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_brand_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
@@ -2159,26 +2151,43 @@ $("#Brand_post_form").on('submit', (function (e) {
 
 //brand photo View
 $('#Brand_dataTable tbody').on('click', '#brand_photo', function () {
-    rowData = brand_table.row($(this).parents('tr')).data();
 
-    $("#brand_image").attr("src", rowData.image_url);
+
+    rowData = brand_table.row($(this).parents('tr')).data();
+    $("#brand_image").attr("src", rowData.logo_url);
+
 });
 
 
 $('#Brand_dataTable tbody').on('click', '#update_brandBtn', function () {
-    // getting parent row Data
+    rowIndex = brand_table.row($(this).parents('tr')).index();
     rowData = brand_table.row($(this).parents('tr')).data();
 
     // setting row values to update modal input boxes
     $("#update_brand_name").val(rowData.name);
     $('#update_brand_description').val(rowData.description);
-    $("#brand_image_url").val(rowData.image_url);
+    $("#s_profile_img").attr("src", rowData.logo_url);
 })
 
 //Cropzee-----------------
 $(document).ready(function () {
     $("#update_brand_image_url").cropzee();
 });
+
+
+//Reset product add Modal Input when it's Close
+$('#add_brand_modal').on('hidden.bs.modal', function () {
+    $('[data-cropzee="' + 'brand_image_url' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="brand_image_url"><img id="brand_img"  src=""></div>');
+    $(this).find('#Brand_post_form').trigger('reset');
+});
+
+
+//Reset salesman update Modal Input when it's Close
+$('#update_brand_modal').on('hidden.bs.modal', function () {
+    $('[data-cropzee="' + 'update_brand_image_url' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="update_brand_image_url"><img id="s_profile_img" src=""></div>');
+    $(this).find('#update_brand_post_form').trigger('reset');
+});
+
 
 $("#update_brand_post_form").on('submit', (function (e) {
     e.preventDefault();
@@ -2195,11 +2204,8 @@ $("#update_brand_post_form").on('submit', (function (e) {
                 // hide modal
                 const modal = bootstrap.Modal.getInstance($("#update_brand_modal"));
                 modal.hide();
-
                 //Set default button text again
-
                 let currentPage = brand_table.page();
-
                 // update datatable
                 brand_table.row(rowIndex).data(data.data).draw();
 
@@ -2211,13 +2217,17 @@ $("#update_brand_post_form").on('submit', (function (e) {
                 setTimeout(function () {
                     $(brand_table.row(rowIndex).nodes()).removeClass('selected');
                 }, 2000);
+
+                // notification
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
 
-            } else {
+            }
+
+             else {
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#update_brand_modal"));
                 modal.hide();
@@ -2227,6 +2237,8 @@ $("#update_brand_post_form").on('submit', (function (e) {
                     duration: 7000,
                     icon: false
                 });
+
+
             }
         },
         error: function (data) {
@@ -2238,38 +2250,34 @@ $("#update_brand_post_form").on('submit', (function (e) {
                 duration: 7000,
                 icon: false
             });
+
+
         }
     });
+
 }));
 
-//Delete supplier-------------------------------------
 
-$('#supplier_dataTable tbody').on('click', '#delete_supplierBtn', function () {
-    rowData = shop_supplier_table.row($(this).parents('tr')).data();
-    rowIndex = shop_supplier_table.row($(this).parents('tr')).index();
+$('#Brand_dataTable tbody').on('click', '#delete_brandBtn', function () {
+    rowData = brand_table.row($(this).parents('tr')).data();
+    rowIndex = brand_table.row($(this).parents('tr')).index();
 });
 
-// DELETE Confirmation button
-$("#delete_supplier").click(function () {
+$("#delete_brand").click(function () {
 
     $(this).text('Deleting...');
     $.ajax({
-        url: riyad_domain + '/supplier/' + rowData.id,
+        url: nafisa_domain + '/brand/' + rowData.id,
         type: 'DELETE',
         dataType: "json",
         success: function (data) {
 
-            let currentPage = shop_supplier_table.page();
-            shop_supplier_table.row(rowIndex).remove().draw();
-
-            const modal = bootstrap.Modal.getInstance($("#delete_supplier_modal"));
+            let currentPage = brand_table.page();
+            brand_table.row(rowIndex).remove().draw();
+            const modal = bootstrap.Modal.getInstance($("#delete_brand_modal"));
             modal.hide();
-
-            $("#delete_supplier").text('Delete');
-
-            // redrawing to original page
-            shop_supplier_table.page(currentPage).draw('page');
-
+            $("#delete_brand").text('Delete');
+            brand_table.page(currentPage).draw('page');
             notyf.success({
                 message: data.status.message,
                 duration: 7000,
@@ -2280,12 +2288,15 @@ $("#delete_supplier").click(function () {
             rowIndex = undefined;
         },
         error: function (data) {
-            $("#delete_supplier").text('Delete');
-            notyf.error({
-                message: "Cannot Delete This Supplier",
+            const modal = bootstrap.Modal.getInstance($("#delete_brand_modal"));
+            modal.hide();
+            $("#delete_brand").text('Delete');
+            notyf.success({
+                message: data.status.message,
                 duration: 7000,
                 icon: false
             });
+
         },
     });
 });
@@ -2532,7 +2543,6 @@ $("#update_department").click(function () {
 //Delete Department----------------------------------------
 
 
-
 $('#department_dataTable tbody').on('click', '#delete_department_btn', function () {
     rowData = department_table.row($(this).parents('tr')).data();
     rowIndex = department_table.row($(this).parents('tr')).index();
@@ -2593,8 +2603,6 @@ $("#delete_department").click(function () {
         },
     });
 });
-
-
 
 
 //Category=========================================================================================================================================
@@ -2932,7 +2940,6 @@ $("#delete_category").click(function () {
 });
 
 
-
 //Designation+==================================================================================================================
 
 
@@ -3020,12 +3027,11 @@ let designation_table = $('#Designation_dataTable').DataTable({
         {
             data: '',
             render: function () {
-                 return  '<button   id="delete_categorybtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button   id="delete_categorybtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
 });
-
 
 
 $("#add_kpi").click(function () {
@@ -3037,7 +3043,7 @@ $("#add_kpi").click(function () {
     };
 
     $.ajax({
-        url: riyad_domain + '/user_designation',
+        url: nafisa_domain + '/user_designation',
         type: 'POST',
         data: JSON.stringify(addKpiModal),
         contentType: "application/json",
@@ -3094,28 +3100,6 @@ $("#add_kpi").click(function () {
     });
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //User Profile================================================================================================================
@@ -3230,7 +3214,7 @@ let userProfile_table = $('#userProfile_datatable').DataTable({
         {data: 'designation_id.name'},
         {data: 'salary'},
         {data: 'department_id.name'},
-        {data: 'shop_id.name'},
+        {data: 'branch_id.name'},
         {data: 'ref_comment'},
 
 
@@ -3249,12 +3233,6 @@ let userProfile_table = $('#userProfile_datatable').DataTable({
             }
         },
 
-        // {
-        //     data: '',
-        //     render: function () {
-        //         return '<button id="salesman_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_salesman_modal">Details</button>'
-        //     }
-        // },
         {
             data: '',
             render: function () {
@@ -3273,7 +3251,7 @@ $(document).ready(function () {
 
 
 $.ajax({
-    url: nafisa_domain +'/department',
+    url: nafisa_domain + '/department',
     type: 'GET',
     success: function (data) {
         let category_parents = data?.data.map(item => item)
@@ -3284,8 +3262,6 @@ $.ajax({
     }
 
 });
-
-
 
 
 // Details Button
@@ -3345,7 +3321,7 @@ $('#add_customer_modal').on('hidden.bs.modal', function () {
 $("#user_profile_post_form").on('submit', (function (e) {
     e.preventDefault();
     $.ajax({
-        url: nafisa_domain + '/userprofile',
+        url: nafisa_domain + '/user_profile',
         type: "POST",
         data: new FormData(this),
         contentType: false,
@@ -3563,7 +3539,7 @@ $("#update_customer_post_form").on('submit', (function (e) {
 let kpi_table = $('#salesKpi_dataTable').DataTable({
 
     ajax: {
-        url: riyad_domain + '/sales_kpi',
+        url: nafisa_domain + '/sales_kpi',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -3657,7 +3633,7 @@ let kpi_table = $('#salesKpi_dataTable').DataTable({
 
 //init Parent--------------------------------------------
 $.ajax({
-    url: riyad_domain + '/salesman',
+    url: nafisa_domain + '/salesman',
     type: 'GET',
     success: function (data) {
         let category_parents = data?.data.map(item => item)
@@ -3683,7 +3659,7 @@ $("#add_kpi").click(function () {
         target_sales_volume: $("#sales_kpi_volume").val(),
     }
     $.ajax({
-        url: riyad_domain + '/sales_kpi',
+        url: nafisa_domain + '/sales_kpi',
         type: 'POST',
         data: JSON.stringify(addKpiModal),
         contentType: "application/json",
@@ -3744,7 +3720,7 @@ $("#add_kpi").click(function () {
 //Update Category-----------------------------------
 
 $.ajax({
-    url: riyad_domain + '/salesman',
+    url: nafisa_domain + '/salesman',
     type: 'GET',
     success: function (data) {
         let category_parents = data?.data.map(item => item)
@@ -3782,7 +3758,7 @@ $("#update_kpi").click(function () {
 
     // updating server row
     $.ajax({
-        url: riyad_domain + '/sales_kpi/' + rowData.id,
+        url: nafisa_domain + '/sales_kpi/' + rowData.id,
         type: 'PUT',
         data: JSON.stringify(addKpiModal),
         contentType: "application/json; charset=utf-8",
@@ -3859,7 +3835,7 @@ $('#salesKpi_dataTable tbody').on('click', '#delete_kpibtn', function () {
 $("#delete_kpi").click(function () {
     $("#delete_category").text('Deleting....');
     $.ajax({
-        url: riyad_domain + '/sales_kpi/' + rowData.id,
+        url: nafisa_domain + '/sales_kpi/' + rowData.id,
         type: 'DELETE',
         dataType: "json",
         success: function (data) {
@@ -4014,27 +3990,28 @@ let attendance_table = $('#attendance_datatable').DataTable({
 //init supplier datatable and load data
 
 let product_table = $('#product_dataTable').DataTable({
-    // order: [[0, 'desc']],
-    // "columnDefs": [
-    //     {'visible': false, 'targets': 0},
-    //     {"width": "15%", "targets": 1},
-    //     {"width": "20%", "targets": 2},
-    //     {'visible': "20%", 'targets': 3},
-    //     {'visible': false, 'targets': 4},
-    //     {'visible': false, 'targets': 5},
-    //     {'visible': false, 'targets': 6},
-    //     {'visible': false, 'targets': 7},
-    //     {'visible': false, 'targets': 8},
-    //     {"visible": false, "targets": 9},
-    //     {"visible": false, "targets": 10},
-    //     {"width": "15%", "targets": 11},
-    //     {"width": "7%", "targets": 12},
-    //     {"width": "10%", "targets": 13},
-    // ],
     ajax: {
         url: nafisa_domain + '/products',
         dataSrc: 'data',
     },
+    order: [[0, 'desc']],
+    "columnDefs": [
+        {"width": "15%", "targets": 0},
+        {"visible": false, "targets": 1},
+        {"visible": false, "targets": 2},
+        {"visible": false, "targets": 3},
+        {"width": "15%", "targets": 4},
+        {"width": "15%", "targets": 5},
+        {"visible": false, "targets": 6},
+        {"visible": false, "targets": 7},
+        {"visible": false, "targets": 8},
+        {"visible": false, "targets": 9},
+        {"visible": false, "targets": 10},
+        {"width": "15%", "targets": 11},
+        {"width": "7%", "targets": 12},
+        {"width": "10%", "targets": 13}
+    ],
+
     rowId: 'id',
     dom: 'Blfrtip',
     oLanguage: {
@@ -4109,7 +4086,7 @@ let product_table = $('#product_dataTable').DataTable({
     columns: [
         {data: 'name'},
         {data: 'description'},
-        {data: 'unit_type.name'},
+        {data: 'unit_id.name'},
         {data: 'unit_size'},
         {data: 'brand_id.name'},
         {data: 'category_id.name'},
@@ -4121,20 +4098,20 @@ let product_table = $('#product_dataTable').DataTable({
         {
             data: 'product_image_url',
             render: function () {
-                return '<button id="supplier_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#supplier_image_modal">View</button>'
+                return '<button id="product_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#product_image_modal">View</button>'
             }
         },
         {
             data: 'details',
             render: function () {
-                return '<button id="supplier_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_supplier_modal">Details</button>'
+                return '<button id="product_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_product_modal">Details</button>'
             }
         },
         {
             data: '',
             render: function () {
-                return '<button id="update_productBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"  data-bs-target="#update_product_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>'
-                    + '<button   id="delete_productBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button id="update_productBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"  data-bs-target="#update_product_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button> '
+                    + ' <button   id="delete_productBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
@@ -4142,16 +4119,34 @@ let product_table = $('#product_dataTable').DataTable({
 
 //View  Supplier Photo Button----------------
 
-$('#supplier_dataTable tbody').on('click', '#supplier_photo', function () {
-    rowData = shop_supplier_table.row($(this).parents('tr')).data();
-
-    $("#supplier_image").attr("src", riyad_domain + rowData.image_url);
+$('#product_dataTable tbody').on('click', '#product_photo', function () {
+    product_table.ajax.reload()
+    rowData = product_table.row($(this).parents('tr')).data();
+    $("#product_image").attr("src", rowData.product_image_url);
 });
 
 //cropzee-----------------
+
 $(document).ready(function () {
     $("#product_image_url").cropzee();
+    $("#update_product_image_url").cropzee();
+
 });
+
+
+//Reset product add Modal Input when it's Close
+$('#add_product_modal').on('hidden.bs.modal', function () {
+    $('[data-cropzee="' + 'product_image_url' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="product_image_url"><img  src=""></div>');
+    $(this).find('#product_post_form').trigger('reset');
+});
+
+//Reset Product update Modal Input when it's Close
+$('#update_product_modal').on('hidden.bs.modal', function () {
+    $('[data-cropzee="' + 'update_product_image_url' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="update_product_image_url"><img id="s_nid_img" src=""></div>');
+});
+
+
+
 
 //init brand--------------------------------------------
 $.ajax({
@@ -4190,8 +4185,51 @@ $.ajax({
     }
 });
 
+
+$('#product_dataTable tbody').on('click', '#product_details', function () {
+    rowData = product_table.row($(this).parents('tr')).data()
+
+    // setting row values to details modal
+    $('#d_description').text(rowData.description);
+    $("#d_unit").text(rowData.unit_id.name);
+    $("#d_unit_size").text(rowData.unit_size);
+    $("#d_cost_price").text(rowData.cost_price);
+    $("#d_mrp").text(rowData.mrp);
+    $("#d_wholesale").text(rowData.wholesale_price);
+    $("#d_retails").text(rowData.retail_price);
+    $("#d_discount").text(rowData.discount_amount);
+})
+
+
+
 /* ### Post Data Start ### */
 $("#product_post_form").on('submit', (function (e) {
+
+
+    let addPd = {
+        name:$("#name").val(),
+        description:$('#product_description').val(),
+        unit_size:$("#product_unit_size").val(),
+        cost_price:$("#product_cost_price").val(),
+        mrp:$("#product_mrp").val(),
+        wholesale_price:$("#product_wholesale_price").val(),
+        retail_price:$("#product_retail_price").val(),
+        discount_amount:$("#product_discount_amount").val(),
+        product_image_url:$("#update_product_image").attr("src", ''),
+        brand_id:{
+            id: 1,
+            name: $("#product_brand_id :selected").text(),
+        },
+        unit_id:{
+            id: 1,
+            name: $("#product_unit_type :selected").text(),
+        },
+        category_id:{
+            id: 1,
+            name: $("#product_category_id :selected").text(),
+        },
+    };
+
     e.preventDefault();
     $.ajax({
         url: nafisa_domain + '/products',
@@ -4202,20 +4240,17 @@ $("#product_post_form").on('submit', (function (e) {
         processData: false,
         success: function (data) {
             if (data.status.code === 1) {
+
                 const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
                 modal.hide();
-                let newSRowIndex = product_table.row.add(data.data).draw();
+                let newSRowIndex = product_table.row.add(addPd).draw();
                 //Success Notification
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
-                //reset input Field
-                $('form :input').val('');
-                $('.input').val('');
-                product_table.search('');
-                // re-ordering to default
+
                 product_table.order([0, 'desc']).draw();
                 // highlighting newly added row
                 $(product_table.row(newSRowIndex.index()).nodes()).addClass('selected');
@@ -4242,34 +4277,68 @@ $("#product_post_form").on('submit', (function (e) {
             });
         }
     });
+    product_table.ajax.reload();
+
 }));
 
 
 $('#product_dataTable tbody').on('click', '#update_productBtn', function () {
     // getting parent row Data
+
     rowData = product_table.row($(this).parents('tr')).data();
+    rowIndex = product_table.row($(this).parents('tr')).index();
+
+
     // setting row values to update modal input boxes
     $("#update_name").val(rowData.name);
     $('#update_product_description').val(rowData.description);
     $("#update_product_brand_id :selected").text(rowData.brand_id.name);
     $("#update_product_category_id :selected").text(rowData.category_id.name);
-    $("#update_product_unit_type :selected").text(rowData.unit_type.name);
+    $("#update_product_unit_type :selected").text(rowData.unit_id.name);
     $("#update_product_unit_size").val(rowData.unit_size);
     $("#update_product_cost_price").val(rowData.cost_price);
     $("#update_product_mrp").val(rowData.mrp);
     $("#update_product_wholesale_price").val(rowData.wholesale_price);
     $("#update_product_retail_price").val(rowData.retail_price);
     $("#update_product_discount_amount").val(rowData.discount_amount);
-    $("#product_image_url").val(rowData.product_image_url);
 
+    $("#update_product_image").attr("src", rowData.product_image_url);
 })
 
+
 $("#update_product_post_form").on('submit', (function (e) {
+
+
+    let addKp = {
+        name:$("#update_name").val(),
+        description:$('#update_product_description').val(),
+        unit_size:$("#update_product_unit_size").val(),
+        cost_price:$("#update_product_cost_price").val(),
+        mrp:$("#update_product_mrp").val(),
+        wholesale_price:$("#update_product_wholesale_price").val(),
+        retail_price:$("#update_product_retail_price").val(),
+        discount_amount:$("#update_product_discount_amount").val(),
+        product_image_url:$("#update_product_image").attr("src", rowData.product_image_url),
+        brand_id:{
+            id: 1,
+            name: $("#update_product_brand_id :selected").text(),
+        },
+        unit_id:{
+            id: 1,
+            name: $("#update_product_unit_type :selected").text(),
+        },
+        category_id:{
+            id: 1,
+            name: $("#update_product_category_id :selected").text(),
+        },
+    };
+
+
     e.preventDefault();
     $.ajax({
-        url: riyad_domain + '/supplier/' + rowData.id,
-        type: "PUT",
-        data: new FormData(this),
+        url: nafisa_domain + '/products/' + rowData.id,
+        type: "POST",
+        data:  new FormData(this),
         contentType: false,
         cache: false,
         processData: false,
@@ -4282,15 +4351,19 @@ $("#update_product_post_form").on('submit', (function (e) {
                 //Set default button text again
                 let currentPage = product_table.page();
                 // update datatable
-                product_table.row(rowIndex).data(data.data).draw();
+                product_table.row(rowIndex).data(addKp).draw();
+
                 // redrawing to original page
                 product_table.page(currentPage).draw('page');
+
                 // highlighting newly added row
                 $(product_table.row(rowIndex).nodes()).addClass('selected');
                 setTimeout(function () {
                     $(product_table.row(rowIndex).nodes()).removeClass('selected');
                 }, 2000);
-                notyf.error({
+
+                // notification
+                notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
@@ -4452,7 +4525,7 @@ let unit_table = $('#product_unit_datatable').DataTable({
         {
             data: '',
             render: function () {
-                  return  '<button   id="delete_UnitBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_unit_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button   id="delete_UnitBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_product_unit_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
@@ -4501,16 +4574,16 @@ $("#add_product_unit").click(function () {
             }
         },
         error: function (data) {
-                const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
-                modal.hide();
-                //Set default button text again
-                $("#add_product_unit").text('Submit');
-                // notification
-                notyf.error({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
+            const modal = bootstrap.Modal.getInstance($("#product_unit_modal"));
+            modal.hide();
+            //Set default button text again
+            $("#add_product_unit").text('Submit');
+            // notification
+            notyf.error({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
 
         }
     });
@@ -4582,16 +4655,6 @@ $("#delete_product_unit").click(function () {
 
     });
 });
-
-
-
-
-
-
-
-
-
-
 
 
 //    PRODUCT RAW MATERIAL ================================================================================================================================
@@ -4718,7 +4781,7 @@ $("#add_product_raw_material").click(function () {
     let addRawModal2 = {
         name: $("#product_raw_material_name").val(),
         unit_id: {
-            id:10,
+            id: 10,
             name: $('#product_raw_material_unit_name option:selected').text()
         },
         unit_size: $("#product_raw_material_unit_size").val(),
@@ -4762,7 +4825,7 @@ $("#add_product_raw_material").click(function () {
             }
         },
         error: function (data) {
-            if (data.status.code===0){
+            if (data.status.code === 0) {
 
                 const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
                 modal.hide();
@@ -4775,7 +4838,7 @@ $("#add_product_raw_material").click(function () {
                     icon: false
                 });
 
-            }else {
+            } else {
 
                 const modal = bootstrap.Modal.getInstance($("#product_raw_material_modal"));
                 modal.hide();
@@ -4790,7 +4853,6 @@ $("#add_product_raw_material").click(function () {
 
 
             }
-
 
 
         }
@@ -4826,7 +4888,7 @@ $("#update_product_raw_material").click(function () {
     let updateRawModal2 = {
         name: $("#update_product_raw_material_name").val(),
         unit_id: {
-            id:10,
+            id: 10,
             name: $('#update_product_raw_material_unit_name option:selected').text()
         },
         unit_size: $("#update_product_raw_material_unit_size").val(),
@@ -4836,7 +4898,7 @@ $("#update_product_raw_material").click(function () {
 
     $(this).text('Updating...');
 
-   // console.log(rowData.id)
+    // console.log(rowData.id)
 
     // updating server row
     $.ajax({
@@ -4984,7 +5046,7 @@ let sales_product_table = $('#sales_product_dataTable').DataTable({
             title: 'Sales Product Information',
             orientation: 'landscape',
             exportOptions: {
-                columns: [ 0, 1, 2, 3, 4],
+                columns: [0, 1, 2, 3, 4],
                 modifier: {
                     page: 'current'
                 }
@@ -5060,7 +5122,6 @@ let sales_product_table = $('#sales_product_dataTable').DataTable({
 });
 
 
-
 $('#sales_product_dataTable tbody').on('click', '#delete_sales_Product_Btn', function () {
     rowData = sales_product_table.row($(this).parents('tr')).data();
     rowIndex = sales_product_table.row($(this).parents('tr')).index();
@@ -5118,10 +5179,6 @@ $("#delete_sales_product").click(function () {
 
     });
 });
-
-
-
-
 
 
 //PURCHASE ORDER FROM ==========================================================================================================
@@ -5425,7 +5482,7 @@ $('#purchase_transaction_dataTable').DataTable({
             title: 'Purchase Transaction',
             orientation: 'landscape',
             exportOptions: {
-                columns: [0,1, 2, 3,5],
+                columns: [0, 1, 2, 3, 5],
                 modifier: {
                     page: 'current'
                 }
@@ -5450,7 +5507,7 @@ $('#purchase_transaction_dataTable').DataTable({
             extend: 'excelHtml5',
             title: 'Purchase Transaction',
             exportOptions: {
-                columns: [0,1,2,3,5],
+                columns: [0, 1, 2, 3, 5],
 
             },
 
@@ -5458,7 +5515,7 @@ $('#purchase_transaction_dataTable').DataTable({
         {
             extend: 'pdf',
             exportOptions: {
-                columns: [0,1,2,3,5],
+                columns: [0, 1, 2, 3, 5],
                 modifier: {
                     page: 'current'
                 }
@@ -5736,7 +5793,6 @@ $("#sales_transaction_form").on('submit', (function (e) {
             sales_payment_modal
 
 
-
             if (data.status.code === 1) {
 
                 const modal = bootstrap.Modal.getInstance($("#sales_payment_modal"));
@@ -5761,18 +5817,17 @@ $("#sales_transaction_form").on('submit', (function (e) {
             const modal = bootstrap.Modal.getInstance($("#sales_payment_modal"));
             modal.hide();
 
-                notyf.error({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
+            notyf.error({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
         },
 
     })
 }));
 
 //SALES TRANSACTION====================================================================================================================================================
-
 
 
 //init shop & branch  datatable and load data
@@ -5797,7 +5852,7 @@ $('#sales_transaction_dataTable').DataTable({
             title: 'Sales Transaction',
             orientation: 'landscape',
             exportOptions: {
-                columns: [0,1, 2, 3,5],
+                columns: [0, 1, 2, 3, 5],
                 modifier: {
                     page: 'current'
                 }
@@ -5822,7 +5877,7 @@ $('#sales_transaction_dataTable').DataTable({
             extend: 'excelHtml5',
             title: 'Sales Transaction',
             exportOptions: {
-                columns: [0,1,2,3,5],
+                columns: [0, 1, 2, 3, 5],
 
             },
 
@@ -5830,7 +5885,7 @@ $('#sales_transaction_dataTable').DataTable({
         {
             extend: 'pdf',
             exportOptions: {
-                columns: [0,1,2,3,5],
+                columns: [0, 1, 2, 3, 5],
                 modifier: {
                     page: 'current'
                 }
@@ -5872,29 +5927,6 @@ $('#sales_transaction_dataTable').DataTable({
 
     ]
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //FORMULA=========================================================================================================
@@ -5993,7 +6025,7 @@ $(document).ready(function () {
 
 
 $.ajax({
-    url: riyad_domain + '/category',
+    url: nafisa_domain + '/category',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
@@ -6006,7 +6038,7 @@ $.ajax({
 
 //init Unit--------------------------------------------
 $.ajax({
-    url: riyad_domain + '/product_raw_material',
+    url: nafisa_domain + '/product_raw_material',
     type: 'GET',
     success: function (data) {
         let product_parents = data?.data.map(item => item)
@@ -6051,7 +6083,7 @@ $("#formula_submit_btn").click(function () {
     };
 
     $.ajax({
-        url: riyad_domain + '/product_formula',
+        url: nafisa_domain + '/product_formula',
         type: 'POST',
         data: JSON.stringify(addformula),
         contentType: "application/json",
@@ -6125,7 +6157,7 @@ var inventory_table = $('#inventory_dataTable').DataTable({
     language: {
         search: "",
         searchPlaceholder: "Search...",
-        emptyTable : "You Need To Selected A Branch"
+        emptyTable: "You Need To Selected A Branch"
     },
 
     columns: [
@@ -6139,18 +6171,17 @@ var inventory_table = $('#inventory_dataTable').DataTable({
             data: '',
             render: function () {
                 return '<button id="update_stockBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#Update_Stock_Alert_Modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button> '
-                    +' <button id="transferStockBtn"  class="btn btn-primary" toggle="tooltip" title="Transfrt Product" type="button" data-bs-toggle="modal"   data-bs-target="#transfer_inventory_modal" >Transfer</button> '
+                    + ' <button id="transferStockBtn"  class="btn btn-primary" toggle="tooltip" title="Transfrt Product" type="button" data-bs-toggle="modal"   data-bs-target="#transfer_inventory_modal" >Transfer</button> '
             }
         },
 
     ],
-    "createdRow": function (row, data, ) {
+    "createdRow": function (row, data,) {
         if (data['min_stock_alert'] >= data['stock_amount']) {
             $(row).css("background-color", "rgb(245,222,179)");
         }
     }
 });
-
 
 
 $("#sub_bra_id").click(function () {
@@ -6176,12 +6207,12 @@ $('#inventory_dataTable tbody').on('click', '#update_stockBtn', function () {
 
         };
 
-       var upData={
-           product_id: rowData.product_id,
-           category_id: rowData.category_id,
-           branch_id:  rowData.branch_id,
-           stock_amount:  rowData.stock_amount,
-           min_stock_alert:  updateUserModal.min_stock_alert,
+        var upData = {
+            product_id: rowData.product_id,
+            category_id: rowData.category_id,
+            branch_id: rowData.branch_id,
+            stock_amount: rowData.stock_amount,
+            min_stock_alert: updateUserModal.min_stock_alert,
         }
 
 
@@ -6215,9 +6246,7 @@ $('#inventory_dataTable tbody').on('click', '#update_stockBtn', function () {
                         duration: 7000,
                         icon: false
                     });
-                }
-
-                else {
+                } else {
                     const modal = bootstrap.Modal.getInstance($("#Update_Stock_Alert_Modal"));
                     modal.hide();
                     notyf.error({
@@ -6240,7 +6269,7 @@ $('#inventory_dataTable tbody').on('click', '#update_stockBtn', function () {
                         icon: false
                     });
 
-                }else {
+                } else {
                     const modal = bootstrap.Modal.getInstance($("#Update_Stock_Alert_Modal"));
                     modal.hide();
                     notyf.error({
@@ -6283,19 +6312,18 @@ $('#inventory_dataTable tbody').on('click', '#transferStockBtn', function () {
         let transferModal = {
             product_id: `${rowData.product_id.id}`,
             from_branch: `${rowData.branch_id.id}`,
-            to_branch:  $("#transfer_to_branch").val(),
+            to_branch: $("#transfer_to_branch").val(),
             purchase_id: "0",
             product_quantity: $("#transfer_quantity").val(),
 
         };
-        var upData={
+        var upData = {
             product_id: rowData.product_id,
             category_id: rowData.category_id,
-            branch_id:  rowData.branch_id,
-            stock_amount: rowData.stock_amount-$("#transfer_quantity").val(),
-            min_stock_alert:  rowData.min_stock_alert,
+            branch_id: rowData.branch_id,
+            stock_amount: rowData.stock_amount - $("#transfer_quantity").val(),
+            min_stock_alert: rowData.min_stock_alert,
         }
-
 
 
         $.ajax({
@@ -6328,9 +6356,7 @@ $('#inventory_dataTable tbody').on('click', '#transferStockBtn', function () {
                         duration: 7000,
                         icon: false
                     });
-                }
-
-                else {
+                } else {
                     const modal = bootstrap.Modal.getInstance($("#transfer_inventory_modal"));
                     modal.hide();
                     notyf.error({
@@ -6352,8 +6378,6 @@ $('#inventory_dataTable tbody').on('click', '#transferStockBtn', function () {
     });
 
 });
-
-
 
 
 //INVENTORY TRACE===========================================================================================================================================
@@ -6390,7 +6414,8 @@ $('#inventory_trace_dataTable').DataTable({
         {data: 'transfer_type_id.name'},
         {data: 'product_id.name'},
         {data: 'product_quantity'},
-        {data: 'from_branch_id.name',
+        {
+            data: 'from_branch_id.name',
             render: function (data) {
                 if (!data) {
                     return 'N/A';
@@ -6399,7 +6424,8 @@ $('#inventory_trace_dataTable').DataTable({
                 }
             }
         },
-        {data: 'to_branch_id.name',
+        {
+            data: 'to_branch_id.name',
             render: function (data) {
                 if (!data) {
                     return 'N/A';
@@ -6408,7 +6434,8 @@ $('#inventory_trace_dataTable').DataTable({
                 }
             }
         },
-        {data: 'from_supplier_id.name',
+        {
+            data: 'from_supplier_id.name',
             render: function (data) {
                 if (!data) {
                     return 'N/A';
@@ -6417,7 +6444,8 @@ $('#inventory_trace_dataTable').DataTable({
                 }
             }
         },
-        {data: 'to_supplier_id.name',
+        {
+            data: 'to_supplier_id.name',
             render: function (data) {
                 if (!data) {
                     return 'N/A';
@@ -6431,46 +6459,45 @@ $('#inventory_trace_dataTable').DataTable({
 });
 
 
-
 // Formula Ingredients=================================================================================================================================
 
 function format(d) {
     let str = '';
-    d.formula_ingredients.forEach(item=>{
-       str +=  '<table class="table mb-0" style="background: #ead4c136">' +
-           '<tr>' +
-           "<td class='ps-6'>Raw Material:</td>" +
-           "<td class='pe-12'>" +
-           item.raw_mat_id.name +
-           "</td>" +
-           "</tr>" +
+    d.formula_ingredients.forEach(item => {
+        str += '<table class="table mb-0" style="background: #ead4c136">' +
+            '<tr>' +
+            "<td class='ps-6'>Raw Material:</td>" +
+            "<td class='pe-12'>" +
+            item.raw_mat_id.name +
+            "</td>" +
+            "</tr>" +
 
-           "<td class='ps-6'>Percentage:</td>" +
-           "<td>" +
-           item.percentage +
-           "</td>" +
-           "</tr>" +
+            "<td class='ps-6'>Percentage:</td>" +
+            "<td>" +
+            item.percentage +
+            "</td>" +
+            "</tr>" +
 
-           "<td class='ps-6'>Unit:</td>" +
-           "<td>" +
-           item.no_of_unit +
-           "</td>" +
-           "</tr>" +
-           "<td>" +
-           "<hr/>"+
-           "</td>" +
-           "</table>"
+            "<td class='ps-6'>Unit:</td>" +
+            "<td>" +
+            item.no_of_unit +
+            "</td>" +
+            "</tr>" +
+            "<td>" +
+            "<hr/>" +
+            "</td>" +
+            "</table>"
     })
     return str
 }
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
 
     var table = $("#formula_ingredients_datatable").DataTable({
         ajax: {
-            url: riyad_domain + '/product_formula',
+            url: nafisa_domain + '/product_formula',
             dataSrc: 'data',
         },
         "columnDefs": [
@@ -6479,39 +6506,39 @@ $(document).ready(function() {
         ],
 
         columns: [
-            { data: "name"},
+            {data: "name"},
             {
                 className: "details-control",
                 orderable: false,
                 data: null,
                 defaultContent: '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>\n'
             },
-            { data: "formula_ingredients[].raw_mat_id.name", visible: false},
-            { data: "formula_ingredients[].percentage", visible: false},
-            { data: "formula_ingredients[].no_of_unit", visible: false},
+            {data: "formula_ingredients[].raw_mat_id.name", visible: false},
+            {data: "formula_ingredients[].percentage", visible: false},
+            {data: "formula_ingredients[].no_of_unit", visible: false},
         ],
         "columnDefs": [
-            { className: "my_class", "targets": [ 0 ] }
+            {className: "my_class", "targets": [0]}
         ],
 
         order: [[1, "asc"]]
     });
 
-    $("#formula_ingredients_datatable tbody").on("click", "td.details-control", function() {
+    $("#formula_ingredients_datatable tbody").on("click", "td.details-control", function () {
         var tr = $(this).closest("tr");
         var row = table.row(tr);
         rowData = table.row($(this).parents('tr')).data();
 
-        var rowArray=rowData.formula_ingredients;
+        var rowArray = rowData.formula_ingredients;
         if (row.child.isShown()) {
             row.child.hide();
             tr.removeClass("shown");
-        }
-        else if (!rowArray.length){
+        } else if (!rowArray.length) {
             notyf.error({
                 message: 'Sorry There have no Products',
                 duration: 7000,
-                icon: false})
+                icon: false
+            })
         } else {
             row.child(format(row.data()), "p-0").show();
             tr.addClass("shown");
@@ -6520,13 +6547,8 @@ $(document).ready(function() {
 });
 
 
-
-
-
 //REPORT================================================================================================================================================================================
 // =====================================================================================================================================================================================
-
-
 
 
 //CUSTOMER DUE REPORT-----------------------------------------------------------------------------------
@@ -6544,32 +6566,32 @@ $.ajax({
     }
 });
 
- var due_data_table=$('#customer_due_datatable').DataTable({
+var due_data_table = $('#customer_due_datatable').DataTable({
 
-     dom: 'Blfrtip',
-     buttons: [
-         {
-             extend: 'print',
-             title: 'Customer Due Report',
-             orientation: 'landscape',
+    dom: 'Blfrtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Customer Due Report',
+            orientation: 'landscape',
 
-             pageSize: 'LEGAL',
+            pageSize: 'LEGAL',
 
-         },
-         {
-             extend: 'excelHtml5',
-             title: 'Customer Due Report',
-         },
-         {
-             extend: 'pdf',
-             pageSize: 'LEGAL',
-             title: 'Customer Due Report',
-         },
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Customer Due Report',
+        },
+        {
+            extend: 'pdf',
+            pageSize: 'LEGAL',
+            title: 'Customer Due Report',
+        },
 
-     ],
+    ],
 
 
-     columns: [
+    columns: [
         {data: 'name'},
         {data: 'total_ordered'},
         {data: 'total_paid'},
@@ -6584,11 +6606,11 @@ $.ajax({
 });
 
 $("#due_customer_submit_button").click(function () {
-   var id = $("#select_customer_due").val();
+    var id = $("#select_customer_due").val();
 
 
     due_data_table.ajax.url(`https://nafisa.selopian.us/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
-        $.fn.dataTable.ext.errMode = 'throw';
+    $.fn.dataTable.ext.errMode = 'throw';
 
 
 });
@@ -6610,7 +6632,7 @@ $.ajax({
 });
 
 
-var purchase_data_table=$('#customer_purchase_datatable').DataTable({
+var purchase_data_table = $('#customer_purchase_datatable').DataTable({
 
 
     dom: 'Blfrtip',
@@ -6634,7 +6656,6 @@ var purchase_data_table=$('#customer_purchase_datatable').DataTable({
         },
 
     ],
-
 
 
     columns: [
@@ -6674,19 +6695,16 @@ $("#customer_purchase_report").click(function () {
 $('#customer_purchase_datatable tbody').on('click', '#product_list', function () {
     rowData = purchase_data_table.row($(this).parents('tr')).data();
     let i = 1
-    rowData.product_list.forEach(item=>{
+    rowData.product_list.forEach(item => {
 
-        $(".customer_product_list").append("<p>"+i+". "+item.name+"</p>");
+        $(".customer_product_list").append("<p>" + i + ". " + item.name + "</p>");
         i++;
     })
-    $('#details_product_modal').on('hide.bs.modal', function(){
+    $('#details_product_modal').on('hide.bs.modal', function () {
         $('.customer_product_list').empty()
     })
 
 });
-
-
-
 
 
 //SALESMAN PERFORMANCE--------------------------------------------------------------------------------------
@@ -6704,7 +6722,7 @@ $.ajax({
     }
 });
 
-var salesman_performance_table=$('#salesman_performance_datatable').DataTable({
+var salesman_performance_table = $('#salesman_performance_datatable').DataTable({
 
     dom: 'Blfrtip',
     buttons: [
@@ -6761,8 +6779,7 @@ $.ajax({
 });
 
 
-
-var supplier_sales_table=$('#supplier_sales_datatable').DataTable({
+var supplier_sales_table = $('#supplier_sales_datatable').DataTable({
 
     dom: 'Blfrtip',
     buttons: [
@@ -6790,7 +6807,8 @@ var supplier_sales_table=$('#supplier_sales_datatable').DataTable({
         {data: 'supplier_name'},
         {data: 'total_purchase_cost'},
 
-        {data: 'product_list[]',
+        {
+            data: 'product_list[]',
             render: function (data) {
                 if (!data.length) {
                     return 'N/A';
@@ -6817,20 +6835,19 @@ $("#supplier_sales_submit_button").click(function () {
 });
 
 
-
 $('#supplier_sales_datatable tbody').on('click', '#details_supplier_modal_btn', function () {
     rowData = supplier_sales_table.row($(this).parents('tr')).data();
 
     //console.log(rowData)
     let i = 1
-    rowData.product_list.forEach(item=>{
-        $(".details_supplier_modal_list").append("<p>"+i+". "+item.name+"</p>");
+    rowData.product_list.forEach(item => {
+        $(".details_supplier_modal_list").append("<p>" + i + ". " + item.name + "</p>");
         i++;
     })
 });
 
 
-$('#details_supplier_modal_report').on('hide.bs.modal', function(){
+$('#details_supplier_modal_report').on('hide.bs.modal', function () {
     $('.details_supplier_modal_list').empty()
     //do your stuff
 })
@@ -6838,7 +6855,7 @@ $('#details_supplier_modal_report').on('hide.bs.modal', function(){
 //SUPPLIER DUE REPORT------------------------------------------------------------------------------
 
 
-var supplier_due_table =$('#supplier_due_datatable').DataTable({
+var supplier_due_table = $('#supplier_due_datatable').DataTable({
 
     dom: 'Blfrtip',
     buttons: [
@@ -6887,10 +6904,6 @@ $("#supplier_due_submit_button").click(function () {
 //PRODUCT SALES REPORT---------------------------------------------------------------
 
 
-
-
-
-
 $.ajax({
     url: nafisa_domain + '/branch',
     type: 'GET',
@@ -6904,12 +6917,11 @@ $.ajax({
 });
 
 
-
 function formatData(d) {
     let str = '';
-    d.products.forEach(item=>{
+    d.products.forEach(item => {
 
-        str +=  '<table class="table mb-0" style="background: #ead4c136; transition: .5s" >' +
+        str += '<table class="table mb-0" style="background: #ead4c136; transition: .5s" >' +
             '<tr>' +
             "<td class='ps-6'>Product Name:</td>" +
             "<td class='pe-12'>" +
@@ -6941,7 +6953,7 @@ function formatData(d) {
             "</td>" +
             "</tr>" +
             "<td>" +
-            "<hr/>"+
+            "<hr/>" +
             "</td>" +
             "</table>"
     })
@@ -6949,93 +6961,90 @@ function formatData(d) {
 }
 
 
+var sales_report_table = $("#product_sales_report_customer_datatable").DataTable({
 
+    dom: 'Blfrtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: 'Branch Sales Information',
+            orientation: 'landscape',
 
-    var sales_report_table = $("#product_sales_report_customer_datatable").DataTable({
+            pageSize: 'LEGAL',
 
-        dom: 'Blfrtip',
-        buttons: [
-            {
-                extend: 'print',
-                title: 'Branch Sales Information',
-                orientation: 'landscape',
+        },
+        {
+            extend: 'excelHtml5',
+            title: 'Branch Sales Information',
+        },
+        {
+            extend: 'pdf',
+            pageSize: 'LEGAL',
+            title: 'Branch Sales Information',
+        },
 
-                pageSize: 'LEGAL',
+    ],
 
-            },
-            {
-                extend: 'excelHtml5',
-                title: 'Branch Sales Information',
-            },
-            {
-                extend: 'pdf',
-                pageSize: 'LEGAL',
-                title: 'Branch Sales Information',
-            },
+    "columnDefs": [
+        {"width": "15%", "targets": 0},
+        {"width": "15%", "targets": 1},
+        {"width": "15%", "targets": 3},
+    ],
+    columns: [
+        {data: "branch_name"},
+        {data: "from"},
+        {data: "to"},
 
-        ],
+        {
+            className: "details-control",
+            orderable: false,
+            data: null,
+            defaultContent: '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>\n'
+        },
+        {data: "products[].name", visible: false},
+        {data: "products[].buying_price", visible: false},
+        {data: "products[].total_units_sold", visible: false},
+        {data: "products[].total_selling_price", visible: false},
+        {data: "products[].total_profit", visible: false},
+    ],
+    "columnDefs": [
+        {className: "my_class", "targets": [0]}
+    ],
+    order: [[1, "asc"]]
+});
 
-        "columnDefs": [
-            {"width": "15%", "targets": 0},
-            {"width": "15%", "targets": 1},
-            {"width": "15%", "targets": 3},
-        ],
-        columns: [
-            { data: "branch_name"},
-            { data: "from"},
-            { data: "to"},
+$("#product_sales_report_customer_datatable tbody").on("click", "td.details-control", function () {
+    var tr = $(this).closest("tr");
+    var row = sales_report_table.row(tr);
+    rowData = sales_report_table.row($(this).parents('tr')).data();
+    var rowArray = rowData.products;
 
-            {
-                className: "details-control",
-                orderable: false,
-                data: null,
-                defaultContent: '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>\n'
-            },
-            { data: "products[].name", visible: false},
-            { data: "products[].buying_price", visible: false},
-            { data: "products[].total_units_sold", visible: false},
-            { data: "products[].total_selling_price", visible: false},
-            { data: "products[].total_profit", visible: false},
-        ],
-        "columnDefs": [
-            { className: "my_class", "targets": [ 0 ] }
-        ],
-        order: [[1, "asc"]]
-    });
+    if (row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass("shown");
+    } else if (!rowArray.length) {
+        notyf.error({
+            message: 'Sorry There have no Products',
+            duration: 7000,
+            icon: false
+        })
+    } else {
+        row.child(formatData(row.data()), "p-0").show();
+        tr.addClass("shown");
+    }
+});
 
-    $("#product_sales_report_customer_datatable tbody").on("click", "td.details-control", function() {
-        var tr = $(this).closest("tr");
-        var row = sales_report_table.row(tr);
-        rowData = sales_report_table.row($(this).parents('tr')).data();
-        var rowArray=rowData.products;
-
-        if (row.child.isShown()) {
-            row.child.hide();
-            tr.removeClass("shown");
-        }
-        else if (!rowArray.length){
-            notyf.error({
-                message: 'Sorry There have no Products',
-                duration: 7000,
-                icon: false})
-        }
-        else {
-            row.child(formatData(row.data()), "p-0").show();
-            tr.addClass("shown");
-        }
-    });
-
-    $("#submit_product_sales_report").click(function () {
-        var id = $("#select_branch_report_product_sales").val();
-        sales_report_table.ajax.url(`https://nafisa.selopian.us/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
-        $.fn.dataTable.ext.errMode = 'throw';
-    });
+$("#submit_product_sales_report").click(function () {
+    var id = $("#select_branch_report_product_sales").val();
+    sales_report_table.ajax.url(`https://nafisa.selopian.us/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
+    $.fn.dataTable.ext.errMode = 'throw';
+});
 
 
 //category wise_product_sales_report-------------------------------------------------------
 
 
-var category_wise_product_sales_report_table =$('#category_wise_product_sales_report_datatable').DataTable({
+var category_wise_product_sales_report_table = $('#category_wise_product_sales_report_datatable').DataTable({
 
     dom: 'Blfrtip',
     buttons: [
@@ -7074,10 +7083,7 @@ $("#submit_category_wise_product_sales_report").click(function () {
 });
 
 
-
-
 //REVENUE============================================================================================================================
-
 
 
 $.ajax({
@@ -7093,9 +7099,7 @@ $.ajax({
 });
 
 
-
-
-var revenue_table =$('#revenue_datatable').DataTable({
+var revenue_table = $('#revenue_datatable').DataTable({
 
     dom: 'Blfrtip',
     buttons: [
@@ -7130,7 +7134,7 @@ var revenue_table =$('#revenue_datatable').DataTable({
     ],
 });
 
-var revenue_table_by_branch =$('#revenue_By_branch_datatable').DataTable({
+var revenue_table_by_branch = $('#revenue_By_branch_datatable').DataTable({
 
     dom: 'Blfrtip',
     buttons: [
@@ -7164,7 +7168,7 @@ var revenue_table_by_branch =$('#revenue_By_branch_datatable').DataTable({
     ],
 });
 
-var revenue_table_by_shop =$('#revenue_By_shop_datatable').DataTable({
+var revenue_table_by_shop = $('#revenue_By_shop_datatable').DataTable({
 
     dom: 'Blfrtip',
     buttons: [
@@ -7199,18 +7203,17 @@ var revenue_table_by_shop =$('#revenue_By_shop_datatable').DataTable({
 });
 
 
-
 $("#company_revenue_submit_button").click(function () {
 
-    if (!$("#company_select_length").val()){
+    if (!$("#company_select_length").val()) {
         notyf.error({
-            message:"Select The Length",
+            message: "Select The Length",
             duration: 7000,
             icon: false
         });
 
-    }else {
-        $('.revenue_datatable').css('display','block');
+    } else {
+        $('.revenue_datatable').css('display', 'block');
         revenue_table.ajax.url(`https://nafisa.selopian.us/revenue/${$("#company_select_length").val()}`).load();
         $.fn.dataTable.ext.errMode = 'throw';
 
@@ -7222,15 +7225,14 @@ $("#branch_revenue_submit_button").click(function () {
     var id = $("#select_branch_report_product_sales").val();
 
 
-
-    if (!$("#branch_select_length").val() || id==null){
+    if (!$("#branch_select_length").val() || id == null) {
         notyf.error({
-            message:"Select The Length & Branch",
+            message: "Select The Length & Branch",
             duration: 7000,
             icon: false
         });
-    }else {
-        $('.revenue_datatable_by_branch').css('display','block');
+    } else {
+        $('.revenue_datatable_by_branch').css('display', 'block');
         revenue_table_by_branch.ajax.url(`https://nafisa.selopian.us/revenue/byBranch/${id}/${$("#branch_select_length").val()}`).load();
         $.fn.dataTable.ext.errMode = 'throw';
     }
@@ -7241,14 +7243,14 @@ $("#branch_revenue_submit_button").click(function () {
 $("#shop_revenue_submit_button").click(function () {
     var id = $("#shop_select_value").val();
 
-    if (!$("#shop_select_length").val() || id==null){
+    if (!$("#shop_select_length").val() || id == null) {
         notyf.error({
-            message:"Select The Length & Shop",
+            message: "Select The Length & Shop",
             duration: 7000,
             icon: false
         });
-    }else {
-        $('.revenue_By_shop_datatable').css('display','block');
+    } else {
+        $('.revenue_By_shop_datatable').css('display', 'block');
         revenue_table_by_shop.ajax.url(`https://nafisa.selopian.us/revenue/byShop/${id}/${$("#shop_select_length").val()}`).load();
         $.fn.dataTable.ext.errMode = 'throw';
     }
