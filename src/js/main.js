@@ -153,15 +153,11 @@ $('#shop_dataTable tbody').on('click', '#update_shopBtn', function () {
 
     $("#update_shopName").val(rowData.name);
 
-    //console.log(rowData.id)
-
 })
 
 
 // Update Button
 $("#update_shop").click(function () {
-
-    //console.log(rowData.id)
 
     let updateShopModal = {
         name: $("#update_shopName").val(),
@@ -193,11 +189,6 @@ $("#update_shop").click(function () {
                 });
                 let currentPage = shop_table.page();
                 // update datatable
-                //console.log(updateShopModal2)
-
-
-                console.log(rowIndex)
-                console.log(updateShopModal2)
                 shop_table.row(rowIndex).data(updateShopModal2).draw();
 
                 // redrawing to original page
@@ -209,8 +200,6 @@ $("#update_shop").click(function () {
                     $(shop_table.row(rowIndex).nodes()).removeClass('selected');
                 }, 2000);
             } else {
-
-                //console.log(rowData.id+"sss")
 
                 //Set default button text again
                 $("#update_shop").text('Update Info');
@@ -3617,12 +3606,12 @@ let kpi_table = $('#salesKpi_dataTable').DataTable({
     ],
 
     columns: [
-        {data: 'name'},
+        {data: 'user_id.profile_user_id.name'},
         {data: 'target_sales_volume'},
         {data: 'last_modified_at'},
 
         {
-            data: 'id',
+            data: '',
             render: function () {
                 return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
                     + '<button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
@@ -3655,9 +3644,19 @@ $("#add_kpi").click(function () {
         target_sales_volume: $("#sales_kpi_volume").val(),
     };
     let d = {
-        name: $("#kpi_user").text(),
+        user_id: {
+            id: 3,
+            profile_user_id: {
+                id: 3,
+                user_id: 3,
+                name: $("#kpi_user :selected").text(),
+                branch_id: 1
+            }
+
+        },
         target_sales_volume: $("#sales_kpi_volume").val(),
     }
+
     $.ajax({
         url: nafisa_domain + '/sales_kpi',
         type: 'POST',
@@ -3780,7 +3779,7 @@ $("#update_kpi").click(function () {
                 let currentPage = kpi_table.page();
 
                 // update datatable
-                kpi_table.row(rowIndex).data(data.data.sales_volume).draw();
+                kpi_table.row(rowIndex).data(data.data).draw();
 
                 // redrawing to original page
                 kpi_table.page(currentPage).draw('page');
@@ -3833,7 +3832,7 @@ $('#salesKpi_dataTable tbody').on('click', '#delete_kpibtn', function () {
 
 // DELETE Confirmation button
 $("#delete_kpi").click(function () {
-    $("#delete_category").text('Deleting....');
+    $("#delete_kpi").text('Deleting....');
     $.ajax({
         url: nafisa_domain + '/sales_kpi/' + rowData.id,
         type: 'DELETE',
@@ -3842,14 +3841,14 @@ $("#delete_kpi").click(function () {
 
             if (data.status.code === 1) {
                 $("#delete_kpi").text('Delete');
-                let currentPage = category_table.page();
-                category_table.row(rowIndex).remove().draw();
+                let currentPage = kpi_table.page();
+                kpi_table.row(rowIndex).remove().draw();
                 const modal = bootstrap.Modal.getInstance($("#delete_kpi_modal"));
                 modal.hide();
                 // redrawing to original page
-                category_table.page(currentPage).draw('page');
+                kpi_table.page(currentPage).draw('page');
                 notyf.success({
-                    message: 'Category  Deleted <strong>Successfully !</strong>',
+                    message: 'Kpi  Deleted <strong>Successfully !</strong>',
                     duration: 7000,
                     icon: false
                 });
@@ -4898,8 +4897,6 @@ $("#update_product_raw_material").click(function () {
 
     $(this).text('Updating...');
 
-    // console.log(rowData.id)
-
     // updating server row
     $.ajax({
         url: nafisa_domain + '/product_raw_material/' + rowData.id,
@@ -5704,6 +5701,8 @@ $("#sales_submit_btn").click(function () {
     var field_name, field_value;
 
     $('.tab_logic_sales tr').find(':input').each(function () {
+
+
 
         field_name = $(this).attr('name');
         field_value = this.value;
@@ -6838,7 +6837,6 @@ $("#supplier_sales_submit_button").click(function () {
 $('#supplier_sales_datatable tbody').on('click', '#details_supplier_modal_btn', function () {
     rowData = supplier_sales_table.row($(this).parents('tr')).data();
 
-    //console.log(rowData)
     let i = 1
     rowData.product_list.forEach(item => {
         $(".details_supplier_modal_list").append("<p>" + i + ". " + item.name + "</p>");
