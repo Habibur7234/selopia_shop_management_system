@@ -1646,7 +1646,7 @@ $("#Supplier_update_post_form").on('submit', (function (e) {
     e.preventDefault();
     $.ajax({
         url: nafisa_domain + '/supplier/' + rowData.id,
-        type: "PUT",
+        type: "POST",
         data: new FormData(this),
         contentType: false,
         cache: false,
@@ -2214,9 +2214,7 @@ $("#update_brand_post_form").on('submit', (function (e) {
                     icon: false
                 });
 
-            }
-
-             else {
+            } else {
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#update_brand_modal"));
                 modal.hide();
@@ -3096,25 +3094,21 @@ $("#add_kpi").click(function () {
 
 //init Salesman datatable and load data
 let userProfile_table = $('#userProfile_datatable').DataTable({
-    // order: [[0, 'desc']],
-    // "columnDefs": [
-    //     {'visible': false, 'targets': 0},
-    //     {"width": "25%", "targets": 1},
-    //     {"width": "15%", "targets": 2},
-    //     {'visible': false, 'targets': 3},
-    //     {'visible': false, 'targets': 4},
-    //     {'visible': false, 'targets': 5},
-    //     {'visible': false, 'targets': 6},
-    //     {'visible': false, 'targets': 7},
-    //     {'visible': false, 'targets': 8},
-    //     {"width": "10%", "targets": 9},
-    //     {"width": "10%", "targets": 10},
-    //     {'visible': false, 'targets': 11},
-    //     {'visible': false, 'targets': 12},
-    //     {'visible': false, 'targets': 13},
-    //     {"width": "10%", "targets": 14},
-    //     {"width": "10%", "targets": 15}
-    // ],
+    order: [[0, 'desc']],
+    "columnDefs": [
+        {"width": "15%", "targets": 0},
+        {"width": "15%", "targets": 1},
+        {'visible': false, 'targets': 2},
+        {'visible': false, 'targets': 3},
+        {'visible': false, 'targets': 4},
+        {'visible': false, 'targets': 5},
+        {"width": "15%", "targets": 6},
+        {'visible': false, 'targets': 7},
+        {"width": "10%", "targets": 8},
+        {"width": "10%", "targets": 9},
+        {"width": "10%", "targets": 10},
+        {"width": "10%", "targets": 11}
+    ],
 
     ajax: {
         url: nafisa_domain + '/user_profile',
@@ -3211,34 +3205,98 @@ let userProfile_table = $('#userProfile_datatable').DataTable({
             data: 'nid_photo_url',
 
             render: function () {
-                return '<button id="customer_profile_img_url"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#customer_image_modal">View</button>'
+                return '<button id="nidPhoto_view"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#nidPhoto_modal">View</button>'
             }
         },
         {
             data: 'profile_photo_url',
 
             render: function () {
-                return '<button id="customer_profile_img_url"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#customer_image_modal">View</button>'
+                return '<button id="profilePhoto_view"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#profilePhoto_modal">View</button>'
+            }
+        },
+
+        {
+            render: function () {
+                return '<button id="user_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_userProfile_modal">Details</button>'
             }
         },
 
         {
             data: '',
             render: function () {
-                return '<button id="update_customerBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                    + '<button   id="delete_customerBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_customerr_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button id="update_userProfile_btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                    + '<button   id="delete_userProfile_btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_user_profile_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
 });
 
 
-//cropzee-------------------------------
-$(document).ready(function () {
-    $("#customer_image_url").cropzee();
+
+
+
+// Details Button
+$('#userProfile_datatable tbody').on('click', '#user_details', function () {
+    rowData = userProfile_table.row($(this).parents('tr')).data();
+    $("#up_nid").text(rowData.nid_no);
+    $("#up_designation").text(rowData.designation_id.name);
+    $("#up_department").text(rowData.department_id.name);
+    $("#up_salary").text(rowData.salary);
+    $("#up_comment").text(rowData.ref_comment);
 });
 
 
+
+$('#userProfile_datatable tbody').on('click', '#nidPhoto_view', function () {
+    rowData = userProfile_table.row($(this).parents('tr')).data();
+    $("#nid_img_link").attr("src", rowData.nid_photo_url);
+});
+
+$('#userProfile_datatable tbody').on('click', '#profilePhoto_view', function () {
+    rowData = userProfile_table.row($(this).parents('tr')).data();
+    $("#profile_img_link").attr("src", rowData.profile_photo_url);
+});
+
+
+//Salesman CRUD Start
+
+//Reset salesman add Modal Input when it's Close
+$('#add_user_profile_photo').on('hidden.bs.modal', function () {
+    $('[data-cropzee="' + 'nid_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="nid_photos"><img  src=""></div>');
+    $(this).find('#user_profile_post_form').trigger('reset');
+});
+//
+// //Reset salesman update Modal Input when it's Close
+// $('#update_salesman_modal').on('hidden.bs.modal', function () {
+//     $('[data-cropzee="' + 'salesman_edit_nid_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_nid_photos"><img id="s_nid_img" src=""></div>');
+//     $('[data-cropzee="' + 'salesman_edit_profile_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_profile_photos"><img id="s_profile_img" src=""></div>');
+//     $(this).find('#salesman_update_form').trigger('reset');
+// });
+
+
+$.ajax({
+    url: nafisa_domain + '/user/byPhone',
+    type: 'GET',
+    success: function (data) {
+        let category_parents = data?.data.map(item => item)
+        category_parents.forEach((element) => {
+            $('<option/>').val(element['id']).html(element['phone_username']).appendTo('#user_profile_phone_number');
+
+        });
+    }
+});
+
+$.ajax({
+    url: nafisa_domain + '/branch',
+    type: 'GET',
+    success: function (data) {
+        let purchase_branch = data?.data.map(item => item)
+        purchase_branch.forEach((element) => {
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#user_profile_branch');
+        });
+    }
+});
 $.ajax({
     url: nafisa_domain + '/department',
     type: 'GET',
@@ -3249,61 +3307,27 @@ $.ajax({
 
         });
     }
-
 });
 
 
-// Details Button
-$('#salesman_dataTable tbody').on('click', '#salesman_details', function () {
-    rowData = salesman_table.row($(this).parents('tr')).data();
 
-    // Set value on Modal
-    $("#sd_name").text(rowData.name);
-    $("#sd_designation").text(rowData.designation_id.designation);
-    $("#sd_age").text(rowData.age);
+$.ajax({
+    url: nafisa_domain + '/user_designation',
+    type: 'GET',
+    success: function (data) {
+        let category_parents = data?.data.map(item => item)
+        category_parents.forEach((element) => {
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#user_profile_designation');
 
-    if (rowData.gender === 1) {
-        $("#sd_gender").text('Male');
-    } else {
-        $("#sd_gender").text('Female');
+        });
     }
-    $("#sd_email").text(rowData.email);
-    $("#sd_phone").text(rowData.phone);
-    $("#sd_address").text(rowData.address);
-    $("#sd_nid").text(rowData.nid);
-    $("#sd_salary").text(rowData.salary);
-    $("#sd_joinDate").text(rowData.joining_date);
-
-    if (rowData.status === 1) {
-        $("#sd_status").text('Active');
-    } else {
-        $("#sd_status").text('Inactive');
-    }
-
 });
 
-
-//View Customer Photo Button
-$('#customer_dataTable tbody').on('click', '#customer_profile_img_url', function () {
-    rowData = customer_table.row($(this).parents('tr')).data();
-    $("#customer_image").attr("src", rowData.image_url);
+//cropzee-------------------------------
+$(document).ready(function () {
+    $("#nid_photos").cropzee();
+    $("#profile_photos").cropzee();
 });
-
-
-//Salesman CRUD Start
-
-//Reset salesman add Modal Input when it's Close
-$('#add_customer_modal').on('hidden.bs.modal', function () {
-    $('[data-cropzee="' + 'customer_image_url' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="customer_image_url"><img  src=""></div>');
-    $(this).find('#salesman_post_form').trigger('reset');
-});
-//
-// //Reset salesman update Modal Input when it's Close
-// $('#update_salesman_modal').on('hidden.bs.modal', function () {
-//     $('[data-cropzee="' + 'salesman_edit_nid_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_nid_photos"><img id="s_nid_img" src=""></div>');
-//     $('[data-cropzee="' + 'salesman_edit_profile_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="salesman_edit_profile_photos"><img id="s_profile_img" src=""></div>');
-//     $(this).find('#salesman_update_form').trigger('reset');
-// });
 
 
 /* ### Post Data Start ### */
@@ -3319,12 +3343,11 @@ $("#user_profile_post_form").on('submit', (function (e) {
 
         success: function (data) {
             if (data.status.code === 1) {
-                $("#add_supplier").text('Add');
 
-                const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
+                const modal = bootstrap.Modal.getInstance($("#add_user_profile_photo"));
                 modal.hide();
 
-                let newSRowIndex = customer_table.row.add(data.data).draw();
+                let newSRowIndex = userProfile_table.row.add(data.data).draw();
                 //Success Notification
                 notyf.success({
                     message: data.status.message,
@@ -3334,12 +3357,21 @@ $("#user_profile_post_form").on('submit', (function (e) {
                 //reset input Field
                 $('form :input').val('');
                 $('.input').val('');
-                customer_table.search('');
+                userProfile_table.search('');
                 // re-ordering to default
 
-                customer_table.order([0, 'desc']).draw();
+                userProfile_table.order([0, 'desc']).draw();
                 // highlighting newly added row
-                $(customer_table.row(newSRowIndex.index()).nodes()).addClass('selected');
+
+
+
+                $(userProfile_table.row(newSRowIndex.index()).nodes()).addClass('selected');
+
+                setTimeout(function () {
+                    $(userProfile_table.row(rowIndex).nodes()).removeClass('selected');
+                }, 2000);
+
+
             } else {
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
@@ -3353,7 +3385,7 @@ $("#user_profile_post_form").on('submit', (function (e) {
             }
         },
         error: function (data) {
-            const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
+            const modal = bootstrap.Modal.getInstance($("#add_user_profile_photo"));
             modal.hide();
             //Notification
             notyf.error({
@@ -3368,56 +3400,56 @@ $("#user_profile_post_form").on('submit', (function (e) {
 
 
 // Delete button
-$('#customer_dataTable tbody').on('click', '#delete_customerBtn', function () {
-    rowData = customer_table.row($(this).parents('tr')).data();
-    rowIndex = customer_table.row($(this).parents('tr')).index();
+$('#userProfile_datatable tbody').on('click', '#delete_userProfile_btn', function () {
+    rowIndex = userProfile_table.row($(this).parents('tr')).index();
+    rowData = userProfile_table.row($(this).parents('tr')).data();
+
 });
 
 // DELETE Confirmation button
-$("#delete_customer").click(function () {
+$("#delete_user_profile").click(function () {
 
-    $(this).text('Deleting...');
     $.ajax({
-        url: nafisa_domain + '/customer/' + rowData.id,
+        url: nafisa_domain + '/user_profile/' + rowData.id,
         type: 'DELETE',
         success: function (data) {
 
             if (data.status.code === 1) {
-                let currentPage = customer_table.page();
-                customer_table.row(rowIndex).remove().draw();
+                let currentPage = userProfile_table.page();
+                userProfile_table.row(rowIndex).remove().draw();
 
-                const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
+                const modal = bootstrap.Modal.getInstance($("#delete_user_profile_modal"));
                 modal.hide();
 
                 $("#delete_customer").text('Delete');
                 // redrawing to original page
-                customer_table.page(currentPage).draw('page');
+                userProfile_table.page(currentPage).draw('page');
 
                 notyf.success({
-                    message: 'Customer  Deleted <strong>Successfully !</strong>',
+                    message: 'User Profile  Deleted <strong>Successfully</strong>',
                     duration: 7000,
                     icon: false
                 });
                 rowData = undefined;
                 rowIndex = undefined;
             } else {
-                notyf.success({
+                notyf.error({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
-                const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
+                const modal = bootstrap.Modal.getInstance($("#delete_user_profile_modal"));
                 modal.hide();
-                $("#delete_customer").text('Delete');
             }
         },
         error: function () {
-            $("#delete_customer").text('Delete');
-            notyf.success({
-                message: data.status.message,
+            notyf.error({
+                message: 'User Profile  Deleted <strong>Successfully !</strong>',
                 duration: 7000,
                 icon: false
             });
+            const modal = bootstrap.Modal.getInstance($("#delete_user_profile_modal"));
+            modal.hide();
 
         },
     });
@@ -3890,7 +3922,7 @@ $("#delete_kpi").click(function () {
 let attendance_table = $('#attendance_datatable').DataTable({
 
     ajax: {
-        url: nafisa_domain + '/attendance/all/1/100',
+        url: nafisa_domain + '/attendance/all/1/1',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -3963,7 +3995,6 @@ let attendance_table = $('#attendance_datatable').DataTable({
             }
         },
 
-        '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
 
     ],
 
@@ -3974,7 +4005,6 @@ let attendance_table = $('#attendance_datatable').DataTable({
         {data: 'check_out'},
 
         {
-            data: 'id',
             render: function () {
                 return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
                     + '<button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
@@ -4145,8 +4175,6 @@ $('#update_product_modal').on('hidden.bs.modal', function () {
 });
 
 
-
-
 //init brand--------------------------------------------
 $.ajax({
     url: nafisa_domain + '/brand',
@@ -4200,30 +4228,29 @@ $('#product_dataTable tbody').on('click', '#product_details', function () {
 })
 
 
-
 /* ### Post Data Start ### */
 $("#product_post_form").on('submit', (function (e) {
 
 
     let addPd = {
-        name:$("#name").val(),
-        description:$('#product_description').val(),
-        unit_size:$("#product_unit_size").val(),
-        cost_price:$("#product_cost_price").val(),
-        mrp:$("#product_mrp").val(),
-        wholesale_price:$("#product_wholesale_price").val(),
-        retail_price:$("#product_retail_price").val(),
-        discount_amount:$("#product_discount_amount").val(),
-        product_image_url:$("#update_product_image").attr("src", ''),
-        brand_id:{
+        name: $("#name").val(),
+        description: $('#product_description').val(),
+        unit_size: $("#product_unit_size").val(),
+        cost_price: $("#product_cost_price").val(),
+        mrp: $("#product_mrp").val(),
+        wholesale_price: $("#product_wholesale_price").val(),
+        retail_price: $("#product_retail_price").val(),
+        discount_amount: $("#product_discount_amount").val(),
+        product_image_url: $("#update_product_image").attr("src", ''),
+        brand_id: {
             id: 1,
             name: $("#product_brand_id :selected").text(),
         },
-        unit_id:{
+        unit_id: {
             id: 1,
             name: $("#product_unit_type :selected").text(),
         },
-        category_id:{
+        category_id: {
             id: 1,
             name: $("#product_category_id :selected").text(),
         },
@@ -4309,24 +4336,24 @@ $("#update_product_post_form").on('submit', (function (e) {
 
 
     let addKp = {
-        name:$("#update_name").val(),
-        description:$('#update_product_description').val(),
-        unit_size:$("#update_product_unit_size").val(),
-        cost_price:$("#update_product_cost_price").val(),
-        mrp:$("#update_product_mrp").val(),
-        wholesale_price:$("#update_product_wholesale_price").val(),
-        retail_price:$("#update_product_retail_price").val(),
-        discount_amount:$("#update_product_discount_amount").val(),
-        product_image_url:$("#update_product_image").attr("src", rowData.product_image_url),
-        brand_id:{
+        name: $("#update_name").val(),
+        description: $('#update_product_description').val(),
+        unit_size: $("#update_product_unit_size").val(),
+        cost_price: $("#update_product_cost_price").val(),
+        mrp: $("#update_product_mrp").val(),
+        wholesale_price: $("#update_product_wholesale_price").val(),
+        retail_price: $("#update_product_retail_price").val(),
+        discount_amount: $("#update_product_discount_amount").val(),
+        product_image_url: $("#update_product_image").attr("src", rowData.product_image_url),
+        brand_id: {
             id: 1,
             name: $("#update_product_brand_id :selected").text(),
         },
-        unit_id:{
+        unit_id: {
             id: 1,
             name: $("#update_product_unit_type :selected").text(),
         },
-        category_id:{
+        category_id: {
             id: 1,
             name: $("#update_product_category_id :selected").text(),
         },
@@ -4337,7 +4364,7 @@ $("#update_product_post_form").on('submit', (function (e) {
     $.ajax({
         url: nafisa_domain + '/products/' + rowData.id,
         type: "POST",
-        data:  new FormData(this),
+        data: new FormData(this),
         contentType: false,
         cache: false,
         processData: false,
@@ -5703,7 +5730,6 @@ $("#sales_submit_btn").click(function () {
     $('.tab_logic_sales tr').find(':input').each(function () {
 
 
-
         field_name = $(this).attr('name');
         field_value = this.value;
 
@@ -6967,7 +6993,6 @@ var sales_report_table = $("#product_sales_report_customer_datatable").DataTable
             extend: 'print',
             title: 'Branch Sales Information',
             orientation: 'landscape',
-
             pageSize: 'LEGAL',
 
         },

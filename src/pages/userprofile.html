@@ -68,8 +68,7 @@
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Add User profile </h1>
-                    <p class="mb-0">User Profile Information </p>
+                    <h1 class="h4"> User profile Details</h1>
                 </div>
             </div>
         </div>
@@ -86,49 +85,56 @@
                     </div>
                     <form id="user_profile_post_form" method="post" enctype="multipart/form-data">
                         <div class="n modal-body" id="kk" style="height: 600px;">
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label class="my-1 me-2" >Select Phone number</label>
+                                <select class="form-select"  id="user_profile_phone_number" name="user_id" aria-label="Default select example" >
+                                    <option disabled selected>Select An option</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label class="my-1 me-2" >Select Branch</label>
+                                <select class="form-select"  id="user_profile_branch" name="branch_id" aria-label="Default select example" >
+                                    <option disabled selected>Select An option</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
+                                <label class="my-1 me-2" >Designation</label>
+                                <select class="form-select" id="user_profile_designation" aria-label="Default select example" name="designation_id">
+                                    <option disabled selected>Select An option</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1">
+                                <label class="my-1 me-2" >Department Name</label>
+                                <select class="form-select" id="user_profile_department" aria-label="Default select example" name="department_id">
+                                    <option disabled selected>Select An option</option>
+                                </select>
+                            </div>
+
+
                             <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
                                 <label >Name</label>
                                 <input type="text" class="form-control" id="user_profile_name" name="name">
                             </div>
 
-                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                <label >Phone number</label>
-                                <input type="email" class="form-control" id="user_profile_phone_number" name="phone_username">
-
-                            </div>
 
                             <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
                                 <label>Nid No</label>
-                                <input type="email" class="form-control" id="user_profile_nid" name="nid_no">
+                                <input type="text" class="form-control" id="user_profile_nid" name="nid_no">
 
                             </div>
-                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                <label class="my-1 me-2" >Designation</label>
-                                <select class="form-select" id="user_profile_designation" aria-label="Default select example" name="name">
-                                <option disabled selected>Select An option</option>
-                                </select>
-                            </div>
+
                             <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
                                 <label>Salary</label>
-                                <input type="text" class="form-control" id="user_profile_salary" name="salary">
-
-
+                                <input type="number" class="form-control" id="user_profile_salary" name="salary">
                             </div>
-                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                <label class="my-1 me-2" >Department Name</label>
-                                <select class="form-select" id="user_profile_department" aria-label="Default select example" name="name">
-                                    <option disabled selected>Select An option</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
-                                <label for="address">Shop Name</label>
-                                <input type="text" class="form-control" id="address" name="name"
-                                      placeholder="Abc...">
 
-                            </div>
                             <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
                                 <label >Reference Comment </label>
-                                <input type="text" class="form-control"  name="ref_comment">
+                                <textarea  type="text" class="form-control"  name="ref_comment"> </textarea>
                             </div>
                             <div class="col-lg-10 col-sm-10 mb-4 offset-lg-1 ">
                                 <label for="image_url">Nid photo</label>
@@ -150,8 +156,6 @@
                                 <input type="file" class="form-control" id="profile_photos" type="file" name="profile_photo_url">
                             </div>
 
-
-
                             <input type="hidden" value="true" class="form-control" id="create" name="create" >
                         </div>
 
@@ -163,16 +167,8 @@
 
         <!-- End of Modal Content -->
 
-        <!--Salesman Datatable-->
-        <div class="py-4">
-            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                <div class="d-flex justify-content-between w-100 flex-wrap">
-                    <div class="mb-3 mb-lg-0">
-                        <h1 class="h4 ">Salesman Information Table</h1>
-                    </div>
-                </div>
-            </nav>
-        </div>
+
+
         <div class="card border-0 shadow">
             <div class="card-body">
                 <table class="table table-flush wrap" id="userProfile_datatable" style="width: 100%; table-layout: fixed">
@@ -184,10 +180,11 @@
                         <th>Designation</th>
                         <th>Salary</th>
                         <th>Department</th>
-                        <th>Shop Name</th>
+                        <th>Branch</th>
                         <th>Rf Comment</th>
                         <th>Nid Photo</th>
                         <th>Profile Photo</th>
+                        <th>Details</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -197,7 +194,7 @@
 
 
         <!--Details Modal-->
-        <div class="modal fade" id="details_salesman_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
+        <div class="modal fade" id="details_userProfile_modal" tabindex="-1" role="dialog" aria-labelledby="modal-form"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -208,54 +205,30 @@
                             <div class="text-center text-md-center mb-4 mt-md-0">
                                 <h1 class="mb-0 h3 text-info">Salesman Details</h1>
                             </div>
-                            <div class="col-12 mb-4">
+                            <div class="col-12 mb-4 col-sm-12 col-md-12">
                                 <div class="card border shadow components-section">
                                     <div class="card-body">
                                         <div class="row mb-4">
-                                            <div class="col-lg-12 col-sm-6 ">
+                                            <div class="col-lg-12 col-sm-12 col-md-12">
                                                 <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Name :</h5>
-                                                    <p class="d-inline" id="sd_name"></p>
+                                                    <h5 class="d-inline">Nid :</h5>
+                                                    <p class="d-inline" id="up_nid"></p>
                                                 </div>
                                                 <div class="bg-gray-100 text-dark my-1">
                                                     <h5 class="d-inline">Designation :</h5>
-                                                    <p class="d-inline" id="sd_designation"></p>
-                                                </div>
-                                                <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Age :</h5>
-                                                    <p class="d-inline" id="sd_age"></p>
-                                                </div>
-                                                <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Gender :</h5>
-                                                    <p class="d-inline" id="sd_gender"></p>
-                                                </div>
-                                                <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Email :</h5>
-                                                    <p class="d-inline" id="sd_email"></p>
-                                                </div>
-                                                <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Phone Number :</h5>
-                                                    <p class="d-inline" id="sd_phone"></p>
-                                                </div>
-                                                <div class="text-dark bg my-1">
-                                                    <h5 class="d-inline">Address :</h5>
-                                                    <p class="d-inline" id="sd_address"></p>
-                                                </div>
-                                                <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Nid :</h5>
-                                                    <p class="d-inline" id="sd_nid"></p>
+                                                    <p class="d-inline" id="up_designation"></p>
                                                 </div>
                                                 <div class="text-dark bg my-1">
                                                     <h5 class="d-inline">Salary :</h5>
-                                                    <p class="d-inline" id="sd_salary"></p>
+                                                    <p class="d-inline" id="up_salary"></p>
                                                 </div>
                                                 <div class="bg-gray-100 text-dark my-1">
-                                                    <h5 class="d-inline">Joining Date :</h5>
-                                                    <p class="d-inline" id="sd_joinDate"></p>
+                                                    <h5 class="d-inline">Department :</h5>
+                                                    <p class="d-inline" id="up_department"></p>
                                                 </div>
                                                 <div class="text-dark bg">
-                                                    <h5 class="d-inline ">Status :</h5>
-                                                    <p class="d-inline" id="sd_status"></p>
+                                                    <h5 class="d-inline ">Rf Comment :</h5>
+                                                    <p class="d-inline" id="up_comment"></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -271,11 +244,11 @@
 
 
         <!--Nid Photo Modal-->
-        <div class="modal img-fluid" id="salesman_nidPhoto_modal">
+        <div class="modal img-fluid" id="nidPhoto_modal">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content" style="width:70%">
                     <div class="modal-body align-items-center-center ">
-                        <img id="nid_img" src="">
+                        <img id="nid_img_link" src="">
                         <button type="button" class="modal-footer ms-auto btn-outline-dark border-0 btn btn-outline-light text-primary"
                                 data-bs-dismiss="modal">Close
                         </button>
@@ -285,11 +258,11 @@
         </div>
 
         <!-- Profile Photo Modal-->
-        <div class="modal img-fluid" id="salesman_profilePhoto_modal">
+        <div class="modal img-fluid" id="profilePhoto_modal">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content" style="width:70%">
                     <div class="modal-body align-items-center-center ">
-                        <img id="profile_img" src="">
+                        <img id="profile_img_link" src="">
                     </div>
                     <button type="button" class="modal-footer ms-auto btn-outline-dark border-0 btn btn-outline-light text-primary"
                             data-bs-dismiss="modal">Close
@@ -436,7 +409,7 @@
         </div>
 
            <!--Delete Salesman Modal-->
-        <div class="modal fade" id="delete_salesman_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="delete_user_profile_modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="pt-3">
@@ -447,7 +420,7 @@
                     </div>
                     <div style="margin-left: auto; padding-right:15px;padding-bottom: 15px">
                         <button type="button" class="btn btn-link text-gray ms-auto btn-outline-gray-200" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button"  id="delete_salesman" class="btn btn-secondary" >Delete</button>
+                        <button type="button"  id="delete_user_profile" class="btn btn-secondary" >Delete</button>
                     </div>
                 </div>
             </div>
