@@ -134,8 +134,6 @@
             icon: false
           });
           let currentPage = shop_table.page();
-          console.log(rowIndex);
-          console.log(updateShopModal2);
           shop_table.row(rowIndex).data(updateShopModal2).draw();
           shop_table.page(currentPage).draw("page");
           $(shop_table.row(rowIndex).nodes()).addClass("selected");
@@ -1109,7 +1107,7 @@
     e.preventDefault();
     $.ajax({
       url: nafisa_domain + "/supplier/" + rowData.id,
-      type: "PUT",
+      type: "POST",
       data: new FormData(this),
       contentType: false,
       cache: false,
@@ -2009,6 +2007,21 @@
     });
   });
   var userProfile_table = $("#userProfile_datatable").DataTable({
+    order: [[0, "desc"]],
+    "columnDefs": [
+      { "width": "15%", "targets": 0 },
+      { "width": "15%", "targets": 1 },
+      { "visible": false, "targets": 2 },
+      { "visible": false, "targets": 3 },
+      { "visible": false, "targets": 4 },
+      { "visible": false, "targets": 5 },
+      { "width": "15%", "targets": 6 },
+      { "visible": false, "targets": 7 },
+      { "width": "10%", "targets": 8 },
+      { "width": "10%", "targets": 9 },
+      { "width": "10%", "targets": 10 },
+      { "width": "10%", "targets": 11 }
+    ],
     ajax: {
       url: nafisa_domain + "/user_profile",
       dataSrc: "data"
@@ -2067,25 +2080,67 @@
       {
         data: "nid_photo_url",
         render: function() {
-          return '<button id="customer_profile_img_url"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#customer_image_modal">View</button>';
+          return '<button id="nidPhoto_view"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#nidPhoto_modal">View</button>';
         }
       },
       {
         data: "profile_photo_url",
         render: function() {
-          return '<button id="customer_profile_img_url"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#customer_image_modal">View</button>';
+          return '<button id="profilePhoto_view"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#profilePhoto_modal">View</button>';
+        }
+      },
+      {
+        render: function() {
+          return '<button id="user_details"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#details_userProfile_modal">Details</button>';
         }
       },
       {
         data: "",
         render: function() {
-          return '<button id="update_customerBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_customerBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_customerr_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
+          return '<button id="update_userProfile_btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_userProfile_btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_user_profile_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }
       }
     ]
   });
-  $(document).ready(function() {
-    $("#customer_image_url").cropzee();
+  $("#userProfile_datatable tbody").on("click", "#user_details", function() {
+    rowData = userProfile_table.row($(this).parents("tr")).data();
+    $("#up_nid").text(rowData.nid_no);
+    $("#up_designation").text(rowData.designation_id.name);
+    $("#up_department").text(rowData.department_id.name);
+    $("#up_salary").text(rowData.salary);
+    $("#up_comment").text(rowData.ref_comment);
+  });
+  $("#userProfile_datatable tbody").on("click", "#nidPhoto_view", function() {
+    rowData = userProfile_table.row($(this).parents("tr")).data();
+    $("#nid_img_link").attr("src", rowData.nid_photo_url);
+  });
+  $("#userProfile_datatable tbody").on("click", "#profilePhoto_view", function() {
+    rowData = userProfile_table.row($(this).parents("tr")).data();
+    $("#profile_img_link").attr("src", rowData.profile_photo_url);
+  });
+  $("#add_user_profile_photo").on("hidden.bs.modal", function() {
+    $('[data-cropzee="nid_photos"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="nid_photos"><img  src=""></div>');
+    $(this).find("#user_profile_post_form").trigger("reset");
+  });
+  $.ajax({
+    url: nafisa_domain + "/user/byPhone",
+    type: "GET",
+    success: function(data2) {
+      let category_parents = data2?.data.map((item) => item);
+      category_parents.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["phone_username"]).appendTo("#user_profile_phone_number");
+      });
+    }
+  });
+  $.ajax({
+    url: nafisa_domain + "/branch",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#user_profile_branch");
+      });
+    }
   });
   $.ajax({
     url: nafisa_domain + "/department",
@@ -2097,35 +2152,19 @@
       });
     }
   });
-  $("#salesman_dataTable tbody").on("click", "#salesman_details", function() {
-    rowData = salesman_table.row($(this).parents("tr")).data();
-    $("#sd_name").text(rowData.name);
-    $("#sd_designation").text(rowData.designation_id.designation);
-    $("#sd_age").text(rowData.age);
-    if (rowData.gender === 1) {
-      $("#sd_gender").text("Male");
-    } else {
-      $("#sd_gender").text("Female");
-    }
-    $("#sd_email").text(rowData.email);
-    $("#sd_phone").text(rowData.phone);
-    $("#sd_address").text(rowData.address);
-    $("#sd_nid").text(rowData.nid);
-    $("#sd_salary").text(rowData.salary);
-    $("#sd_joinDate").text(rowData.joining_date);
-    if (rowData.status === 1) {
-      $("#sd_status").text("Active");
-    } else {
-      $("#sd_status").text("Inactive");
+  $.ajax({
+    url: nafisa_domain + "/user_designation",
+    type: "GET",
+    success: function(data2) {
+      let category_parents = data2?.data.map((item) => item);
+      category_parents.forEach((element) => {
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#user_profile_designation");
+      });
     }
   });
-  $("#customer_dataTable tbody").on("click", "#customer_profile_img_url", function() {
-    rowData = customer_table.row($(this).parents("tr")).data();
-    $("#customer_image").attr("src", rowData.image_url);
-  });
-  $("#add_customer_modal").on("hidden.bs.modal", function() {
-    $('[data-cropzee="customer_image_url"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="customer_image_url"><img  src=""></div>');
-    $(this).find("#salesman_post_form").trigger("reset");
+  $(document).ready(function() {
+    $("#nid_photos").cropzee();
+    $("#profile_photos").cropzee();
   });
   $("#user_profile_post_form").on("submit", function(e) {
     e.preventDefault();
@@ -2138,10 +2177,9 @@
       processData: false,
       success: function(data2) {
         if (data2.status.code === 1) {
-          $("#add_supplier").text("Add");
-          const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
+          const modal = bootstrap.Modal.getInstance($("#add_user_profile_photo"));
           modal.hide();
-          let newSRowIndex = customer_table.row.add(data2.data).draw();
+          let newSRowIndex = userProfile_table.row.add(data2.data).draw();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -2149,9 +2187,12 @@
           });
           $("form :input").val("");
           $(".input").val("");
-          customer_table.search("");
-          customer_table.order([0, "desc"]).draw();
-          $(customer_table.row(newSRowIndex.index()).nodes()).addClass("selected");
+          userProfile_table.search("");
+          userProfile_table.order([0, "desc"]).draw();
+          $(userProfile_table.row(newSRowIndex.index()).nodes()).addClass("selected");
+          setTimeout(function() {
+            $(userProfile_table.row(rowIndex).nodes()).removeClass("selected");
+          }, 2e3);
         } else {
           const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
           modal.hide();
@@ -2163,7 +2204,7 @@
         }
       },
       error: function(data2) {
-        const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
+        const modal = bootstrap.Modal.getInstance($("#add_user_profile_photo"));
         modal.hide();
         notyf.error({
           message: data2.status.message,
@@ -2173,48 +2214,47 @@
       }
     });
   });
-  $("#customer_dataTable tbody").on("click", "#delete_customerBtn", function() {
-    rowData = customer_table.row($(this).parents("tr")).data();
-    rowIndex = customer_table.row($(this).parents("tr")).index();
+  $("#userProfile_datatable tbody").on("click", "#delete_userProfile_btn", function() {
+    rowIndex = userProfile_table.row($(this).parents("tr")).index();
+    rowData = userProfile_table.row($(this).parents("tr")).data();
   });
-  $("#delete_customer").click(function() {
-    $(this).text("Deleting...");
+  $("#delete_user_profile").click(function() {
     $.ajax({
-      url: nafisa_domain + "/customer/" + rowData.id,
+      url: nafisa_domain + "/user_profile/" + rowData.id,
       type: "DELETE",
       success: function(data2) {
         if (data2.status.code === 1) {
-          let currentPage = customer_table.page();
-          customer_table.row(rowIndex).remove().draw();
-          const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
+          let currentPage = userProfile_table.page();
+          userProfile_table.row(rowIndex).remove().draw();
+          const modal = bootstrap.Modal.getInstance($("#delete_user_profile_modal"));
           modal.hide();
           $("#delete_customer").text("Delete");
-          customer_table.page(currentPage).draw("page");
+          userProfile_table.page(currentPage).draw("page");
           notyf.success({
-            message: "Customer  Deleted <strong>Successfully !</strong>",
+            message: "User Profile  Deleted <strong>Successfully</strong>",
             duration: 7e3,
             icon: false
           });
           rowData = void 0;
           rowIndex = void 0;
         } else {
-          notyf.success({
+          notyf.error({
             message: data2.status.message,
             duration: 7e3,
             icon: false
           });
-          const modal = bootstrap.Modal.getInstance($("#delete_customerr_modal"));
+          const modal = bootstrap.Modal.getInstance($("#delete_user_profile_modal"));
           modal.hide();
-          $("#delete_customer").text("Delete");
         }
       },
       error: function() {
-        $("#delete_customer").text("Delete");
-        notyf.success({
-          message: data.status.message,
+        notyf.error({
+          message: "User Profile  Deleted <strong>Successfully !</strong>",
           duration: 7e3,
           icon: false
         });
+        const modal = bootstrap.Modal.getInstance($("#delete_user_profile_modal"));
+        modal.hide();
       }
     });
   });
@@ -2356,11 +2396,11 @@
       '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
     ],
     columns: [
-      { data: "name" },
+      { data: "user_id.profile_user_id.name" },
       { data: "target_sales_volume" },
       { data: "last_modified_at" },
       {
-        data: "id",
+        data: "",
         render: function() {
           return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }
@@ -2384,7 +2424,15 @@
       target_sales_volume: $("#sales_kpi_volume").val()
     };
     let d2 = {
-      name: $("#kpi_user").text(),
+      user_id: {
+        id: 3,
+        profile_user_id: {
+          id: 3,
+          user_id: 3,
+          name: $("#kpi_user :selected").text(),
+          branch_id: 1
+        }
+      },
       target_sales_volume: $("#sales_kpi_volume").val()
     };
     $.ajax({
@@ -2469,7 +2517,7 @@
             icon: false
           });
           let currentPage = kpi_table.page();
-          kpi_table.row(rowIndex).data(data2.data.sales_volume).draw();
+          kpi_table.row(rowIndex).data(data2.data).draw();
           kpi_table.page(currentPage).draw("page");
           $(kpi_table.row(rowIndex).nodes()).addClass("selected");
           setTimeout(function() {
@@ -2503,7 +2551,7 @@
     rowIndex = kpi_table.row($(this).parents("tr")).index();
   });
   $("#delete_kpi").click(function() {
-    $("#delete_category").text("Deleting....");
+    $("#delete_kpi").text("Deleting....");
     $.ajax({
       url: nafisa_domain + "/sales_kpi/" + rowData.id,
       type: "DELETE",
@@ -2511,13 +2559,13 @@
       success: function(data2) {
         if (data2.status.code === 1) {
           $("#delete_kpi").text("Delete");
-          let currentPage = category_table.page();
-          category_table.row(rowIndex).remove().draw();
+          let currentPage = kpi_table.page();
+          kpi_table.row(rowIndex).remove().draw();
           const modal = bootstrap.Modal.getInstance($("#delete_kpi_modal"));
           modal.hide();
-          category_table.page(currentPage).draw("page");
+          kpi_table.page(currentPage).draw("page");
           notyf.success({
-            message: "Category  Deleted <strong>Successfully !</strong>",
+            message: "Kpi  Deleted <strong>Successfully !</strong>",
             duration: 7e3,
             icon: false
           });
@@ -2550,7 +2598,7 @@
   });
   var attendance_table = $("#attendance_datatable").DataTable({
     ajax: {
-      url: nafisa_domain + "/attendance/all/1/100",
+      url: nafisa_domain + "/attendance/all/1/1",
       dataSrc: "data"
     },
     rowId: "id",
@@ -2613,8 +2661,7 @@
             doc.content[1].table.body[i][2].alignment = "center";
           }
         }
-      },
-      '<button id="shop_addBtn"  toggle="tooltip" title="Add New" class="btn btn-light btn-outline-gray-700 shadow-none" type="button" data-bs-toggle="modal" data-bs-target="#add_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>'
+      }
     ],
     columns: [
       { data: "name" },
@@ -2622,7 +2669,6 @@
       { data: "check_in" },
       { data: "check_out" },
       {
-        data: "id",
         render: function() {
           return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }

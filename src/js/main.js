@@ -1555,7 +1555,6 @@ $('#supplier_dataTable tbody').on('click', '#supplier_details', function () {
 
 $('#supplier_dataTable tbody').on('click', '#supplier_photo', function () {
     rowData = shop_supplier_table.row($(this).parents('tr')).data();
-
     $("#supplier_image").attr("src", nafisa_domain + rowData.image_url);
 });
 
