@@ -1575,6 +1575,10 @@ $("#Supplier_post_form").on('submit', (function (e) {
         cache: false,
         processData: false,
         success: function (data) {
+
+
+
+
             if (data.status.code === 1) {
                 $("#add_supplier").text('Add');
 
