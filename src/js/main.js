@@ -1522,7 +1522,7 @@ let shop_supplier_table = $('#supplier_dataTable').DataTable({
             data: '',
             render: function () {
                 return '<button id="update_supplierBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"  data-bs-target="#Update_supplier_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>'
-                    + '<button   id="delete_supplierBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_supplier_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                    + ' <button   id="delete_supplierBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_supplier_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
@@ -1555,7 +1555,9 @@ $('#supplier_dataTable tbody').on('click', '#supplier_details', function () {
 
 $('#supplier_dataTable tbody').on('click', '#supplier_photo', function () {
     rowData = shop_supplier_table.row($(this).parents('tr')).data();
-    $("#supplier_image").attr("src", nafisa_domain + rowData.image_url);
+
+    console.log(rowData)
+    $("#supplier_image").attr("src", rowData.profile_photo_url);
 });
 
 //cropzee-----------------
@@ -1575,12 +1577,7 @@ $("#Supplier_post_form").on('submit', (function (e) {
         cache: false,
         processData: false,
         success: function (data) {
-
-
-
-
             if (data.status.code === 1) {
-                $("#add_supplier").text('Add');
 
                 const modal = bootstrap.Modal.getInstance($("#add_supplier_modal"));
                 modal.hide();
@@ -1602,11 +1599,7 @@ $("#Supplier_post_form").on('submit', (function (e) {
                 // highlighting newly added row
                 $(shop_supplier_table.row(newSRowIndex.index()).nodes()).addClass('selected');
             } else {
-                //Set default button text again
-                $("#add_supplier").text('Add');
-                const modal = bootstrap.Modal.getInstance($("#add_supplier_modal"));
-                modal.hide();
-                //Notification
+
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
@@ -1656,14 +1649,15 @@ $("#Supplier_update_post_form").on('submit', (function (e) {
         processData: false,
 
         success: function (data) {
+
+
             if (data.status.code === 1) {
                 // hide modal
-                const modal = bootstrap.Modal.getInstance($("#update_supplier_modal"));
+
+                const modal = bootstrap.Modal.getInstance($("#Update_supplier_modal"));
                 modal.hide();
 
                 //Set default button text again
-
-
                 let currentPage = shop_supplier_table.page();
 
                 // update datatable
@@ -3376,15 +3370,14 @@ $("#user_profile_post_form").on('submit', (function (e) {
 
 
             } else {
-                //Set default button text again
-                const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
-                modal.hide();
-                //Notification
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
+
+
+
             }
         },
         error: function (data) {
