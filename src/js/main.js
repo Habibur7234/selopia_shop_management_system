@@ -228,7 +228,7 @@ $('#shop_dataTable tbody').on('click', '#delete_shopBtn', function () {
 $("#delete_shop").click(function () {
 
     $.ajax({
-        url: 'https://riyadshop.selopian.us/shop/' + rowData.id,
+        url: 'https://nafisa.selopian.us/shop/' + rowData.id,
         type: 'DELETE',
         dataType: "json",
         success: function (data) {
@@ -270,7 +270,7 @@ $("#delete_shop").click(function () {
 //init shop & branch  datatable and load data
 let branch_table = $('#branch_dataTable').DataTable({
     ajax: {
-        url: 'https://riyadshop.selopian.us/branch',
+        url: 'https://nafisa.selopian.us/branch',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -366,7 +366,7 @@ let branch_table = $('#branch_dataTable').DataTable({
 
 //init Shop Name
 $.ajax({
-    url: 'https://riyadshop.selopian.us/shop',
+    url: 'https://nafisa.selopian.us/shop',
     type: 'GET',
     success: function (result) {
         let shopName = result?.data.map(item => item)
@@ -386,7 +386,7 @@ $("#add_Branch").click(function () {
         shop_id: $("#selectShop").val(),
     };
     $.ajax({
-        url: 'https://riyadshop.selopian.us/branch ',
+        url: 'https://nafisa.selopian.us/branch ',
         type: 'POST',
         data: JSON.stringify(addBranch),
         contentType: "application/json",
