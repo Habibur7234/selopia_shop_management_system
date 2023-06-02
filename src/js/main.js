@@ -1109,18 +1109,6 @@ $("#customer_post_form").on('submit', (function (e) {
 /* ### Post Data End ### */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 $('#customer_dataTable tbody').on('click', '#update_customerBtn', function () {
     // getting parent row Data
     rowData = customer_table.row($(this).parents('tr')).data();
@@ -1185,22 +1173,6 @@ $("#update_customer_post_form").on('submit', (function (e) {
 }));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Delete button
 $('#customer_dataTable tbody').on('click', '#delete_customerBtn', function () {
     rowData = customer_table.row($(this).parents('tr')).data();
@@ -1257,19 +1229,6 @@ $("#delete_customer").click(function () {
     });
 });
 /* ### Delete Data End ### */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //SUPPLIER==================================================================================================
@@ -1892,7 +1851,7 @@ $("#delete_supplier").click(function () {
 //BRAND=================================================================================================================================================
 
 let brand_table = $('#Brand_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/brand',
         dataSrc: 'data',
@@ -1909,7 +1868,7 @@ let brand_table = $('#Brand_dataTable').DataTable({
     buttons: [
         {
             extend: 'print',
-            title: 'Shop Information',
+            title: 'Brand Information',
             orientation: 'landscape',
             exportOptions: {
                 columns: [1, 2, 3],
@@ -1935,7 +1894,7 @@ let brand_table = $('#Brand_dataTable').DataTable({
         },
         {
             extend: 'excelHtml5',
-            title: 'Shop Information',
+            title: 'Brand Information',
             exportOptions: {
                 columns: [1, 2, 3]
 
@@ -1951,7 +1910,7 @@ let brand_table = $('#Brand_dataTable').DataTable({
                 }
             },
             pageSize: 'LEGAL',
-            title: 'Shop Information',
+            title: 'Brand Information',
             customize: function (doc) {
                 doc.content[1].table.widths = [
                     '20%',
@@ -2013,6 +1972,7 @@ $("#Brand_post_form").on('submit', (function (e) {
 
                 let newSRowIndex = brand_table.row.add(data.data).draw();
                 //Success Notification
+                branch_table.ajax.reload()
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
@@ -2045,7 +2005,7 @@ $("#Brand_post_form").on('submit', (function (e) {
             modal.hide();
             //Notification
             notyf.error({
-                message: data.status.message,
+                message: data.responseJSON.status.message,
                 duration: 7000,
                 icon: false
             });
@@ -2097,7 +2057,7 @@ $("#update_brand_post_form").on('submit', (function (e) {
     e.preventDefault();
     $.ajax({
         url: nafisa_domain + '/brand/' + rowData.id,
-        type: "POST",
+        type: "PUT",
         data: new FormData(this),
         contentType: false,
         cache: false,
@@ -2109,20 +2069,7 @@ $("#update_brand_post_form").on('submit', (function (e) {
                 const modal = bootstrap.Modal.getInstance($("#update_brand_modal"));
                 modal.hide();
                 //Set default button text again
-                let currentPage = brand_table.page();
-                // update datatable
-                brand_table.row(rowIndex).data(data.data).draw();
-
-                // redrawing to original page
-                brand_table.page(currentPage).draw('page');
-
-                // highlighting newly added row
-                $(brand_table.row(rowIndex).nodes()).addClass('selected');
-                setTimeout(function () {
-                    $(brand_table.row(rowIndex).nodes()).removeClass('selected');
-                }, 2000);
-
-                // notification
+                brand_table.ajax.reload()
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
@@ -2135,7 +2082,7 @@ $("#update_brand_post_form").on('submit', (function (e) {
                 modal.hide();
                 //Notification
                 notyf.error({
-                    message: data.status.message,
+                    message: data.responseJSON.status.message,
                     duration: 7000,
                     icon: false
                 });
@@ -2613,12 +2560,13 @@ let category_table = $('#category_dataTable').DataTable({
 
 //init Parent--------------------------------------------
 $.ajax({
-    url: nafisa_domain + '/category/byparent/0',
+    url: nafisa_domain + '/category/byparent/7',
     type: 'GET',
     success: function (data) {
         let category_parents = data?.data.map(item => item)
         category_parents.forEach((element) => {
-            $('<option/>').val(element['id']).html(element['name']).appendTo('#cParent', '#update_cParent');
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#cParent');
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#update_cParent');
 
         });
     }
@@ -2628,8 +2576,6 @@ $.ajax({
 //Post Category-------------------------------------------
 
 $("#add_category").click(function () {
-
-    $(this).text('Submitting..');
     let addcategoryModal = {
         name: $("#category_name").val(),
         description: $("#category_description").val(),
@@ -2645,7 +2591,6 @@ $("#add_category").click(function () {
         success: function (data) {
 
             if (data.status.code === 1) {
-
                 const modal = bootstrap.Modal.getInstance($("#add_category_modal"));
                 modal.hide();
                 notyf.success({
@@ -2653,36 +2598,23 @@ $("#add_category").click(function () {
                     duration: 7000,
                     icon: false
                 });
-                let newRowIndex = category_table.row.add(addcategoryModal).draw();
 
-                //Success Notification
-
-                $("#add_category").text('Submit');
-
-                //reset input Field
-                $('form :input').val('');
-                $('.input').val('');
-                category_table.search('');
-                // re-ordering to default
-
-                category_table.order([0, 'desc']).draw();
-                // highlighting newly added row
-                $(category_table.row(newRowIndex.index()).nodes()).addClass('selected');
-            } else {
-                //Set default button text again
-                $("#add_category").text('Submit');
-                const modal = bootstrap.Modal.getInstance($("#add_category_modal"));
-                modal.hide();
-                //Notification
-                notyf.error({
-                    message: "<strong>Warning !</strong> Can't Add Category.",
-                    duration: 7000,
-                    icon: false
-                });
-
+               category_table.ajax.reload()
             }
-
         },
+
+        error: function (data) {
+            category_table.ajax.reload()
+
+            const modal = bootstrap.Modal.getInstance($("#add_category_modal"));
+            modal.hide();
+            // notification
+            notyf.error({
+                message: data.responseJSON.status.message,
+                duration: 7000,
+                icon: false
+            });
+        }
 
     });
 
@@ -3168,9 +3100,9 @@ $('#userProfile_datatable tbody').on('click', '#user_details', function () {
 $('#userProfile_datatable tbody').on('click', '#nidPhoto_view', function () {
     rowData = userProfile_table.row($(this).parents('tr')).data();
 
-console.log(nafisa_domain+ rowData.nid_photo_url)
+    console.log(nafisa_domain + rowData.nid_photo_url)
 
-    $("#nid_img_link").attr("src",nafisa_domain+ rowData.nid_photo_url);
+    $("#nid_img_link").attr("src", nafisa_domain + rowData.nid_photo_url);
 });
 
 $('#userProfile_datatable tbody').on('click', '#profilePhoto_view', function () {
@@ -3248,8 +3180,6 @@ $.ajax({
 });
 
 
-
-
 //cropzee-------------------------------
 $(document).ready(function () {
     $("#nid_photos").cropzee();
@@ -3285,7 +3215,7 @@ $("#user_profile_post_form").on('submit', (function (e) {
                 $('form :input').val('');
                 $('.input').val('');
 
-                 userProfile_table.ajax.reload()
+                userProfile_table.ajax.reload()
 
             } else {
                 notyf.error({
@@ -3312,39 +3242,32 @@ $("#user_profile_post_form").on('submit', (function (e) {
 /* ### Post Data End ### */
 
 
-
-
-
-
 $('#userProfile_datatable tbody').on('click', '#update_userProfile_btn', function () {
     rowIndex = userProfile_table.row($(this).parents('tr')).index();
     rowData = userProfile_table.row($(this).parents('tr')).data();
 
 
-console.log(rowData)
+    console.log(rowData)
     var select_user = rowData.user_id.phone_username;
-    $("#update_user_profile_phone_number option").filter(function() {
+    $("#update_user_profile_phone_number option").filter(function () {
         return $(this).text() == select_user;
     }).prop('selected', true);
 
 
-
     var select_user1 = rowData.branch_id.name;
-    $("#update_user_profile_branch option").filter(function() {
+    $("#update_user_profile_branch option").filter(function () {
         return $(this).text() == select_user1;
     }).prop('selected', true);
 
 
     var select_user2 = rowData.designation_id.name;
-    $("#update_user_profile_designation option").filter(function() {
+    $("#update_user_profile_designation option").filter(function () {
         return $(this).text() == select_user2;
     }).prop('selected', true);
 
 
-
-
     var select_user3 = rowData.department_id.name;
-    $("#update_user_profile_department option").filter(function() {
+    $("#update_user_profile_department option").filter(function () {
         return $(this).text() == select_user3;
     }).prop('selected', true);
     $("#update_user_profile_name").val(rowData.name);
@@ -3359,16 +3282,11 @@ console.log(rowData)
 });
 
 
-
-
-
-
-
 /* ### Post Data Start ### */
 $("#update_user_profile_post_form").on('submit', (function (e) {
     e.preventDefault();
     $.ajax({
-        url: nafisa_domain + '/user_profile/'+ rowData.id,
+        url: nafisa_domain + '/user_profile/' + rowData.id,
         type: "PUT",
         data: new FormData(this),
         contentType: false,
@@ -3417,24 +3335,6 @@ $("#update_user_profile_post_form").on('submit', (function (e) {
     });
 }));
 /* ### Post Data End ### */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Delete button
@@ -4379,8 +4279,6 @@ $('#product_dataTable tbody').on('click', '#delete_productBtn', function () {
     rowData = product_table.row($(this).parents('tr')).data();
     rowIndex = product_table.row($(this).parents('tr')).index();
 
-    console.log(rowData.id)
-
 });
 
 // DELETE Confirmation button
@@ -4400,19 +4298,15 @@ $("#delete_product").click(function () {
             $("#delete_product").text('Delete');
             // redrawing to original page
             product_table.page(currentPage).draw('page');
-
+            product_table.ajax.reload()
             notyf.success({
                 message: data.status.message,
                 duration: 7000,
                 icon: false
             });
-            rowData = undefined;
-            rowIndex = undefined;
+
         },
         error: function (data) {
-            const modal = bootstrap.Modal.getInstance($("#delete_product_modal"));
-            modal.hide();
-            $("#delete_product").text('Delete');
             notyf.error({
                 message: "Cannot Delete This Product",
                 duration: 7000,
