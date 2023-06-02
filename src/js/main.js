@@ -1,14 +1,29 @@
-// global variable for storing index and data
 let rowIndex, rowData;
-// init notification instance
 const notyf = new Notyf();
-const nafisa_domain = 'https://nafisa.selopian.us'
+
+const nafisa_domain = 'http://192.168.68.124:3005'
+
+$.fn.dataTable.ext.errMode = 'throw';
+
+
+const closeModalValue = (id) => {
+    $(id).on('hidden.bs.modal', function (e) {
+        $(this)
+            .find("input,textarea,select")
+            .val('')
+            .end()
+            .find("input[type=checkbox], input[type=radio]")
+            .prop("checked", "")
+            .end();
+    })
+}
 
 
 //SHOP================================================================================================
 //init shop & branch  datatable and load data
 let shop_table = $('#shop_dataTable').DataTable({
-    order: [[0, 'desc']],
+
+    order: [[1, 'desc']],
     "columnDefs": [
 
         {"width": "80%", "targets": 0},
@@ -76,7 +91,7 @@ let shop_table = $('#shop_dataTable').DataTable({
         {data: 'name'},
 
         {
-            data: 'id',
+            data: '',
             render: function () {
                 return '<button id="update_shopBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
                     + '<button   id="delete_shopBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
@@ -88,6 +103,7 @@ let shop_table = $('#shop_dataTable').DataTable({
 
 /* ### Add Data Start ### */
 $("#add_shop").click(function () {
+
     let addShopModal = {
         name: $("#shopName").val(),
 
@@ -104,19 +120,8 @@ $("#add_shop").click(function () {
 
                 const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
                 modal.hide();
-                let newRowIndex = shop_table.row.add(addShopModal).draw();
-                //reset input Field
-                $('form :input').val('');
-                $('.input').val('');
-                // reset search
-                shop_table.search('');
-                // re-ordering to default
-                shop_table.order([0, 'desc']).draw();
-                // highlighting newly added row
-                $(shop_table.row(newRowIndex.index()).nodes()).addClass('selected');
-                setTimeout(function () {
-                    $(shop_table.row(newRowIndex.index()).nodes()).removeClass('selected');
-                }, 2000);
+
+                shop_table.ajax.reload()
 
                 //Success Notification
                 notyf.success({
@@ -129,16 +134,12 @@ $("#add_shop").click(function () {
 
                 const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
                 modal.hide();
-
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
             }
-
-            rowData = undefined;
-
         },
     });
 
@@ -147,29 +148,16 @@ $("#add_shop").click(function () {
 
 // EDIT button
 $('#shop_dataTable tbody').on('click', '#update_shopBtn', function () {
-    // getting parent row index and data
     rowData = shop_table.row($(this).parents('tr')).data();
-    rowIndex = shop_table.row($(this).parents('tr')).index();
-
     $("#update_shopName").val(rowData.name);
-
 })
 
-
-// Update Button
 $("#update_shop").click(function () {
 
     let updateShopModal = {
         name: $("#update_shopName").val(),
     };
 
-    let updateShopModal2 = {
-        name: $("#update_shopName").val(),
-        id: rowData.id
-    };
-
-
-    // updating server row
     $.ajax({
         url: nafisa_domain + '/shop/' + rowData.id,
         type: 'PUT',
@@ -178,32 +166,17 @@ $("#update_shop").click(function () {
         success: function (data) {
 
             if (data.status.code === 1) {
-                // hide modal
                 const modal = bootstrap.Modal.getInstance($("#update_shop_modal"));
                 modal.hide();
-                // notification
+                shop_table.ajax.reload()
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
-                let currentPage = shop_table.page();
-                // update datatable
-                shop_table.row(rowIndex).data(updateShopModal2).draw();
 
-                // redrawing to original page
-                shop_table.page(currentPage).draw('page');
-
-                // highlighting newly added row
-                $(shop_table.row(rowIndex).nodes()).addClass('selected');
-                setTimeout(function () {
-                    $(shop_table.row(rowIndex).nodes()).removeClass('selected');
-                }, 2000);
             } else {
-
-                //Set default button text again
-                $("#update_shop").text('Update Info');
-
+                shop_table.ajax.reload()
                 //Notification
                 notyf.success({
                     message: data.status.message,
@@ -220,29 +193,18 @@ $('#shop_dataTable tbody').on('click', '#delete_shopBtn', function () {
     // getting parent row index and data
     rowData = shop_table.row($(this).parents('tr')).data();
     rowIndex = shop_table.row($(this).parents('tr')).index();
-
-    $("#update_shopName").val(rowData.name);
-
 })
 
 $("#delete_shop").click(function () {
 
     $.ajax({
-        url: 'https://nafisa.selopian.us/shop/' + rowData.id,
+        url: nafisa_domain + '/shop/' + rowData.id,
         type: 'DELETE',
         dataType: "json",
         success: function (data) {
-            let currentPage = shop_table.page();
-            shop_table.row(rowIndex).remove().draw();
-
+            shop_table.ajax.reload()
             const modal = bootstrap.Modal.getInstance($("#delete_shop_modal"));
             modal.hide();
-
-            $("#delete_shop").text('Delete');
-
-            // redrawing to original page
-            shop_table.page(currentPage).draw('page');
-
             notyf.success({
                 message: 'Shop  Deleted <strong>Successfully !</strong>',
                 duration: 7000,
@@ -253,7 +215,8 @@ $("#delete_shop").click(function () {
             rowIndex = undefined;
         },
         error: function () {
-            $("#delete_shop").text('Delete');
+            shop_table.ajax.reload()
+
             notyf.error({
                 message: "<strong>Warning !</strong> Can't Delete shop",
                 duration: 7000,
@@ -270,7 +233,7 @@ $("#delete_shop").click(function () {
 //init shop & branch  datatable and load data
 let branch_table = $('#branch_dataTable').DataTable({
     ajax: {
-        url: 'https://nafisa.selopian.us/branch',
+        url: nafisa_domain + '/branch',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -366,7 +329,7 @@ let branch_table = $('#branch_dataTable').DataTable({
 
 //init Shop Name
 $.ajax({
-    url: 'https://nafisa.selopian.us/shop',
+    url: nafisa_domain + '/shop',
     type: 'GET',
     success: function (result) {
         let shopName = result?.data.map(item => item)
@@ -386,7 +349,7 @@ $("#add_Branch").click(function () {
         shop_id: $("#selectShop").val(),
     };
     $.ajax({
-        url: 'https://nafisa.selopian.us/branch ',
+        url: nafisa_domain + '/branch ',
         type: 'POST',
         data: JSON.stringify(addBranch),
         contentType: "application/json",
@@ -538,55 +501,51 @@ $('#update_shop_modal').on('hidden.bs.modal', function () {
 
 /* ### Delete Data Start ### */
 
-//     // DELETE button
-//     $('#shop_dataTable tbody').on('click', '#delete_shopBtn', function () {
-//         rowData =  shop_table.row($(this).parents('tr')).data();
-//         rowIndex = shop_table.row($(this).parents('tr')).index();
-//         // Set value on Modal
-//         $("#sName").text(`Are you sure you want to delete "${rowData.name}"?`);
-//     });
-//
-//     // DELETE Confirmation button
-//     $("#delete_shop").click(function() {
-//
-//         $(this).text('Deleting...');
-//         $.ajax({
-//             url: 'http://103.205.71.148/shop/' + rowData.id + '/',
-//             type: 'DELETE',
-//             dataType: "json",
-//             success: function(data )
-//             {
-//                 let currentPage = shop_table.page();
-//                 shop_table.row(rowIndex).remove().draw();
-//
-//                 const modal = bootstrap.Modal.getInstance($("#delete_shop_modal"));
-//                 modal.hide();
-//
-//                 $("#delete_shop").text('Delete');
-//
-//                 // redrawing to original page
-//                 shop_table.page(currentPage).draw( 'page' );
-//
-//                 notyf.success({
-//                     message: 'Shop  Deleted <strong>Successfully !</strong>',
-//                     duration: 7000,
-//                     icon: false
-//                 });
-//
-//                 rowData = undefined;
-//                 rowIndex = undefined;
-//             },
-//             error: function()
-//             {
-//                 $("#delete_shop").text('Delete');
-//                 notyf.error({
-//                     message: "<strong>Warning !</strong> Can't Delete shop",
-//                     duration: 7000,
-//                     icon: false
-//                 });
-//             },
-//         });
-//     });
+// DELETE button
+$('#branch_dataTable tbody').on('click', '#delete_shopBtn', function () {
+    rowData = branch_table.row($(this).parents('tr')).data();
+    rowIndex = branch_table.row($(this).parents('tr')).index();
+    // Set value on Modal
+    $("#sName").text(`Are you sure you want to delete "${rowData.name}"?`);
+});
+
+// DELETE Confirmation button
+$("#delete_branch").click(function () {
+    $.ajax({
+        url: nafisa_domain + '/branch/' + rowData.id,
+        type: 'DELETE',
+        dataType: "json",
+        success: function (data) {
+            let currentPage = shop_table.page();
+            shop_table.row(rowIndex).remove().draw();
+
+            const modal = bootstrap.Modal.getInstance($("#delete_shop_modal"));
+            modal.hide();
+
+            $("#delete_shop").text('Delete');
+
+            // redrawing to original page
+            shop_table.page(currentPage).draw('page');
+
+            notyf.success({
+                message: 'Shop  Deleted <strong>Successfully !</strong>',
+                duration: 7000,
+                icon: false
+            });
+
+            rowData = undefined;
+            rowIndex = undefined;
+        },
+        error: function () {
+            $("#delete_shop").text('Delete');
+            notyf.error({
+                message: "<strong>Warning !</strong> Can't Delete shop",
+                duration: 7000,
+                icon: false
+            });
+        },
+    });
+});
 //     /* ### Delete Data End ### */
 //
 //     //Reset Input when close modal
@@ -601,12 +560,14 @@ $('#update_shop_modal').on('hidden.bs.modal', function () {
 //
 
 
-//    USER====================================================================================================================
+//USER====================================================================================================================
 
 
 //init User datatable and load data
 
 let user_table = $('#user_dataTable').DataTable({
+
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/user',
         dataSrc: 'data',
@@ -626,7 +587,7 @@ let user_table = $('#user_dataTable').DataTable({
             title: 'Shop Information',
             orientation: 'landscape',
             exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5],
+                columns: [0, 1, 2, 3, 4],
                 modifier: {
                     page: 'current'
                 }
@@ -650,13 +611,13 @@ let user_table = $('#user_dataTable').DataTable({
             extend: 'excelHtml5',
             title: 'Shop Information',
             exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5]
+                columns: [0, 1, 2, 3, 4]
             },
         },
         {
             extend: 'pdf',
             exportOptions: {
-                columns: [0, 1, 2, 3, 4, 5],
+                columns: [0, 1, 2, 3, 4],
                 modifier: {
                     page: 'current'
                 }
@@ -670,7 +631,7 @@ let user_table = $('#user_dataTable').DataTable({
                     '15%',
                     '15%',
                     '15%',
-                    '15%',
+
                 ]
                 let rowCount = doc.content[1].table.body.length;
                 for (let i = 1; i < rowCount; i++) {
@@ -707,8 +668,6 @@ let user_table = $('#user_dataTable').DataTable({
         },
         {data: 'last_login_at'},
         {data: 'last_login_ip'},
-        {data: 'password_changed_at'},
-
         {
             data: '',
             render: function () {
@@ -723,45 +682,44 @@ let user_table = $('#user_dataTable').DataTable({
 
 /* ### Add Data Start ### */
 $("#add_user").click(function () {
-    $("#add_user").text('Adding');
+
+
     let addUser = {
         phone_username: $("#user_number").val(),
         role: $("#user_role").val(),
         password: $("#user_password").val(),
     };
+
     $.ajax({
         url: nafisa_domain + '/user',
         type: 'POST',
         data: JSON.stringify(addUser),
         contentType: "application/json",
         success: function (data) {
-            if (data.status.code === 1) {
-                notyf.success({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-                const modal = bootstrap.Modal.getInstance($("#add_user_modal"));
-                modal.hide();
-                let newRowIndex = user_table.row.add(addUser).draw();
-                $("#add_user").text('Add User');
-                //reset input Field
-                $('form :input').val('');
-                $('.input').val('');
-                user_table.search('');
-                // re-ordering to default
-                user_table.order([0, 'desc']).draw();
-                // highlighting newly added row
-                $(user_table.row(newRowIndex.index()).nodes()).addClass('selected');
 
-            } else {
-                notyf.error({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-            }
+            notyf.success({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
+            const modal = bootstrap.Modal.getInstance($("#add_user_modal"));
+            modal.hide();
+            user_table.ajax.reload();
+            closeModalValue('#add_user_modal');
+
+
         },
+        error: function (data) {
+
+            notyf.error({
+                message: data.responseJSON.status.message,
+                duration: 7000,
+                icon: false
+            });
+            user_table.ajax.reload();
+
+        }
+
     });
 })
 
@@ -769,15 +727,16 @@ $("#add_user").click(function () {
 //Update User---------------------------------------------
 // EDIT button
 $('#user_dataTable tbody').on('click', '#update_userBtn', function () {
-    // getting parent row index and data
     rowIndex = user_table.row($(this).parents('tr')).index();
     rowData = user_table.row($(this).parents('tr')).data();
 
-    // setting row values to update modal input boxes
     $("#update_user_number").val(rowData.phone_username);
-    $("#update_user_role").val(rowData.role);
-    $("#update_user_password").val(rowData.password);
+    var select_user3 = rowData.role;
+    $("#update_user_role option").filter(function () {
+        return $(this).val() == select_user3;
+    }).prop('selected', true);
 
+    $("#update_user_password").val(rowData.password);
 
 })
 
@@ -789,12 +748,9 @@ $("#update_user").click(function () {
         phone_username: $("#update_user_number").val(),
         role: $("#update_user_role").val(),
         password: $("#update_user_password").val(),
+
     };
 
-    // updating button text
-    $(this).text('Updating...');
-
-    // updating server row
     $.ajax({
         url: nafisa_domain + '/user/' + rowData.id,
         type: 'PUT',
@@ -802,63 +758,34 @@ $("#update_user").click(function () {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
 
-            if (data.status.code === 1) {
-                // hide modal
-                const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
-                modal.hide();
+            const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
+            modal.hide();
 
-                //Set default button text again
-                $("#update_user").text('Update');
+            user_table.ajax.reload()
 
-                let currentPage = user_table.page();
-
-                // update datatable
-                user_table.row(rowIndex).data(updateUserModal).draw();
-
-                // redrawing to original page
-                user_table.page(currentPage).draw('page');
-
-                // highlighting newly added row
-                $(user_table.row(rowIndex).nodes()).addClass('selected');
-                setTimeout(function () {
-                    $(user_table.row(rowIndex).nodes()).removeClass('selected');
-                }, 2000);
-
-                // notification
-                notyf.success({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-            } else {
-                const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
-                modal.hide();
-
-                //Set default button text again
-                $("#update_user").text('Update');
-                // notification
-                notyf.error({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-            }
+            notyf.success({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
 
         },
 
-        error: function () {
-            const modal = bootstrap.Modal.getInstance($("#update_category_modal"));
+        error: function (data) {
+            user_table.ajax.reload()
+
+            const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
             modal.hide();
-            //Set default button text again
-            $("#update_category").text('Update');
-            // notification
+
             notyf.error({
-                message: data.status.message,
+                message: data.responseJSON.data,
                 duration: 7000,
                 icon: false
             });
         }
     });
+
+    closeModalValue('#update_user_modal');
 
 });
 
@@ -874,7 +801,6 @@ $('#user_dataTable tbody').on('click', '#delete_userBtn', function () {
 // User DELETE Confirmation button
 $("#delete_user").click(function () {
 
-    $(this).text('Deleting...');
     $.ajax({
         url: nafisa_domain + '/user/' + rowData.id,
         type: 'DELETE',
@@ -883,7 +809,6 @@ $("#delete_user").click(function () {
             if (data.status.code === 1) {
                 const modal = bootstrap.Modal.getInstance($("#delete_user_modal"));
                 modal.hide();
-                $("#delete_user").text('Delete');
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
@@ -1184,6 +1109,98 @@ $("#customer_post_form").on('submit', (function (e) {
 /* ### Post Data End ### */
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+$('#customer_dataTable tbody').on('click', '#update_customerBtn', function () {
+    // getting parent row Data
+    rowData = customer_table.row($(this).parents('tr')).data();
+
+    // setting row values to update modal input boxes
+    $("#update_customer_name").val(rowData.name);
+    $('#update_customer_email').val(rowData.email);
+    $('#update_customer_phone_no').val(rowData.phone_no);
+    $("#update_customer_address").val(rowData.address);
+    $('#update_customer_company_name').val(rowData.company_name);
+    $("#update_customer_image_url").val(rowData.image_url);
+
+    //Close "#" In url From cropzee modal
+    closeModal();
+})
+
+
+// Update Button
+$("#update_customer_post_form").on('submit', (function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: nafisa_domain + '/customer/' + rowData.id,
+        type: "PUT",
+        data: new FormData(this),
+        contentType: false,
+        cache: false,
+        processData: false,
+
+        success: function (data) {
+            if (data.status.code === 1) {
+
+                customer_table.ajax.reload();
+
+                const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
+                modal.hide();
+
+                //Success Notification
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+
+            }
+        },
+        error: function (data) {
+
+
+            console.log(data)
+            const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
+            modal.hide();
+            //Notification
+
+            notyf.error({
+                message: data.responseJSON.status.message,
+                duration: 7000,
+                icon: false
+            });
+        }
+    });
+}));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Delete button
 $('#customer_dataTable tbody').on('click', '#delete_customerBtn', function () {
     rowData = customer_table.row($(this).parents('tr')).data();
@@ -1242,100 +1259,17 @@ $("#delete_customer").click(function () {
 /* ### Delete Data End ### */
 
 
-// Update Customer Data Start --------------------------------------------
-
-//Chance nid photo preview when update
-function updateNidURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-
-            $('#update_customer_image_url').attr('src', e.target.result);
-            $('#update_customer_image_url').hide();
-            $('#update_customer_image_url').fadeIn(650);
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-$("#salesman_edit_nid_photos").change(function () {
-    updateNidURL(this);
-});
 
 
-$('#customer_dataTable tbody').on('click', '#update_customerBtn', function () {
-    // getting parent row Data
-    rowData = customer_table.row($(this).parents('tr')).data();
-
-    // setting row values to update modal input boxes
-    $("#update_customer_name").val(rowData.name);
-    $('#update_customer_email').val(rowData.email);
-    $('#update_customer_phone_no').val(rowData.phone_no);
-    $("#update_customer_address").val(rowData.address);
-    $('#update_customer_company_name').val(rowData.company_name);
-    $("#update_customer_image_url").val(rowData.image_url);
-
-    //Close "#" In url From cropzee modal
-    closeModal();
-})
 
 
-// Update Button
-$("#update_customer_post_form").on('submit', (function (e) {
-    e.preventDefault();
-    $.ajax({
-        url: nafisa_domain + '/customer/' + rowData.id,
-        type: "POST",
-        data: new FormData(this),
-        contentType: false,
-        cache: false,
-        processData: false,
 
-        success: function (data) {
-            if (data.status.code === 1) {
-                const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-                modal.hide();
 
-                let newSRowIndex = customer_table.row.add(data.data).draw();
-                //Success Notification
-                notyf.success({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-                //reset input Field
-                $('form :input').val('');
-                $('.input').val('');
-                customer_table.search('');
-                // re-ordering to default
 
-                customer_table.order([0, 'desc']).draw();
-                // highlighting newly added row
-                $(customer_table.row(newSRowIndex.index()).nodes()).addClass('selected');
-            } else {
-                //Set default button text again
-                const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-                modal.hide();
-                //Notification
-                notyf.error({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-            }
-        },
-        error: function (data) {
-            const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-            modal.hide();
-            //Notification
-            notyf.error({
-                message: data.status.message,
-                duration: 7000,
-                icon: false
-            });
-        }
-    });
-}));
+
+
+
+
 
 
 //SUPPLIER==================================================================================================
@@ -1555,8 +1489,6 @@ $('#supplier_dataTable tbody').on('click', '#supplier_details', function () {
 
 $('#supplier_dataTable tbody').on('click', '#supplier_photo', function () {
     rowData = shop_supplier_table.row($(this).parents('tr')).data();
-
-    console.log(rowData)
     $("#supplier_image").attr("src", rowData.profile_photo_url);
 });
 
@@ -1589,6 +1521,7 @@ $("#Supplier_post_form").on('submit', (function (e) {
                     duration: 7000,
                     icon: false
                 });
+                shop_supplier_table.ajax.reload()
                 //reset input Field
                 $('form :input').val('');
                 $('.input').val('');
@@ -1608,12 +1541,12 @@ $("#Supplier_post_form").on('submit', (function (e) {
             }
         },
         error: function (data) {
-            $("#add_supplier").text('Add');
+
             const modal = bootstrap.Modal.getInstance($("#add_supplier_modal"));
             modal.hide();
             //Notification
             notyf.error({
-                message: data.status.message,
+                message: data.responseJSON.status.message,
                 duration: 7000,
                 icon: false
             });
@@ -1634,7 +1567,6 @@ $('#supplier_dataTable tbody').on('click', '#update_supplierBtn', function () {
     $("#Ucompany_name").val(rowData.company_name);
     $("#Uimage_url").val(rowData.image_url);
 
-
 })
 
 
@@ -1642,7 +1574,7 @@ $("#Supplier_update_post_form").on('submit', (function (e) {
     e.preventDefault();
     $.ajax({
         url: nafisa_domain + '/supplier/' + rowData.id,
-        type: "POST",
+        type: "PUT",
         data: new FormData(this),
         contentType: false,
         cache: false,
@@ -1650,28 +1582,14 @@ $("#Supplier_update_post_form").on('submit', (function (e) {
 
         success: function (data) {
 
-
             if (data.status.code === 1) {
-                // hide modal
 
                 const modal = bootstrap.Modal.getInstance($("#Update_supplier_modal"));
                 modal.hide();
 
-                //Set default button text again
-                let currentPage = shop_supplier_table.page();
+                shop_supplier_table.ajax.reload();
 
-                // update datatable
-                shop_supplier_table.row(rowIndex).data(data.data).draw();
-
-                // redrawing to original page
-                shop_supplier_table.page(currentPage).draw('page');
-
-                // highlighting newly added row
-                $(shop_supplier_table.row(rowIndex).nodes()).addClass('selected');
-                setTimeout(function () {
-                    $(shop_supplier_table.row(rowIndex).nodes()).removeClass('selected');
-                }, 2000);
-                notyf.error({
+                notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
@@ -1681,7 +1599,7 @@ $("#Supplier_update_post_form").on('submit', (function (e) {
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#update_supplier_modal"));
                 modal.hide();
-                //Notification
+                shop_supplier_table.ajax.reload();
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
@@ -1692,9 +1610,9 @@ $("#Supplier_update_post_form").on('submit', (function (e) {
         error: function (data) {
             const modal = bootstrap.Modal.getInstance($("#Update_supplier_modal"));
             modal.hide();
-            //Notification
+            shop_supplier_table.ajax.reload();
             notyf.error({
-                message: data.status.message,
+                message: data.responseJSON.status.message,
                 duration: 7000,
                 icon: false
             });
@@ -2291,6 +2209,12 @@ $("#delete_brand").click(function () {
 //init Department datatable and load data
 let department_table = $('#department_dataTable').DataTable({
 
+    "columnDefs": [
+        {"width": "70%", "targets": 0},
+        {"width": "20%", "targets": 1},
+    ],
+
+
     ajax: {
         url: nafisa_domain + '/department',
         dataSrc: 'data',
@@ -2689,7 +2613,7 @@ let category_table = $('#category_dataTable').DataTable({
 
 //init Parent--------------------------------------------
 $.ajax({
-    url: 'https://nafisa.selopian.us/category/byparent/0',
+    url: nafisa_domain + '/category/byparent/0',
     type: 'GET',
     success: function (data) {
         let category_parents = data?.data.map(item => item)
@@ -3123,7 +3047,7 @@ let userProfile_table = $('#userProfile_datatable').DataTable({
     buttons: [
         {
             extend: 'print',
-            title: 'Salesman Information',
+            title: 'User Information',
             orientation: 'landscape',
             exportOptions: {
                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13,],
@@ -3222,15 +3146,12 @@ let userProfile_table = $('#userProfile_datatable').DataTable({
         {
             data: '',
             render: function () {
-                return '<button id="update_userProfile_btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                return '<button id="update_userProfile_btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_userProfile_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
                     + '<button   id="delete_userProfile_btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_user_profile_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
 });
-
-
-
 
 
 // Details Button
@@ -3244,10 +3165,12 @@ $('#userProfile_datatable tbody').on('click', '#user_details', function () {
 });
 
 
-
 $('#userProfile_datatable tbody').on('click', '#nidPhoto_view', function () {
     rowData = userProfile_table.row($(this).parents('tr')).data();
-    $("#nid_img_link").attr("src", rowData.nid_photo_url);
+
+console.log(nafisa_domain+ rowData.nid_photo_url)
+
+    $("#nid_img_link").attr("src",nafisa_domain+ rowData.nid_photo_url);
 });
 
 $('#userProfile_datatable tbody').on('click', '#profilePhoto_view', function () {
@@ -3257,7 +3180,6 @@ $('#userProfile_datatable tbody').on('click', '#profilePhoto_view', function () 
 
 
 //Salesman CRUD Start
-
 //Reset salesman add Modal Input when it's Close
 $('#add_user_profile_photo').on('hidden.bs.modal', function () {
     $('[data-cropzee="' + 'nid_photos' + '"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="nid_photos"><img  src=""></div>');
@@ -3279,6 +3201,8 @@ $.ajax({
         let category_parents = data?.data.map(item => item)
         category_parents.forEach((element) => {
             $('<option/>').val(element['id']).html(element['phone_username']).appendTo('#user_profile_phone_number');
+            $('<option/>').val(element['id']).html(element['phone_username']).appendTo('#update_user_profile_phone_number');
+
 
         });
     }
@@ -3291,6 +3215,8 @@ $.ajax({
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
             $('<option/>').val(element['id']).html(element['name']).appendTo('#user_profile_branch');
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#update_user_profile_branch');
+
         });
     }
 });
@@ -3301,11 +3227,12 @@ $.ajax({
         let category_parents = data?.data.map(item => item)
         category_parents.forEach((element) => {
             $('<option/>').val(element['id']).html(element['name']).appendTo('#user_profile_department');
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#update_user_profile_department');
+
 
         });
     }
 });
-
 
 
 $.ajax({
@@ -3315,10 +3242,13 @@ $.ajax({
         let category_parents = data?.data.map(item => item)
         category_parents.forEach((element) => {
             $('<option/>').val(element['id']).html(element['name']).appendTo('#user_profile_designation');
-
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#update_user_profile_designation');
         });
     }
 });
+
+
+
 
 //cropzee-------------------------------
 $(document).ready(function () {
@@ -3337,37 +3267,25 @@ $("#user_profile_post_form").on('submit', (function (e) {
         contentType: false,
         cache: false,
         processData: false,
-
         success: function (data) {
+
             if (data.status.code === 1) {
 
                 const modal = bootstrap.Modal.getInstance($("#add_user_profile_photo"));
                 modal.hide();
 
-                let newSRowIndex = userProfile_table.row.add(data.data).draw();
+
                 //Success Notification
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
-                //reset input Field
+
                 $('form :input').val('');
                 $('.input').val('');
-                userProfile_table.search('');
-                // re-ordering to default
 
-                userProfile_table.order([0, 'desc']).draw();
-                // highlighting newly added row
-
-
-
-                $(userProfile_table.row(newSRowIndex.index()).nodes()).addClass('selected');
-
-                setTimeout(function () {
-                    $(userProfile_table.row(rowIndex).nodes()).removeClass('selected');
-                }, 2000);
-
+                 userProfile_table.ajax.reload()
 
             } else {
                 notyf.error({
@@ -3377,7 +3295,6 @@ $("#user_profile_post_form").on('submit', (function (e) {
                 });
 
 
-
             }
         },
         error: function (data) {
@@ -3385,7 +3302,7 @@ $("#user_profile_post_form").on('submit', (function (e) {
             modal.hide();
             //Notification
             notyf.error({
-                message: data.status.message,
+                message: data.responseJSON.status.message,
                 duration: 7000,
                 icon: false
             });
@@ -3393,6 +3310,131 @@ $("#user_profile_post_form").on('submit', (function (e) {
     });
 }));
 /* ### Post Data End ### */
+
+
+
+
+
+
+$('#userProfile_datatable tbody').on('click', '#update_userProfile_btn', function () {
+    rowIndex = userProfile_table.row($(this).parents('tr')).index();
+    rowData = userProfile_table.row($(this).parents('tr')).data();
+
+
+console.log(rowData)
+    var select_user = rowData.user_id.phone_username;
+    $("#update_user_profile_phone_number option").filter(function() {
+        return $(this).text() == select_user;
+    }).prop('selected', true);
+
+
+
+    var select_user1 = rowData.branch_id.name;
+    $("#update_user_profile_branch option").filter(function() {
+        return $(this).text() == select_user1;
+    }).prop('selected', true);
+
+
+    var select_user2 = rowData.designation_id.name;
+    $("#update_user_profile_designation option").filter(function() {
+        return $(this).text() == select_user2;
+    }).prop('selected', true);
+
+
+
+
+    var select_user3 = rowData.department_id.name;
+    $("#update_user_profile_department option").filter(function() {
+        return $(this).text() == select_user3;
+    }).prop('selected', true);
+    $("#update_user_profile_name").val(rowData.name);
+    $("#update_user_profile_nid").val(rowData.nid_no);
+
+    $("#update_user_profile_salary").val(rowData.salary);
+    $("#update_refComment").val(rowData.ref_comment);
+
+    // $("#update_image_url").val(rowData.);
+    // $("#update_profile_photos").val(rowData.);
+
+});
+
+
+
+
+
+
+
+/* ### Post Data Start ### */
+$("#update_user_profile_post_form").on('submit', (function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: nafisa_domain + '/user_profile/'+ rowData.id,
+        type: "PUT",
+        data: new FormData(this),
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (data) {
+
+            if (data.status.code === 1) {
+
+                const modal = bootstrap.Modal.getInstance($("#update_userProfile_modal"));
+                modal.hide();
+
+
+                //Success Notification
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+                $('form :input').val('');
+                $('.input').val('');
+
+                userProfile_table.ajax.reload()
+
+            } else {
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+
+            }
+        },
+        error: function (data) {
+            const modal = bootstrap.Modal.getInstance($("#update_userProfile_modal"));
+            modal.hide();
+            //Notification
+            notyf.error({
+                message: data.responseJSON.status.message,
+                duration: 7000,
+                icon: false
+            });
+        }
+    });
+}));
+/* ### Post Data End ### */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Delete button
@@ -3472,81 +3514,6 @@ function updateNidURL(input) {
 $("#salesman_edit_nid_photos").change(function () {
     updateNidURL(this);
 });
-
-
-$('#customer_dataTable tbody').on('click', '#update_customerBtn', function () {
-    // getting parent row Data
-    rowData = customer_table.row($(this).parents('tr')).data();
-
-    // setting row values to update modal input boxes
-    $("#update_customer_name").val(rowData.name);
-    $('#update_customer_email').val(rowData.email);
-    $('#update_customer_phone_no').val(rowData.phone_no);
-    $("#update_customer_address").val(rowData.address);
-    $('#update_customer_company_name').val(rowData.company_name);
-    $("#update_customer_image_url").val(rowData.image_url);
-
-    //Close "#" In url From cropzee modal
-    closeModal();
-})
-
-
-// Update Button
-$("#update_customer_post_form").on('submit', (function (e) {
-    e.preventDefault();
-    $.ajax({
-        url: nafisa_domain + '/customer/' + rowData.id,
-        type: "POST",
-        data: new FormData(this),
-        contentType: false,
-        cache: false,
-        processData: false,
-
-        success: function (data) {
-            if (data.status.code === 1) {
-                const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-                modal.hide();
-
-                let newSRowIndex = customer_table.row.add(data.data).draw();
-                //Success Notification
-                notyf.success({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-                //reset input Field
-                $('form :input').val('');
-                $('.input').val('');
-                customer_table.search('');
-                // re-ordering to default
-
-                customer_table.order([0, 'desc']).draw();
-                // highlighting newly added row
-                $(customer_table.row(newSRowIndex.index()).nodes()).addClass('selected');
-            } else {
-                //Set default button text again
-                const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-                modal.hide();
-                //Notification
-                notyf.error({
-                    message: data.status.message,
-                    duration: 7000,
-                    icon: false
-                });
-            }
-        },
-        error: function (data) {
-            const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-            modal.hide();
-            //Notification
-            notyf.error({
-                message: data.status.message,
-                duration: 7000,
-                icon: false
-            });
-        }
-    });
-}));
 
 
 //Sales KPI=======================================================================================
@@ -3918,7 +3885,7 @@ $("#delete_kpi").click(function () {
 let attendance_table = $('#attendance_datatable').DataTable({
 
     ajax: {
-        url: nafisa_domain + '/attendance/all/1/1',
+        url: nafisa_domain + '/attendance/all/1000/1',
         dataSrc: 'data',
     },
     rowId: 'id',
@@ -3995,17 +3962,11 @@ let attendance_table = $('#attendance_datatable').DataTable({
     ],
 
     columns: [
-        {data: 'name'},
+        {data: 'user_id.name'},
         {data: 'date'},
         {data: 'check_in'},
         {data: 'check_out'},
 
-        {
-            render: function () {
-                return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                    + '<button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
-            }
-        },
     ]
 });
 
@@ -4277,9 +4238,7 @@ $("#product_post_form").on('submit', (function (e) {
                 // highlighting newly added row
                 $(product_table.row(newSRowIndex.index()).nodes()).addClass('selected');
             } else {
-                //Set default button text again
-                const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
-                modal.hide();
+
                 //Notification
                 notyf.error({
                     message: data.status.message,
@@ -4289,8 +4248,7 @@ $("#product_post_form").on('submit', (function (e) {
             }
         },
         error: function (data) {
-            const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
-            modal.hide();
+
             //Notification
             notyf.error({
                 message: data.status.message,
@@ -4420,12 +4378,14 @@ $("#update_product_post_form").on('submit', (function (e) {
 $('#product_dataTable tbody').on('click', '#delete_productBtn', function () {
     rowData = product_table.row($(this).parents('tr')).data();
     rowIndex = product_table.row($(this).parents('tr')).index();
+
+    console.log(rowData.id)
+
 });
 
 // DELETE Confirmation button
 $("#delete_product").click(function () {
 
-    $(this).text('Deleting...');
     $.ajax({
         url: nafisa_domain + '/products/' + rowData.id,
         type: 'DELETE',
@@ -6207,7 +6167,7 @@ var inventory_table = $('#inventory_dataTable').DataTable({
 
 $("#sub_bra_id").click(function () {
     var abc = $("#select_inventory_category").val();
-    inventory_table.ajax.url('https://nafisa.selopian.us/inventory/' + abc).load();
+    inventory_table.ajax.url(nafisa_domain + '/inventory/' + abc).load();
     $.fn.dataTable.ext.errMode = 'throw';
 
 });
@@ -6630,7 +6590,7 @@ $("#due_customer_submit_button").click(function () {
     var id = $("#select_customer_due").val();
 
 
-    due_data_table.ajax.url(`https://nafisa.selopian.us/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
+    due_data_table.ajax.url(nafisa_domain + `/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
 
 
@@ -6707,7 +6667,7 @@ $("#customer_purchase_report").click(function () {
 
     var id = $("#select_customer_due_report").val();
 
-    purchase_data_table.ajax.url(`https://nafisa.selopian.us/customer_purchase_report/${id}/${$("#customer_from_date1").val()}/${$("#customer_to_date2").val()}`).load();
+    purchase_data_table.ajax.url(nafisa_domain + `/customer_purchase_report/${id}/${$("#customer_from_date1").val()}/${$("#customer_to_date2").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
 
 });
@@ -6779,7 +6739,7 @@ var salesman_performance_table = $('#salesman_performance_datatable').DataTable(
 $("#salesman_performance").click(function () {
     var id = $("#select_salesman_performance").val();
 
-    salesman_performance_table.ajax.url(`https://nafisa.selopian.us/salesman_performance_report/${id}/${$("#salesman_performance_from_date").val()}/${$("#salesman_performance_to_date").val()}`).load();
+    salesman_performance_table.ajax.url(nafisa_domain + `/salesman_performance_report/${id}/${$("#salesman_performance_from_date").val()}/${$("#salesman_performance_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
 
 
@@ -6849,7 +6809,7 @@ var supplier_sales_table = $('#supplier_sales_datatable').DataTable({
 $("#supplier_sales_submit_button").click(function () {
     var id = $("#select_supplier_sales").val();
 
-    supplier_sales_table.ajax.url(`https://nafisa.selopian.us/supplier_sales_report/${id}/${$("#supplier_from_date").val()}/${$("#supplier_to_date").val()}`).load();
+    supplier_sales_table.ajax.url(nafisa_domain + `/supplier_sales_report/${id}/${$("#supplier_from_date").val()}/${$("#supplier_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
 
 
@@ -6916,7 +6876,7 @@ var supplier_due_table = $('#supplier_due_datatable').DataTable({
 $("#supplier_due_submit_button").click(function () {
     var id = $("#select_supplier_sales").val();
 
-    supplier_due_table.ajax.url(`https://nafisa.selopian.us/supplier_due_report/${id}/${$("#supplier_due_from_date").val()}/${$("#supplier_due_date").val()}`).load();
+    supplier_due_table.ajax.url(nafisa_domain + `/supplier_due_report/${id}/${$("#supplier_due_from_date").val()}/${$("#supplier_due_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
 
 });
@@ -7055,7 +7015,7 @@ $("#product_sales_report_customer_datatable tbody").on("click", "td.details-cont
 
 $("#submit_product_sales_report").click(function () {
     var id = $("#select_branch_report_product_sales").val();
-    sales_report_table.ajax.url(`https://nafisa.selopian.us/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
+    sales_report_table.ajax.url(nafisa_domain + `/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
 });
 
@@ -7096,7 +7056,7 @@ var category_wise_product_sales_report_table = $('#category_wise_product_sales_r
 });
 
 $("#submit_category_wise_product_sales_report").click(function () {
-    category_wise_product_sales_report_table.ajax.url(`https://nafisa.selopian.us/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
+    category_wise_product_sales_report_table.ajax.url(nafisa_domain + `/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
 
 });
@@ -7233,7 +7193,7 @@ $("#company_revenue_submit_button").click(function () {
 
     } else {
         $('.revenue_datatable').css('display', 'block');
-        revenue_table.ajax.url(`https://nafisa.selopian.us/revenue/${$("#company_select_length").val()}`).load();
+        revenue_table.ajax.url(nafisa_domain + `/revenue/${$("#company_select_length").val()}`).load();
         $.fn.dataTable.ext.errMode = 'throw';
 
     }
@@ -7252,7 +7212,7 @@ $("#branch_revenue_submit_button").click(function () {
         });
     } else {
         $('.revenue_datatable_by_branch').css('display', 'block');
-        revenue_table_by_branch.ajax.url(`https://nafisa.selopian.us/revenue/byBranch/${id}/${$("#branch_select_length").val()}`).load();
+        revenue_table_by_branch.ajax.url(nafisa_domain + `/revenue/byBranch/${id}/${$("#branch_select_length").val()}`).load();
         $.fn.dataTable.ext.errMode = 'throw';
     }
 
@@ -7270,7 +7230,7 @@ $("#shop_revenue_submit_button").click(function () {
         });
     } else {
         $('.revenue_By_shop_datatable').css('display', 'block');
-        revenue_table_by_shop.ajax.url(`https://nafisa.selopian.us/revenue/byShop/${id}/${$("#shop_select_length").val()}`).load();
+        revenue_table_by_shop.ajax.url(nafisa_domain + `/revenue/byShop/${id}/${$("#shop_select_length").val()}`).load();
         $.fn.dataTable.ext.errMode = 'throw';
     }
 });

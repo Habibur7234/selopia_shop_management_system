@@ -170,11 +170,11 @@
                             </a>
                         </li>
 
-                        <li class="nav-item @@if (context.page === 'sales') { active}">
-                            <a href="@@path/pages/salesKpi.html" class="nav-link">
-                                <span class="sidebar-text">Sales Target</span>
-                            </a>
-                        </li>
+<!--                        <li class="nav-item @@if (context.page === 'sales') { active}">-->
+<!--                            <a href="@@path/pages/salesKpi.html" class="nav-link">-->
+<!--                                <span class="sidebar-text">Sales Target</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
 
                         <li class="nav-item @@if (context.page === 'department') { active }">
                             <a href="@@path/pages/department.html" class="nav-link">
@@ -362,53 +362,53 @@
 
 
 
-            <li class="nav-item">
-                    <span class="nav-link @@if (context.page!== 'page_examples') { collapsed } d-flex justify-content-between align-items-center"
-                          data-bs-toggle="collapse" data-bs-target="#product_submenu">
-                        <span>
-                        <span class="sidebar-icon">
-                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20"
-                                 xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"
-                                                                          d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
-                                                                          clip-rule="evenodd"></path></svg>
-                        </span>
-                        <span class="sidebar-text">R & D</span>
-                    </span>
-                      <span class="link-arrow">
-                        <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20"
-                             xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"
-                                                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                                      clip-rule="evenodd"></path></svg>
-                      </span>
-                    </span>
-                <div class="multi-level collapse @@if (context.page === 'productformula' ||  context.page === 'product_raw_material'   ||  context.page === 'product_formula_ingredients') { show }"
-                     role="list" id="product_submenu" aria-expanded="false">
-                    <ul class="flex-column nav">
+<!--            <li class="nav-item">-->
+<!--                    <span class="nav-link @@if (context.page!== 'page_examples') { collapsed } d-flex justify-content-between align-items-center"-->
+<!--                          data-bs-toggle="collapse" data-bs-target="#product_submenu">-->
+<!--                        <span>-->
+<!--                        <span class="sidebar-icon">-->
+<!--                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20"-->
+<!--                                 xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"-->
+<!--                                                                          d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"-->
+<!--                                                                          clip-rule="evenodd"></path></svg>-->
+<!--                        </span>-->
+<!--                        <span class="sidebar-text">R & D</span>-->
+<!--                    </span>-->
+<!--                      <span class="link-arrow">-->
+<!--                        <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20"-->
+<!--                             xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"-->
+<!--                                                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"-->
+<!--                                                                      clip-rule="evenodd"></path></svg>-->
+<!--                      </span>-->
+<!--                    </span>-->
+<!--                <div class="multi-level collapse @@if (context.page === 'productformula' ||  context.page === 'product_raw_material'   ||  context.page === 'product_formula_ingredients') { show }"-->
+<!--                     role="list" id="product_submenu" aria-expanded="false">-->
+<!--                    <ul class="flex-column nav">-->
 
-                        <li class="nav-item @@if (context.page === 'product_raw_material') { active }">
-                            <a href="@@path/pages/productrawmaterial.html" class="nav-link">
+<!--                        <li class="nav-item @@if (context.page === 'product_raw_material') { active }">-->
+<!--                            <a href="@@path/pages/productrawmaterial.html" class="nav-link">-->
 
-                                <span class="sidebar-text">Product Raw Material</span>
-                            </a>
-                        </li>
+<!--                                <span class="sidebar-text">Product Raw Material</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
 
-                        <li class="nav-item @@if (context.page === 'productformula') { active }">
-                            <a href="@@path/pages/productformula.html" class="nav-link">
-                                <span class="sidebar-text">Product Formula</span>
-                            </a>
-                        </li>
+<!--                        <li class="nav-item @@if (context.page === 'productformula') { active }">-->
+<!--                            <a href="@@path/pages/productformula.html" class="nav-link">-->
+<!--                                <span class="sidebar-text">Product Formula</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
 
 
-                        <li class="nav-item @@if (context.page === 'product_formula_ingredients') { active }">
-                            <a href="@@path/pages/product_formula_ingredients.html" class="nav-link">
+<!--                        <li class="nav-item @@if (context.page === 'product_formula_ingredients') { active }">-->
+<!--                            <a href="@@path/pages/product_formula_ingredients.html" class="nav-link">-->
 
-                                <span class="sidebar-text"> Formula Ingredients</span>
-                            </a>
-                        </li>
+<!--                                <span class="sidebar-text"> Formula Ingredients</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
 
-                    </ul>
-                </div>
-            </li>
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </li>-->
 
 
 
@@ -577,16 +577,16 @@
             </li>
 
 
-            <li class="nav-item @@if (context.page === 'inventorytrace') { active }">
-                <a href="@@path/pages/inventorytrace.html" class="nav-link">
-          <span class="sidebar-icon">
-            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
-                    fill-rule="evenodd" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    clip-rule="evenodd"></path></svg>
-          </span>
-                    <span class="sidebar-text">Inventory Trace</span>
-                </a>
-            </li>
+<!--            <li class="nav-item @@if (context.page === 'inventorytrace') { active }">-->
+<!--                <a href="@@path/pages/inventorytrace.html" class="nav-link">-->
+<!--          <span class="sidebar-icon">-->
+<!--            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path-->
+<!--                    fill-rule="evenodd" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"-->
+<!--                    clip-rule="evenodd"></path></svg>-->
+<!--          </span>-->
+<!--                    <span class="sidebar-text">Inventory Trace</span>-->
+<!--                </a>-->
+<!--            </li>-->
 
 
 
