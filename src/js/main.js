@@ -7288,6 +7288,9 @@ $("#log_out").click(function () {
 
 
 
+
+
+
 $.ajax({
     url: nafisa_domain + '/revenue/3',
     type: 'GET',
@@ -7300,6 +7303,9 @@ $.ajax({
         });
     }
 });
+
+
+
 
 
 
