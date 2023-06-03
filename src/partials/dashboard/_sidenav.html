@@ -66,17 +66,17 @@
                 </span>
               </a>
             </li-->
-            <li class="nav-item @@if (context.page === 'transactions') { active }">
-                <a href="@@path/pages/transactions.html" class="nav-link">
-          <span class="sidebar-icon">
-            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path
-                    d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path><path fill-rule="evenodd"
-                                                                              d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                                                                              clip-rule="evenodd"></path></svg>
-          </span>
-                    <span class="sidebar-text">Transactions</span>
-                </a>
-            </li>
+<!--            <li class="nav-item @@if (context.page === 'transactions') { active }">-->
+<!--                <a href="@@path/pages/transactions.html" class="nav-link">-->
+<!--          <span class="sidebar-icon">-->
+<!--            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path-->
+<!--                    d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path><path fill-rule="evenodd"-->
+<!--                                                                              d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"-->
+<!--                                                                              clip-rule="evenodd"></path></svg>-->
+<!--          </span>-->
+<!--                    <span class="sidebar-text">Transactions</span>-->
+<!--                </a>-->
+<!--            </li>-->
 
 
             <!--Location-->
@@ -455,22 +455,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <li class="nav-item">
                     <span class="nav-link @@if (context.page!== 'page_examples') { collapsed } d-flex justify-content-between align-items-center"
                           data-bs-toggle="collapse" data-bs-target="#report_submenu">
@@ -493,6 +477,13 @@
                         <li class="nav-item @@if (context.page === 'revenue') { active }">
                             <a href="@@path/pages/revenue.html" class="nav-link">
                                 <span class="sidebar-text">Revenue</span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item @@if (context.page === 'product_sales_report') { active }">
+                            <a href="@@path/pages/product_sales_report.html" class="nav-link">
+                                <span class="sidebar-text">Product Sales</span>
                             </a>
                         </li>
 
@@ -520,24 +511,20 @@
                                 <span class="sidebar-text">Supplier Due</span>
                             </a>
                         </li>
-                        <li class="nav-item @@if (context.page === 'product_sales_report') { active }">
-                            <a href="@@path/pages/product_sales_report.html" class="nav-link">
-                                <span class="sidebar-text">Product Sales</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item @@if (context.page === 'category_wise_product_sales_report') { active }">
-                            <a href="@@path/pages/category_wise_product_sales_report.html" class="nav-link">
-                                <span class="sidebar-text">Category Sales</span>
-                            </a>
-                        </li>
 
 
-                        <li class="nav-item @@if (context.page === 'salesmanperformance') { active }">
-                            <a href="@@path/pages/salesmanperformance.html" class="nav-link">
-                                <span class="sidebar-text">Salesman Performance</span>
-                            </a>
-                        </li>
+<!--                        <li class="nav-item @@if (context.page === 'category_wise_product_sales_report') { active }">-->
+<!--                            <a href="@@path/pages/category_wise_product_sales_report.html" class="nav-link">-->
+<!--                                <span class="sidebar-text">Category Sales</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+
+
+<!--                        <li class="nav-item @@if (context.page === 'salesmanperformance') { active }">-->
+<!--                            <a href="@@path/pages/salesmanperformance.html" class="nav-link">-->
+<!--                                <span class="sidebar-text">Salesman Performance</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
 
                     </ul>
                 </div>

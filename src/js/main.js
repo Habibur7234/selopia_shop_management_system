@@ -232,6 +232,8 @@ $("#delete_shop").click(function () {
 
 //init shop & branch  datatable and load data
 let branch_table = $('#branch_dataTable').DataTable({
+    order: [[1, 'desc']],
+
     ajax: {
         url: nafisa_domain + '/branch',
         dataSrc: 'data',
@@ -314,13 +316,11 @@ let branch_table = $('#branch_dataTable').DataTable({
         {data: 'name'},
         {data: 'location'},
         {data: 'shop_id.name'},
-        {data: 'geolocation'},
-
         {
-            data: 'id',
+            data: '',
             render: function () {
-                return '<button id="update_shopBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
-                    + '<button   id="delete_shopBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button id="update_branch_Btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_branch_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  '
+                    + '<button   id="delete_branch_Btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_branch_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
@@ -335,6 +335,8 @@ $.ajax({
         let shopName = result?.data.map(item => item)
         shopName.forEach((element) => {
             $('<option/>').val(element['id']).html(element['name']).appendTo('#selectShop');
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#update_selectShop');
+
         });
     }
 
@@ -357,7 +359,6 @@ $("#add_Branch").click(function () {
 
 
             if (data.status.code === 0) {
-                let newRowIndex = branch_table.row.add(addBranch).draw();
 
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
                 modal.hide();
@@ -372,18 +373,13 @@ $("#add_Branch").click(function () {
 
                 $('.input').val('');
 
-                branch_table.search('');
+                branch_table.ajax.reload()
 
-                branch_table.order([0, 'desc']).draw();
-
-                // highlighting newly added row
-                $(branch_table.row(newRowIndex.index()).nodes()).addClass('selected');
-                setTimeout(function () {
-                    $(branch_table.row(newRowIndex.index()).nodes()).removeClass('selected');
-                }, 2000);
             } else {
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
                 modal.hide();
+                branch_table.ajax.reload()
+
                 //Success Notification
                 notyf.success({
                     message: data.status.message,
@@ -394,6 +390,7 @@ $("#add_Branch").click(function () {
         },
         error: function (data) {
             if (data.status.code === 0) {
+                branch_table.ajax.reload()
 
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
@@ -405,6 +402,8 @@ $("#add_Branch").click(function () {
                     icon: false
                 });
             } else {
+                branch_table.ajax.reload()
+
                 //Set default button text again
                 const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
                 modal.hide();
@@ -418,6 +417,97 @@ $("#add_Branch").click(function () {
         }
     });
 })
+
+
+// EDIT button
+$('#branch_dataTable tbody').on('click', '#update_branch_Btn', function () {
+    rowData = branch_table.row($(this).parents('tr')).data();
+
+    $("#update_branch_name").val(rowData.name);
+    $("#update_add_location").val(rowData.location);
+    var select_user = rowData.shop_id.name;
+    $("#update_selectShop option").filter(function () {
+        return $(this).text() == select_user;
+    }).prop('selected', true);
+
+})
+
+$("#update_add_Branch").click(function () {
+
+
+    let updateShopModal = {
+        name: $("#update_branch_name").val(),
+        location: $("#update_add_location").val(),
+        shop_id: $("#update_selectShop").val(),
+    };
+
+    $.ajax({
+        url: nafisa_domain + '/branch/' + rowData.id,
+        type: 'PUT',
+        data: JSON.stringify(updateShopModal),
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+
+            if (data.status.code === 1) {
+                const modal = bootstrap.Modal.getInstance($("#update_branch_modal"));
+                modal.hide();
+                branch_table.ajax.reload()
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+
+            } else {
+                const modal = bootstrap.Modal.getInstance($("#update_branch_modal"));
+                modal.hide();
+                branch_table.ajax.reload()
+                //Notification
+                notyf.success({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+            }
+        },
+    });
+})
+
+
+// DELETE
+$('#branch_dataTable tbody').on('click', '#delete_branch_Btn', function () {
+    // getting parent row index and data
+    rowData = branch_table.row($(this).parents('tr')).data();
+    rowIndex = branch_table.row($(this).parents('tr')).index();
+})
+
+$("#delete_branch").click(function () {
+
+    $.ajax({
+        url: nafisa_domain + '/branch/' + rowData.id,
+        type: 'DELETE',
+        dataType: "json",
+        success: function (data) {
+            branch_table.ajax.reload()
+            const modal = bootstrap.Modal.getInstance($("#delete_branch_modal"));
+            modal.hide();
+            notyf.success({
+                message: 'Branch  Deleted <strong>Successfully !</strong>',
+                duration: 7000,
+                icon: false
+            });
+        },
+        error: function () {
+            branch_table.ajax.reload()
+
+            notyf.error({
+                message: "<strong>Warning !</strong> Can't Delete Branch",
+                duration: 7000,
+                icon: false
+            });
+        },
+    });
+});
 
 
 //Reset Input when close modal
@@ -877,7 +967,7 @@ let customer_table = $('#customer_dataTable').DataTable({
     //     {"width": "10%", "targets": 14},
     //     {"width": "10%", "targets": 15}
     // ],
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/customer/all',
         dataSrc: 'data',
@@ -1236,7 +1326,7 @@ $("#delete_customer").click(function () {
 //init supplier datatable and load data
 
 let shop_supplier_table = $('#supplier_dataTable').DataTable({
-    order: [[0, 'desc']],
+    order: [[1, 'desc']],
     "columnDefs": [
         {'visible': false, 'targets': 0},
         {"width": "15%", "targets": 1},
@@ -2016,7 +2106,6 @@ $("#Brand_post_form").on('submit', (function (e) {
 //brand photo View
 $('#Brand_dataTable tbody').on('click', '#brand_photo', function () {
 
-
     rowData = brand_table.row($(this).parents('tr')).data();
     $("#brand_image").attr("src", rowData.logo_url);
 
@@ -2155,7 +2244,7 @@ $("#delete_brand").click(function () {
 
 //init Department datatable and load data
 let department_table = $('#department_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     "columnDefs": [
         {"width": "70%", "targets": 0},
         {"width": "20%", "targets": 1},
@@ -2464,7 +2553,7 @@ $("#delete_department").click(function () {
 
 //init category  datatable and load data
 let category_table = $('#category_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/category',
         dataSrc: 'data',
@@ -2599,7 +2688,7 @@ $("#add_category").click(function () {
                     icon: false
                 });
 
-               category_table.ajax.reload()
+                category_table.ajax.reload()
             }
         },
 
@@ -2785,7 +2874,7 @@ $("#delete_category").click(function () {
 
 //init category  datatable and load data
 let designation_table = $('#Designation_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/user_designation',
         dataSrc: 'data',
@@ -2947,7 +3036,7 @@ $("#add_kpi").click(function () {
 
 //init Salesman datatable and load data
 let userProfile_table = $('#userProfile_datatable').DataTable({
-    order: [[0, 'desc']],
+    order: [[1, 'desc']],
     "columnDefs": [
         {"width": "15%", "targets": 0},
         {"width": "15%", "targets": 1},
@@ -3421,7 +3510,7 @@ $("#salesman_edit_nid_photos").change(function () {
 
 //init category  datatable and load data
 let kpi_table = $('#salesKpi_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/sales_kpi',
         dataSrc: 'data',
@@ -3783,7 +3872,7 @@ $("#delete_kpi").click(function () {
 
 //init category  datatable and load data
 let attendance_table = $('#attendance_datatable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/attendance/all/1000/1',
         dataSrc: 'data',
@@ -3876,6 +3965,7 @@ let attendance_table = $('#attendance_datatable').DataTable({
 //init supplier datatable and load data
 
 let product_table = $('#product_dataTable').DataTable({
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/products',
         dataSrc: 'data',
@@ -4320,7 +4410,7 @@ $("#delete_product").click(function () {
 
 //init category  datatable and load data
 let unit_table = $('#product_unit_datatable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/product_unit',
         dataSrc: 'data',
@@ -4537,7 +4627,7 @@ $("#delete_product_unit").click(function () {
 
 //init category  datatable and load data
 let raw_material_table = $('#product_raw_material_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/product_raw_material',
         dataSrc: 'data',
@@ -4900,7 +4990,7 @@ $("#delete_raw_product").click(function () {
 //SALES PRODUCT============================================================================================================================
 
 let sales_product_table = $('#sales_product_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/sales_product',
         dataSrc: 'data',
@@ -5243,6 +5333,7 @@ $("#Submit_btn").click(function () {
                     duration: 7000,
                     icon: false
                 });
+                console.log(data)
 
                 purchase_order_id = data.data.purchase_order_id;
 
@@ -5301,12 +5392,16 @@ $("#purchase_transaction_form").on('submit', (function (e) {
                     duration: 7000,
                     icon: false
                 });
+                const modal = bootstrap.Modal.getInstance($("#update_product_raw_material_modal"));
+                modal.hide();
             } else {
                 notyf.error({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
+                const modal = bootstrap.Modal.getInstance($("#update_product_raw_material_modal"));
+                modal.hide();
             }
         },
         error: function (data) {
@@ -5336,7 +5431,7 @@ $("#purchase_transaction_form").on('submit', (function (e) {
 
 //init shop & branch  datatable and load data
 $('#purchase_transaction_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/purchase_transaction',
         dataSrc: 'data',
@@ -5548,23 +5643,24 @@ $('.tab_logic_sales').on('change', 'select', function () {
 
 
 $.ajax({
-    url: nafisa_domain + '/sales_order',
+    url: nafisa_domain + '/sales_type',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
-            $('<option/>').val(element['sales_type_id']['id']).html(element['sales_type_id'] ['name']).appendTo('#select_sales_type');
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#select_sales_type');
         });
     }
 });
 
 $.ajax({
-    url: nafisa_domain + '/sales_order',
+    url: nafisa_domain + '/customer/all',
     type: 'GET',
     success: function (data) {
+
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
-            $('<option/>').val(element['customer_id']['id']).html(element['customer_id']['name']).appendTo('#select_sales_customer');
+            $('<option/>').val(element['id']).html(element['name']).appendTo('#select_sales_customer');
         });
     }
 });
@@ -5615,7 +5711,6 @@ $("#sales_submit_btn").click(function () {
 
                 sales_order_id = data.data.sales_order_id;
 
-
             } else if (data.status.code === 0) {
 
                 notyf.error({
@@ -5665,9 +5760,6 @@ $("#sales_transaction_form").on('submit', (function (e) {
 
         success: function (data) {
 
-            sales_payment_modal
-
-
             if (data.status.code === 1) {
 
                 const modal = bootstrap.Modal.getInstance($("#sales_payment_modal"));
@@ -5707,7 +5799,7 @@ $("#sales_transaction_form").on('submit', (function (e) {
 
 //init shop & branch  datatable and load data
 $('#sales_transaction_dataTable').DataTable({
-
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/sales_transaction',
         dataSrc: 'data',
@@ -6002,12 +6094,12 @@ $("#formula_submit_btn").click(function () {
 //INVENTORY================================================================================================================================
 
 $.ajax({
-    url: nafisa_domain + '/inventory',
+    url: nafisa_domain + '/branch',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
-            $('<option/>').val(element ['branch_id'] ['id']).html(element ['branch_id'] ['name']).appendTo('#select_inventory_category');
+            $('<option/>').val(element['id']).html(element ['name']).appendTo('#select_inventory_category');
 
         });
     }
@@ -6015,6 +6107,7 @@ $.ajax({
 
 
 var inventory_table = $('#inventory_dataTable').DataTable({
+    order: [[1, 'desc']],
     "columnDefs": [
         {"width": "15%", "targets": 0},
         {"width": "15%", "targets": 1},
@@ -6258,6 +6351,7 @@ $('#inventory_dataTable tbody').on('click', '#transferStockBtn', function () {
 //INVENTORY TRACE===========================================================================================================================================
 
 $('#inventory_trace_dataTable').DataTable({
+    order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/inventory_trace',
         dataSrc: 'data',
@@ -6410,7 +6504,7 @@ $(document).ready(function () {
             tr.removeClass("shown");
         } else if (!rowArray.length) {
             notyf.error({
-                message: 'Sorry There have no Products',
+                message: 'Sorry There are no Products',
                 duration: 7000,
                 icon: false
             })
@@ -6472,10 +6566,10 @@ var due_data_table = $('#customer_due_datatable').DataTable({
         {data: 'total_paid'},
         {data: 'total_due'},
         {data: 'total_number_of_orders'},
-        {data: 'total_completed_orders'},
-        {data: 'total_pending_orders'},
-        {data: 'from'},
-        {data: 'to'},
+        // {data: 'total_completed_orders'},
+        // {data: 'total_pending_orders'},
+        {data: 'start'},
+        {data: 'finish'},
 
     ],
 });
@@ -6483,6 +6577,17 @@ var due_data_table = $('#customer_due_datatable').DataTable({
 $("#due_customer_submit_button").click(function () {
     var id = $("#select_customer_due").val();
 
+    let fromData = $("#from_date").val();
+    let toData = $("#to_date").val();
+
+
+ if (!fromData && !toData){
+     notyf.error({
+         message: 'Please Select All Field',
+         duration: 3000,
+         icon: false
+     });
+ }
 
     due_data_table.ajax.url(nafisa_domain + `/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
@@ -6679,7 +6784,7 @@ var supplier_sales_table = $('#supplier_sales_datatable').DataTable({
     ],
 
     columns: [
-        {data: 'supplier_name'},
+        {data: 'name'},
         {data: 'total_purchase_cost'},
 
         {
@@ -6755,15 +6860,14 @@ var supplier_due_table = $('#supplier_due_datatable').DataTable({
 
     columns: [
         {data: 'name'},
-        {data: 'total_ordered'},
-        {data: 'total_paid'},
+        {data: 'total_orders'},
+        {data: 'total_paid_amount'},
         {data: 'total_due'},
-        {data: 'total_number_of_orders'},
-        {data: 'total_completed_orders'},
-        {data: 'total_pending_orders'},
-        {data: 'from'},
-        {data: 'to'},
-
+        {data: 'total_order_amount'},
+        // {data: 'total_completed_orders'},
+        // {data: 'total_pending_orders'},
+        {data: 'start'},
+        {data: 'finish'},
     ],
 });
 
@@ -6799,7 +6903,7 @@ function formatData(d) {
             '<tr>' +
             "<td class='ps-6'>Product Name:</td>" +
             "<td class='pe-12'>" +
-            item.product_name +
+            item.name +
             "</td>" +
             "</tr>" +
 
@@ -7128,3 +7232,72 @@ $("#shop_revenue_submit_button").click(function () {
         $.fn.dataTable.ext.errMode = 'throw';
     }
 });
+
+
+
+
+
+
+
+$("#login_button").click(function () {
+
+    let email_val= $("#login_email").val();
+     let password_val = $("#login_password").val();
+
+    let email='admin@admin.com'
+     let password='test123'
+
+     if (email_val===email && password_val===password){
+
+         window.location="dashboard.html";
+         document.cookie = "token" + "=" + email +  "; path=/; secure; sameSite=Lax";
+
+     }else {
+         notyf.error({
+             message: "Email or password incorrect",
+             duration: 7000,
+             icon: false
+         });
+     }
+
+});
+
+
+
+
+// function getToken() {
+//     var match = document.cookie.match(new RegExp('(^| )token=([^;]+)'));
+//     if (match) return match[2];
+// }
+
+
+
+
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            //return c.substring(name.length, c.length);
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+
+
+
+
+
+if (!getCookie("token") && location.href.replace(/.*\/\/[^\/]*/, '') != "/login.html") {
+    window.location.replace("/login.html");
+}
+
