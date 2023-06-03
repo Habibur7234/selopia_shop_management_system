@@ -3,9 +3,15 @@
   var rowIndex;
   var rowData;
   var notyf = new Notyf();
-  var nafisa_domain = "https://nafisa.selopian.us";
+  var nafisa_domain = "https://riyadshop.selopian.us";
+  $.fn.dataTable.ext.errMode = "throw";
+  var closeModalValue = (id) => {
+    $(id).on("hidden.bs.modal", function(e) {
+      $(this).find("input,textarea,select").val("").end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
+    });
+  };
   var shop_table = $("#shop_dataTable").DataTable({
-    order: [[0, "desc"]],
+    order: [[1, "desc"]],
     "columnDefs": [
       { "width": "80%", "targets": 0 },
       { "width": "20%", "targets": 1 }
@@ -59,7 +65,7 @@
     columns: [
       { data: "name" },
       {
-        data: "id",
+        data: "",
         render: function() {
           return '<button id="update_shopBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_shopBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }
@@ -79,15 +85,7 @@
         if (data2.status.code === 1) {
           const modal = bootstrap.Modal.getInstance($("#add_shop_modal"));
           modal.hide();
-          let newRowIndex = shop_table.row.add(addShopModal).draw();
-          $("form :input").val("");
-          $(".input").val("");
-          shop_table.search("");
-          shop_table.order([0, "desc"]).draw();
-          $(shop_table.row(newRowIndex.index()).nodes()).addClass("selected");
-          setTimeout(function() {
-            $(shop_table.row(newRowIndex.index()).nodes()).removeClass("selected");
-          }, 2e3);
+          shop_table.ajax.reload();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -102,22 +100,16 @@
             icon: false
           });
         }
-        rowData = void 0;
       }
     });
   });
   $("#shop_dataTable tbody").on("click", "#update_shopBtn", function() {
     rowData = shop_table.row($(this).parents("tr")).data();
-    rowIndex = shop_table.row($(this).parents("tr")).index();
     $("#update_shopName").val(rowData.name);
   });
   $("#update_shop").click(function() {
     let updateShopModal = {
       name: $("#update_shopName").val()
-    };
-    let updateShopModal2 = {
-      name: $("#update_shopName").val(),
-      id: rowData.id
     };
     $.ajax({
       url: nafisa_domain + "/shop/" + rowData.id,
@@ -128,20 +120,14 @@
         if (data2.status.code === 1) {
           const modal = bootstrap.Modal.getInstance($("#update_shop_modal"));
           modal.hide();
+          shop_table.ajax.reload();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
             icon: false
           });
-          let currentPage = shop_table.page();
-          shop_table.row(rowIndex).data(updateShopModal2).draw();
-          shop_table.page(currentPage).draw("page");
-          $(shop_table.row(rowIndex).nodes()).addClass("selected");
-          setTimeout(function() {
-            $(shop_table.row(rowIndex).nodes()).removeClass("selected");
-          }, 2e3);
         } else {
-          $("#update_shop").text("Update Info");
+          shop_table.ajax.reload();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -154,20 +140,16 @@
   $("#shop_dataTable tbody").on("click", "#delete_shopBtn", function() {
     rowData = shop_table.row($(this).parents("tr")).data();
     rowIndex = shop_table.row($(this).parents("tr")).index();
-    $("#update_shopName").val(rowData.name);
   });
   $("#delete_shop").click(function() {
     $.ajax({
-      url: "https://riyadshop.selopian.us/shop/" + rowData.id,
+      url: nafisa_domain + "/shop/" + rowData.id,
       type: "DELETE",
       dataType: "json",
       success: function(data2) {
-        let currentPage = shop_table.page();
-        shop_table.row(rowIndex).remove().draw();
+        shop_table.ajax.reload();
         const modal = bootstrap.Modal.getInstance($("#delete_shop_modal"));
         modal.hide();
-        $("#delete_shop").text("Delete");
-        shop_table.page(currentPage).draw("page");
         notyf.success({
           message: "Shop  Deleted <strong>Successfully !</strong>",
           duration: 7e3,
@@ -177,7 +159,7 @@
         rowIndex = void 0;
       },
       error: function() {
-        $("#delete_shop").text("Delete");
+        shop_table.ajax.reload();
         notyf.error({
           message: "<strong>Warning !</strong> Can't Delete shop",
           duration: 7e3,
@@ -187,8 +169,9 @@
     });
   });
   var branch_table = $("#branch_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
-      url: "https://riyadshop.selopian.us/branch",
+      url: nafisa_domain + "/branch",
       dataSrc: "data"
     },
     rowId: "id",
@@ -258,22 +241,22 @@
       { data: "name" },
       { data: "location" },
       { data: "shop_id.name" },
-      { data: "geolocation" },
       {
-        data: "id",
+        data: "",
         render: function() {
-          return '<button id="update_shopBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_shop_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_shopBtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_shop_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
+          return '<button id="update_branch_Btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_branch_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_branch_Btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_branch_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }
       }
     ]
   });
   $.ajax({
-    url: "https://riyadshop.selopian.us/shop",
+    url: nafisa_domain + "/shop",
     type: "GET",
     success: function(result) {
       let shopName = result?.data.map((item) => item);
       shopName.forEach((element) => {
         $("<option/>").val(element["id"]).html(element["name"]).appendTo("#selectShop");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#update_selectShop");
       });
     }
   });
@@ -284,13 +267,12 @@
       shop_id: $("#selectShop").val()
     };
     $.ajax({
-      url: "https://riyadshop.selopian.us/branch ",
+      url: nafisa_domain + "/branch ",
       type: "POST",
       data: JSON.stringify(addBranch),
       contentType: "application/json",
       success: function(data2) {
         if (data2.status.code === 0) {
-          let newRowIndex = branch_table.row.add(addBranch).draw();
           const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
           modal.hide();
           notyf.success({
@@ -300,15 +282,11 @@
           });
           $("form :input").val("");
           $(".input").val("");
-          branch_table.search("");
-          branch_table.order([0, "desc"]).draw();
-          $(branch_table.row(newRowIndex.index()).nodes()).addClass("selected");
-          setTimeout(function() {
-            $(branch_table.row(newRowIndex.index()).nodes()).removeClass("selected");
-          }, 2e3);
+          branch_table.ajax.reload();
         } else {
           const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
           modal.hide();
+          branch_table.ajax.reload();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -318,6 +296,7 @@
       },
       error: function(data2) {
         if (data2.status.code === 0) {
+          branch_table.ajax.reload();
           const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
           modal.hide();
           notyf.error({
@@ -326,6 +305,7 @@
             icon: false
           });
         } else {
+          branch_table.ajax.reload();
           const modal = bootstrap.Modal.getInstance($("#add_branch_modal"));
           modal.hide();
           notyf.error({
@@ -337,13 +317,121 @@
       }
     });
   });
+  $("#branch_dataTable tbody").on("click", "#update_branch_Btn", function() {
+    rowData = branch_table.row($(this).parents("tr")).data();
+    $("#update_branch_name").val(rowData.name);
+    $("#update_add_location").val(rowData.location);
+    var select_user = rowData.shop_id.name;
+    $("#update_selectShop option").filter(function() {
+      return $(this).text() == select_user;
+    }).prop("selected", true);
+  });
+  $("#update_add_Branch").click(function() {
+    let updateShopModal = {
+      name: $("#update_branch_name").val(),
+      location: $("#update_add_location").val(),
+      shop_id: $("#update_selectShop").val()
+    };
+    $.ajax({
+      url: nafisa_domain + "/branch/" + rowData.id,
+      type: "PUT",
+      data: JSON.stringify(updateShopModal),
+      contentType: "application/json; charset=utf-8",
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          const modal = bootstrap.Modal.getInstance($("#update_branch_modal"));
+          modal.hide();
+          branch_table.ajax.reload();
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        } else {
+          const modal = bootstrap.Modal.getInstance($("#update_branch_modal"));
+          modal.hide();
+          branch_table.ajax.reload();
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      }
+    });
+  });
+  $("#branch_dataTable tbody").on("click", "#delete_branch_Btn", function() {
+    rowData = branch_table.row($(this).parents("tr")).data();
+    rowIndex = branch_table.row($(this).parents("tr")).index();
+  });
+  $("#delete_branch").click(function() {
+    $.ajax({
+      url: nafisa_domain + "/branch/" + rowData.id,
+      type: "DELETE",
+      dataType: "json",
+      success: function(data2) {
+        branch_table.ajax.reload();
+        const modal = bootstrap.Modal.getInstance($("#delete_branch_modal"));
+        modal.hide();
+        notyf.success({
+          message: "Branch  Deleted <strong>Successfully !</strong>",
+          duration: 7e3,
+          icon: false
+        });
+      },
+      error: function() {
+        branch_table.ajax.reload();
+        notyf.error({
+          message: "<strong>Warning !</strong> Can't Delete Branch",
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
   $("#add_shop_modal").on("hidden.bs.modal", function() {
     $(this).find("#shop_form").trigger("reset");
   });
   $("#update_shop_modal").on("hidden.bs.modal", function() {
     $(this).find("#update_shop_form").trigger("reset");
   });
+  $("#branch_dataTable tbody").on("click", "#delete_shopBtn", function() {
+    rowData = branch_table.row($(this).parents("tr")).data();
+    rowIndex = branch_table.row($(this).parents("tr")).index();
+    $("#sName").text(`Are you sure you want to delete "${rowData.name}"?`);
+  });
+  $("#delete_branch").click(function() {
+    $.ajax({
+      url: nafisa_domain + "/branch/" + rowData.id,
+      type: "DELETE",
+      dataType: "json",
+      success: function(data2) {
+        let currentPage = shop_table.page();
+        shop_table.row(rowIndex).remove().draw();
+        const modal = bootstrap.Modal.getInstance($("#delete_shop_modal"));
+        modal.hide();
+        $("#delete_shop").text("Delete");
+        shop_table.page(currentPage).draw("page");
+        notyf.success({
+          message: "Shop  Deleted <strong>Successfully !</strong>",
+          duration: 7e3,
+          icon: false
+        });
+        rowData = void 0;
+        rowIndex = void 0;
+      },
+      error: function() {
+        $("#delete_shop").text("Delete");
+        notyf.error({
+          message: "<strong>Warning !</strong> Can't Delete shop",
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
   var user_table = $("#user_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/user",
       dataSrc: "data"
@@ -363,7 +451,7 @@
         title: "Shop Information",
         orientation: "landscape",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5],
+          columns: [0, 1, 2, 3, 4],
           modifier: {
             page: "current"
           }
@@ -382,13 +470,13 @@
         extend: "excelHtml5",
         title: "Shop Information",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5]
+          columns: [0, 1, 2, 3, 4]
         }
       },
       {
         extend: "pdf",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5],
+          columns: [0, 1, 2, 3, 4],
           modifier: {
             page: "current"
           }
@@ -397,7 +485,6 @@
         title: "Shop Information",
         customize: function(doc) {
           doc.content[1].table.widths = [
-            "15%",
             "15%",
             "15%",
             "15%",
@@ -438,7 +525,6 @@
       },
       { data: "last_login_at" },
       { data: "last_login_ip" },
-      { data: "password_changed_at" },
       {
         data: "",
         render: function() {
@@ -448,7 +534,6 @@
     ]
   });
   $("#add_user").click(function() {
-    $("#add_user").text("Adding");
     let addUser = {
       phone_username: $("#user_number").val(),
       role: $("#user_role").val(),
@@ -460,28 +545,23 @@
       data: JSON.stringify(addUser),
       contentType: "application/json",
       success: function(data2) {
-        if (data2.status.code === 1) {
-          notyf.success({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-          const modal = bootstrap.Modal.getInstance($("#add_user_modal"));
-          modal.hide();
-          let newRowIndex = user_table.row.add(addUser).draw();
-          $("#add_user").text("Add User");
-          $("form :input").val("");
-          $(".input").val("");
-          user_table.search("");
-          user_table.order([0, "desc"]).draw();
-          $(user_table.row(newRowIndex.index()).nodes()).addClass("selected");
-        } else {
-          notyf.error({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-        }
+        notyf.success({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+        const modal = bootstrap.Modal.getInstance($("#add_user_modal"));
+        modal.hide();
+        user_table.ajax.reload();
+        closeModalValue("#add_user_modal");
+      },
+      error: function(data2) {
+        notyf.error({
+          message: data2.responseJSON.status.message,
+          duration: 7e3,
+          icon: false
+        });
+        user_table.ajax.reload();
       }
     });
   });
@@ -489,7 +569,10 @@
     rowIndex = user_table.row($(this).parents("tr")).index();
     rowData = user_table.row($(this).parents("tr")).data();
     $("#update_user_number").val(rowData.phone_username);
-    $("#update_user_role").val(rowData.role);
+    var select_user3 = rowData.role;
+    $("#update_user_role option").filter(function() {
+      return $(this).val() == select_user3;
+    }).prop("selected", true);
     $("#update_user_password").val(rowData.password);
   });
   $("#update_user").click(function() {
@@ -498,58 +581,39 @@
       role: $("#update_user_role").val(),
       password: $("#update_user_password").val()
     };
-    $(this).text("Updating...");
     $.ajax({
       url: nafisa_domain + "/user/" + rowData.id,
       type: "PUT",
       data: JSON.stringify(updateUserModal),
       contentType: "application/json; charset=utf-8",
       success: function(data2) {
-        if (data2.status.code === 1) {
-          const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
-          modal.hide();
-          $("#update_user").text("Update");
-          let currentPage = user_table.page();
-          user_table.row(rowIndex).data(updateUserModal).draw();
-          user_table.page(currentPage).draw("page");
-          $(user_table.row(rowIndex).nodes()).addClass("selected");
-          setTimeout(function() {
-            $(user_table.row(rowIndex).nodes()).removeClass("selected");
-          }, 2e3);
-          notyf.success({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-        } else {
-          const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
-          modal.hide();
-          $("#update_user").text("Update");
-          notyf.error({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-        }
-      },
-      error: function() {
-        const modal = bootstrap.Modal.getInstance($("#update_category_modal"));
+        const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
         modal.hide();
-        $("#update_category").text("Update");
+        user_table.ajax.reload();
+        notyf.success({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      },
+      error: function(data2) {
+        user_table.ajax.reload();
+        const modal = bootstrap.Modal.getInstance($("#update_user_modal"));
+        modal.hide();
         notyf.error({
-          message: data.status.message,
+          message: data2.responseJSON.data,
           duration: 7e3,
           icon: false
         });
       }
     });
+    closeModalValue("#update_user_modal");
   });
   $("#user_dataTable tbody").on("click", "#delete_userBtn", function() {
     rowData = user_table.row($(this).parents("tr")).data();
     rowIndex = user_table.row($(this).parents("tr")).index();
   });
   $("#delete_user").click(function() {
-    $(this).text("Deleting...");
     $.ajax({
       url: nafisa_domain + "/user/" + rowData.id,
       type: "DELETE",
@@ -557,7 +621,6 @@
         if (data2.status.code === 1) {
           const modal = bootstrap.Modal.getInstance($("#delete_user_modal"));
           modal.hide();
-          $("#delete_user").text("Delete");
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -595,6 +658,7 @@
     });
   });
   var customer_table = $("#customer_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/customer/all",
       dataSrc: "data"
@@ -688,7 +752,7 @@
   });
   $("#customer_dataTable tbody").on("click", "#customer_profile_img_url", function() {
     rowData = customer_table.row($(this).parents("tr")).data();
-    $("#customer_image").attr("src", rowData.image_url);
+    $("#customer_image").attr("src", nafisa_domain + rowData.profile_photo_url);
   });
   $("#add_customer_modal").on("hidden.bs.modal", function() {
     $('[data-cropzee="customer_image_url"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="customer_image_url"><img  src=""></div>');
@@ -708,17 +772,12 @@
           $("#add_supplier").text("Add");
           const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
           modal.hide();
-          let newSRowIndex = customer_table.row.add(data2.data).draw();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
             icon: false
           });
-          $("form :input").val("");
-          $(".input").val("");
-          customer_table.search("");
-          customer_table.order([0, "desc"]).draw();
-          $(customer_table.row(newSRowIndex.index()).nodes()).addClass("selected");
+          customer_table.ajax.reload();
         } else {
           const modal = bootstrap.Modal.getInstance($("#add_customer_modal"));
           modal.hide();
@@ -734,6 +793,49 @@
         modal.hide();
         notyf.error({
           message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
+  $("#customer_dataTable tbody").on("click", "#update_customerBtn", function() {
+    rowData = customer_table.row($(this).parents("tr")).data();
+    $("#update_customer_name").val(rowData.name);
+    $("#update_customer_email").val(rowData.email);
+    $("#update_customer_phone_no").val(rowData.phone_no);
+    $("#update_customer_address").val(rowData.address);
+    $("#update_customer_company_name").val(rowData.company_name);
+    $("#update_customer_image_url").val(rowData.image_url);
+    closeModal();
+  });
+  $("#update_customer_post_form").on("submit", function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: nafisa_domain + "/customer/" + rowData.id,
+      type: "PUT",
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          customer_table.ajax.reload();
+          const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
+          modal.hide();
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      },
+      error: function(data2) {
+        console.log(data2);
+        const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
+        modal.hide();
+        notyf.error({
+          message: data2.responseJSON.status.message,
           duration: 7e3,
           icon: false
         });
@@ -785,77 +887,8 @@
       }
     });
   });
-  function updateNidURL(input) {
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $("#update_customer_image_url").attr("src", e.target.result);
-        $("#update_customer_image_url").hide();
-        $("#update_customer_image_url").fadeIn(650);
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-  $("#salesman_edit_nid_photos").change(function() {
-    updateNidURL(this);
-  });
-  $("#customer_dataTable tbody").on("click", "#update_customerBtn", function() {
-    rowData = customer_table.row($(this).parents("tr")).data();
-    $("#update_customer_name").val(rowData.name);
-    $("#update_customer_email").val(rowData.email);
-    $("#update_customer_phone_no").val(rowData.phone_no);
-    $("#update_customer_address").val(rowData.address);
-    $("#update_customer_company_name").val(rowData.company_name);
-    $("#update_customer_image_url").val(rowData.image_url);
-    closeModal();
-  });
-  $("#update_customer_post_form").on("submit", function(e) {
-    e.preventDefault();
-    $.ajax({
-      url: nafisa_domain + "/customer/" + rowData.id,
-      type: "POST",
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      success: function(data2) {
-        if (data2.status.code === 1) {
-          const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-          modal.hide();
-          let newSRowIndex = customer_table.row.add(data2.data).draw();
-          notyf.success({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-          $("form :input").val("");
-          $(".input").val("");
-          customer_table.search("");
-          customer_table.order([0, "desc"]).draw();
-          $(customer_table.row(newSRowIndex.index()).nodes()).addClass("selected");
-        } else {
-          const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-          modal.hide();
-          notyf.error({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-        }
-      },
-      error: function(data2) {
-        const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-        modal.hide();
-        notyf.error({
-          message: data2.status.message,
-          duration: 7e3,
-          icon: false
-        });
-      }
-    });
-  });
   var shop_supplier_table = $("#supplier_dataTable").DataTable({
-    order: [[0, "desc"]],
+    order: [[1, "desc"]],
     "columnDefs": [
       { "visible": false, "targets": 0 },
       { "width": "15%", "targets": 1 },
@@ -1006,7 +1039,7 @@
         }
       },
       {
-        data: "image_url",
+        data: "profile_photo_url",
         render: function() {
           return '<button id="supplier_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#supplier_image_modal">View</button>';
         }
@@ -1066,6 +1099,7 @@
             duration: 7e3,
             icon: false
           });
+          shop_supplier_table.ajax.reload();
           $("form :input").val("");
           $(".input").val("");
           shop_supplier_table.search("");
@@ -1080,11 +1114,10 @@
         }
       },
       error: function(data2) {
-        $("#add_supplier").text("Add");
         const modal = bootstrap.Modal.getInstance($("#add_supplier_modal"));
         modal.hide();
         notyf.error({
-          message: data2.status.message,
+          message: data2.responseJSON.status.message,
           duration: 7e3,
           icon: false
         });
@@ -1104,7 +1137,7 @@
     e.preventDefault();
     $.ajax({
       url: nafisa_domain + "/supplier/" + rowData.id,
-      type: "POST",
+      type: "PUT",
       data: new FormData(this),
       contentType: false,
       cache: false,
@@ -1113,14 +1146,8 @@
         if (data2.status.code === 1) {
           const modal = bootstrap.Modal.getInstance($("#Update_supplier_modal"));
           modal.hide();
-          let currentPage = shop_supplier_table.page();
-          shop_supplier_table.row(rowIndex).data(data2.data).draw();
-          shop_supplier_table.page(currentPage).draw("page");
-          $(shop_supplier_table.row(rowIndex).nodes()).addClass("selected");
-          setTimeout(function() {
-            $(shop_supplier_table.row(rowIndex).nodes()).removeClass("selected");
-          }, 2e3);
-          notyf.error({
+          shop_supplier_table.ajax.reload();
+          notyf.success({
             message: data2.status.message,
             duration: 7e3,
             icon: false
@@ -1128,6 +1155,7 @@
         } else {
           const modal = bootstrap.Modal.getInstance($("#update_supplier_modal"));
           modal.hide();
+          shop_supplier_table.ajax.reload();
           notyf.error({
             message: data2.status.message,
             duration: 7e3,
@@ -1138,8 +1166,9 @@
       error: function(data2) {
         const modal = bootstrap.Modal.getInstance($("#Update_supplier_modal"));
         modal.hide();
+        shop_supplier_table.ajax.reload();
         notyf.error({
-          message: data2.status.message,
+          message: data2.responseJSON.status.message,
           duration: 7e3,
           icon: false
         });
@@ -1182,6 +1211,7 @@
     });
   });
   var brand_table = $("#Brand_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/brand",
       dataSrc: "data"
@@ -1198,7 +1228,7 @@
     buttons: [
       {
         extend: "print",
-        title: "Shop Information",
+        title: "Brand Information",
         orientation: "landscape",
         exportOptions: {
           columns: [1, 2, 3],
@@ -1218,7 +1248,7 @@
       },
       {
         extend: "excelHtml5",
-        title: "Shop Information",
+        title: "Brand Information",
         exportOptions: {
           columns: [1, 2, 3]
         }
@@ -1232,7 +1262,7 @@
           }
         },
         pageSize: "LEGAL",
-        title: "Shop Information",
+        title: "Brand Information",
         customize: function(doc) {
           doc.content[1].table.widths = [
             "20%",
@@ -1283,6 +1313,7 @@
           const modal = bootstrap.Modal.getInstance($("#add_brand_modal"));
           modal.hide();
           let newSRowIndex = brand_table.row.add(data2.data).draw();
+          branch_table.ajax.reload();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -1308,7 +1339,7 @@
         const modal = bootstrap.Modal.getInstance($("#add_brand_modal"));
         modal.hide();
         notyf.error({
-          message: data2.status.message,
+          message: data2.responseJSON.status.message,
           duration: 7e3,
           icon: false
         });
@@ -1341,7 +1372,7 @@
     e.preventDefault();
     $.ajax({
       url: nafisa_domain + "/brand/" + rowData.id,
-      type: "POST",
+      type: "PUT",
       data: new FormData(this),
       contentType: false,
       cache: false,
@@ -1350,13 +1381,7 @@
         if (data2.status.code === 1) {
           const modal = bootstrap.Modal.getInstance($("#update_brand_modal"));
           modal.hide();
-          let currentPage = brand_table.page();
-          brand_table.row(rowIndex).data(data2.data).draw();
-          brand_table.page(currentPage).draw("page");
-          $(brand_table.row(rowIndex).nodes()).addClass("selected");
-          setTimeout(function() {
-            $(brand_table.row(rowIndex).nodes()).removeClass("selected");
-          }, 2e3);
+          brand_table.ajax.reload();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -1366,7 +1391,7 @@
           const modal = bootstrap.Modal.getInstance($("#update_brand_modal"));
           modal.hide();
           notyf.error({
-            message: data2.status.message,
+            message: data2.responseJSON.status.message,
             duration: 7e3,
             icon: false
           });
@@ -1421,6 +1446,11 @@
     });
   });
   var department_table = $("#department_dataTable").DataTable({
+    order: [[1, "desc"]],
+    "columnDefs": [
+      { "width": "70%", "targets": 0 },
+      { "width": "20%", "targets": 1 }
+    ],
     ajax: {
       url: nafisa_domain + "/department",
       dataSrc: "data"
@@ -1508,10 +1538,8 @@
       contentType: "application/json",
       success: function(data2) {
         if (data2.status.code === 1) {
-          $("#add_department").text("Add");
           const modal = bootstrap.Modal.getInstance($("#add_department_modal"));
           modal.hide();
-          let newRowIndex = department_table.row.add(addDepartment).draw();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -1519,11 +1547,8 @@
           });
           $("form :input").val("");
           $(".input").val("");
-          department_table.search("");
-          department_table.order([0, "desc"]).draw();
-          $(department_table.row(newRowIndex.index()).nodes()).addClass("selected");
+          department_table.ajax.reload();
         } else {
-          $("#add_department").text("Add");
           notyf.error({
             message: data2.status.message,
             duration: 7e3,
@@ -1559,6 +1584,7 @@
           $(department_table.row(rowIndex).nodes()).addClass("selected");
           setTimeout(function() {
             $(department_table.row(rowIndex).nodes()).removeClass("selected");
+            department_table.ajax.reload();
           }, 2e3);
           notyf.success({
             message: data2.status.message,
@@ -1640,6 +1666,7 @@
     });
   });
   var category_table = $("#category_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/category",
       dataSrc: "data"
@@ -1720,17 +1747,17 @@
     ]
   });
   $.ajax({
-    url: "https://nafisa.selopian.us/category/byparent/0",
+    url: nafisa_domain + "/category/byparent/7",
     type: "GET",
     success: function(data2) {
       let category_parents = data2?.data.map((item) => item);
       category_parents.forEach((element) => {
-        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#cParent", "#update_cParent");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#cParent");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#update_cParent");
       });
     }
   });
   $("#add_category").click(function() {
-    $(this).text("Submitting..");
     let addcategoryModal = {
       name: $("#category_name").val(),
       description: $("#category_description").val(),
@@ -1751,23 +1778,18 @@
             duration: 7e3,
             icon: false
           });
-          let newRowIndex = category_table.row.add(addcategoryModal).draw();
-          $("#add_category").text("Submit");
-          $("form :input").val("");
-          $(".input").val("");
-          category_table.search("");
-          category_table.order([0, "desc"]).draw();
-          $(category_table.row(newRowIndex.index()).nodes()).addClass("selected");
-        } else {
-          $("#add_category").text("Submit");
-          const modal = bootstrap.Modal.getInstance($("#add_category_modal"));
-          modal.hide();
-          notyf.error({
-            message: "<strong>Warning !</strong> Can't Add Category.",
-            duration: 7e3,
-            icon: false
-          });
+          category_table.ajax.reload();
         }
+      },
+      error: function(data2) {
+        category_table.ajax.reload();
+        const modal = bootstrap.Modal.getInstance($("#add_category_modal"));
+        modal.hide();
+        notyf.error({
+          message: data2.responseJSON.status.message,
+          duration: 7e3,
+          icon: false
+        });
       }
     });
   });
@@ -1881,6 +1903,7 @@
     });
   });
   var designation_table = $("#Designation_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/user_designation",
       dataSrc: "data"
@@ -2004,7 +2027,7 @@
     });
   });
   var userProfile_table = $("#userProfile_datatable").DataTable({
-    order: [[0, "desc"]],
+    order: [[1, "desc"]],
     "columnDefs": [
       { "width": "15%", "targets": 0 },
       { "width": "15%", "targets": 1 },
@@ -2035,7 +2058,7 @@
     buttons: [
       {
         extend: "print",
-        title: "Salesman Information",
+        title: "User Information",
         orientation: "landscape",
         exportOptions: {
           columns: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
@@ -2094,7 +2117,7 @@
       {
         data: "",
         render: function() {
-          return '<button id="update_userProfile_btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_customer_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_userProfile_btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_user_profile_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
+          return '<button id="update_userProfile_btn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_userProfile_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_userProfile_btn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_user_profile_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }
       }
     ]
@@ -2109,15 +2132,11 @@
   });
   $("#userProfile_datatable tbody").on("click", "#nidPhoto_view", function() {
     rowData = userProfile_table.row($(this).parents("tr")).data();
-    $("#nid_img_link").attr("src", rowData.nid_photo_url);
+    $("#nid_img_link").attr("src", nafisa_domain + rowData.nid_photo_url);
   });
   $("#userProfile_datatable tbody").on("click", "#profilePhoto_view", function() {
     rowData = userProfile_table.row($(this).parents("tr")).data();
-    $("#profile_img_link").attr("src", rowData.profile_photo_url);
-  });
-  $("#add_user_profile_photo").on("hidden.bs.modal", function() {
-    $('[data-cropzee="nid_photos"]').replaceWith('<div class="modal-body align-items-center-center"  data-cropzee="nid_photos"><img  src=""></div>');
-    $(this).find("#user_profile_post_form").trigger("reset");
+    $("#profile_img_link").attr("src", nafisa_domain + rowData.profile_photo_url);
   });
   $.ajax({
     url: nafisa_domain + "/user/byPhone",
@@ -2126,6 +2145,7 @@
       let category_parents = data2?.data.map((item) => item);
       category_parents.forEach((element) => {
         $("<option/>").val(element["id"]).html(element["phone_username"]).appendTo("#user_profile_phone_number");
+        $("<option/>").val(element["id"]).html(element["phone_username"]).appendTo("#update_user_profile_phone_number");
       });
     }
   });
@@ -2136,6 +2156,7 @@
       let purchase_branch = data2?.data.map((item) => item);
       purchase_branch.forEach((element) => {
         $("<option/>").val(element["id"]).html(element["name"]).appendTo("#user_profile_branch");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#update_user_profile_branch");
       });
     }
   });
@@ -2146,6 +2167,7 @@
       let category_parents = data2?.data.map((item) => item);
       category_parents.forEach((element) => {
         $("<option/>").val(element["id"]).html(element["name"]).appendTo("#user_profile_department");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#update_user_profile_department");
       });
     }
   });
@@ -2156,12 +2178,9 @@
       let category_parents = data2?.data.map((item) => item);
       category_parents.forEach((element) => {
         $("<option/>").val(element["id"]).html(element["name"]).appendTo("#user_profile_designation");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#update_user_profile_designation");
       });
     }
-  });
-  $(document).ready(function() {
-    $("#nid_photos").cropzee();
-    $("#profile_photos").cropzee();
   });
   $("#user_profile_post_form").on("submit", function(e) {
     e.preventDefault();
@@ -2176,7 +2195,7 @@
         if (data2.status.code === 1) {
           const modal = bootstrap.Modal.getInstance($("#add_user_profile_photo"));
           modal.hide();
-          let newSRowIndex = userProfile_table.row.add(data2.data).draw();
+          userProfile_table.ajax.reload();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
@@ -2184,12 +2203,71 @@
           });
           $("form :input").val("");
           $(".input").val("");
-          userProfile_table.search("");
-          userProfile_table.order([0, "desc"]).draw();
-          $(userProfile_table.row(newSRowIndex.index()).nodes()).addClass("selected");
-          setTimeout(function() {
-            $(userProfile_table.row(rowIndex).nodes()).removeClass("selected");
-          }, 2e3);
+          userProfile_table.ajax.reload();
+        } else {
+          userProfile_table.ajax.reload();
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+        }
+      },
+      error: function(data2) {
+        userProfile_table.ajax.reload();
+        notyf.error({
+          message: data2.responseJSON.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
+  $("#userProfile_datatable tbody").on("click", "#update_userProfile_btn", function() {
+    rowIndex = userProfile_table.row($(this).parents("tr")).index();
+    rowData = userProfile_table.row($(this).parents("tr")).data();
+    var select_user = rowData.user_id.phone_username;
+    $("#update_user_profile_phone_number option").filter(function() {
+      return $(this).text() == select_user;
+    }).prop("selected", true);
+    var select_user1 = rowData.branch_id.name;
+    $("#update_user_profile_branch option").filter(function() {
+      return $(this).text() == select_user1;
+    }).prop("selected", true);
+    var select_user2 = rowData.designation_id.name;
+    $("#update_user_profile_designation option").filter(function() {
+      return $(this).text() == select_user2;
+    }).prop("selected", true);
+    var select_user3 = rowData.department_id.name;
+    $("#update_user_profile_department option").filter(function() {
+      return $(this).text() == select_user3;
+    }).prop("selected", true);
+    $("#update_user_profile_name").val(rowData.name);
+    $("#update_user_profile_nid").val(rowData.nid_no);
+    $("#update_user_profile_salary").val(rowData.salary);
+    $("#update_refComment").val(rowData.ref_comment);
+  });
+  $("#update_user_profile_post_form").on("submit", function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: nafisa_domain + "/user_profile/" + rowData.id,
+      type: "PUT",
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          const modal = bootstrap.Modal.getInstance($("#update_userProfile_modal"));
+          modal.hide();
+          notyf.success({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          $("form :input").val("");
+          $(".input").val("");
+          userProfile_table.ajax.reload();
         } else {
           notyf.error({
             message: data2.status.message,
@@ -2199,10 +2277,10 @@
         }
       },
       error: function(data2) {
-        const modal = bootstrap.Modal.getInstance($("#add_user_profile_photo"));
+        const modal = bootstrap.Modal.getInstance($("#update_userProfile_modal"));
         modal.hide();
         notyf.error({
-          message: data2.status.message,
+          message: data2.responseJSON.status.message,
           duration: 7e3,
           icon: false
         });
@@ -2267,62 +2345,8 @@
   $("#salesman_edit_nid_photos").change(function() {
     updateNidURL(this);
   });
-  $("#customer_dataTable tbody").on("click", "#update_customerBtn", function() {
-    rowData = customer_table.row($(this).parents("tr")).data();
-    $("#update_customer_name").val(rowData.name);
-    $("#update_customer_email").val(rowData.email);
-    $("#update_customer_phone_no").val(rowData.phone_no);
-    $("#update_customer_address").val(rowData.address);
-    $("#update_customer_company_name").val(rowData.company_name);
-    $("#update_customer_image_url").val(rowData.image_url);
-    closeModal();
-  });
-  $("#update_customer_post_form").on("submit", function(e) {
-    e.preventDefault();
-    $.ajax({
-      url: nafisa_domain + "/customer/" + rowData.id,
-      type: "POST",
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      success: function(data2) {
-        if (data2.status.code === 1) {
-          const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-          modal.hide();
-          let newSRowIndex = customer_table.row.add(data2.data).draw();
-          notyf.success({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-          $("form :input").val("");
-          $(".input").val("");
-          customer_table.search("");
-          customer_table.order([0, "desc"]).draw();
-          $(customer_table.row(newSRowIndex.index()).nodes()).addClass("selected");
-        } else {
-          const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-          modal.hide();
-          notyf.error({
-            message: data2.status.message,
-            duration: 7e3,
-            icon: false
-          });
-        }
-      },
-      error: function(data2) {
-        const modal = bootstrap.Modal.getInstance($("#update_customer_modal"));
-        modal.hide();
-        notyf.error({
-          message: data2.status.message,
-          duration: 7e3,
-          icon: false
-        });
-      }
-    });
-  });
   var kpi_table = $("#salesKpi_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/sales_kpi",
       dataSrc: "data"
@@ -2592,8 +2616,9 @@
     });
   });
   var attendance_table = $("#attendance_datatable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
-      url: nafisa_domain + "/attendance/all/1/1",
+      url: nafisa_domain + "/attendance/all/1000/1",
       dataSrc: "data"
     },
     rowId: "id",
@@ -2659,18 +2684,14 @@
       }
     ],
     columns: [
-      { data: "name" },
+      { data: "user_id.name" },
       { data: "date" },
       { data: "check_in" },
-      { data: "check_out" },
-      {
-        render: function() {
-          return '<button id="update_kpiBtn"  class="btn btn-primary" toggle="tooltip" title="Edit" type="button" data-bs-toggle="modal"   data-bs-target="#update_kpi_modal" ><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>  <button   id="delete_kpibtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_kpi_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
-        }
-      }
+      { data: "check_out" }
     ]
   });
   var product_table = $("#product_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/products",
       dataSrc: "data"
@@ -2892,8 +2913,6 @@
           product_table.order([0, "desc"]).draw();
           $(product_table.row(newSRowIndex.index()).nodes()).addClass("selected");
         } else {
-          const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
-          modal.hide();
           notyf.error({
             message: data2.status.message,
             duration: 7e3,
@@ -2902,8 +2921,6 @@
         }
       },
       error: function(data2) {
-        const modal = bootstrap.Modal.getInstance($("#add_product_modal"));
-        modal.hide();
         notyf.error({
           message: data2.status.message,
           duration: 7e3,
@@ -3003,7 +3020,6 @@
     rowIndex = product_table.row($(this).parents("tr")).index();
   });
   $("#delete_product").click(function() {
-    $(this).text("Deleting...");
     $.ajax({
       url: nafisa_domain + "/products/" + rowData.id,
       type: "DELETE",
@@ -3015,18 +3031,14 @@
         modal.hide();
         $("#delete_product").text("Delete");
         product_table.page(currentPage).draw("page");
+        product_table.ajax.reload();
         notyf.success({
           message: data2.status.message,
           duration: 7e3,
           icon: false
         });
-        rowData = void 0;
-        rowIndex = void 0;
       },
       error: function(data2) {
-        const modal = bootstrap.Modal.getInstance($("#delete_product_modal"));
-        modal.hide();
-        $("#delete_product").text("Delete");
         notyf.error({
           message: "Cannot Delete This Product",
           duration: 7e3,
@@ -3036,6 +3048,7 @@
     });
   });
   var unit_table = $("#product_unit_datatable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/product_unit",
       dataSrc: "data"
@@ -3210,6 +3223,7 @@
     });
   });
   var raw_material_table = $("#product_raw_material_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/product_raw_material",
       dataSrc: "data"
@@ -3491,6 +3505,7 @@
     });
   });
   var sales_product_table = $("#sales_product_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/sales_product",
       dataSrc: "data"
@@ -3782,6 +3797,7 @@
             duration: 7e3,
             icon: false
           });
+          console.log(data2);
           purchase_order_id = data2.data.purchase_order_id;
         } else if (data2.status.code === 0) {
           notyf.error({
@@ -3828,12 +3844,16 @@
             duration: 7e3,
             icon: false
           });
+          const modal = bootstrap.Modal.getInstance($("#update_product_raw_material_modal"));
+          modal.hide();
         } else {
           notyf.error({
             message: data2.status.message,
             duration: 7e3,
             icon: false
           });
+          const modal = bootstrap.Modal.getInstance($("#update_product_raw_material_modal"));
+          modal.hide();
         }
       },
       error: function(data2) {
@@ -3854,6 +3874,7 @@
     });
   });
   $("#purchase_transaction_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/purchase_transaction",
       dataSrc: "data"
@@ -4032,22 +4053,22 @@
     $(this).closest("tr").find(".sales_unit_type").text($(this).find(":selected").data("unit"));
   });
   $.ajax({
-    url: nafisa_domain + "/sales_order",
+    url: nafisa_domain + "/sales_type",
     type: "GET",
     success: function(data2) {
       let purchase_branch = data2?.data.map((item) => item);
       purchase_branch.forEach((element) => {
-        $("<option/>").val(element["sales_type_id"]["id"]).html(element["sales_type_id"]["name"]).appendTo("#select_sales_type");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#select_sales_type");
       });
     }
   });
   $.ajax({
-    url: nafisa_domain + "/sales_order",
+    url: nafisa_domain + "/customer/all",
     type: "GET",
     success: function(data2) {
       let purchase_branch = data2?.data.map((item) => item);
       purchase_branch.forEach((element) => {
-        $("<option/>").val(element["customer_id"]["id"]).html(element["customer_id"]["name"]).appendTo("#select_sales_customer");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#select_sales_customer");
       });
     }
   });
@@ -4126,7 +4147,6 @@
       cache: false,
       processData: false,
       success: function(data2) {
-        sales_payment_modal;
         if (data2.status.code === 1) {
           const modal = bootstrap.Modal.getInstance($("#sales_payment_modal"));
           modal.hide();
@@ -4157,6 +4177,7 @@
     });
   });
   $("#sales_transaction_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/sales_transaction",
       dataSrc: "data"
@@ -4402,16 +4423,17 @@
     });
   });
   $.ajax({
-    url: nafisa_domain + "/inventory",
+    url: nafisa_domain + "/branch",
     type: "GET",
     success: function(data2) {
       let purchase_branch = data2?.data.map((item) => item);
       purchase_branch.forEach((element) => {
-        $("<option/>").val(element["branch_id"]["id"]).html(element["branch_id"]["name"]).appendTo("#select_inventory_category");
+        $("<option/>").val(element["id"]).html(element["name"]).appendTo("#select_inventory_category");
       });
     }
   });
   var inventory_table = $("#inventory_dataTable").DataTable({
+    order: [[1, "desc"]],
     "columnDefs": [
       { "width": "15%", "targets": 0 },
       { "width": "15%", "targets": 1 },
@@ -4449,7 +4471,7 @@
   });
   $("#sub_bra_id").click(function() {
     var abc = $("#select_inventory_category").val();
-    inventory_table.ajax.url("https://nafisa.selopian.us/inventory/" + abc).load();
+    inventory_table.ajax.url(nafisa_domain + "/inventory/" + abc).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   $("#inventory_dataTable tbody").on("click", "#update_stockBtn", function() {
@@ -4592,6 +4614,7 @@
     });
   });
   $("#inventory_trace_dataTable").DataTable({
+    order: [[1, "desc"]],
     ajax: {
       url: nafisa_domain + "/inventory_trace",
       dataSrc: "data"
@@ -4710,7 +4733,7 @@
         tr.removeClass("shown");
       } else if (!rowArray.length) {
         notyf.error({
-          message: "Sorry There have no Products",
+          message: "Sorry There are no Products",
           duration: 7e3,
           icon: false
         });
@@ -4755,15 +4778,22 @@
       { data: "total_paid" },
       { data: "total_due" },
       { data: "total_number_of_orders" },
-      { data: "total_completed_orders" },
-      { data: "total_pending_orders" },
-      { data: "from" },
-      { data: "to" }
+      { data: "start" },
+      { data: "finish" }
     ]
   });
   $("#due_customer_submit_button").click(function() {
     var id = $("#select_customer_due").val();
-    due_data_table.ajax.url(`https://nafisa.selopian.us/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
+    let fromData = $("#from_date").val();
+    let toData = $("#to_date").val();
+    if (!fromData && !toData) {
+      notyf.error({
+        message: "Please Select All Field",
+        duration: 3e3,
+        icon: false
+      });
+    }
+    due_data_table.ajax.url(nafisa_domain + `/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   $.ajax({
@@ -4815,7 +4845,7 @@
   });
   $("#customer_purchase_report").click(function() {
     var id = $("#select_customer_due_report").val();
-    purchase_data_table.ajax.url(`https://nafisa.selopian.us/customer_purchase_report/${id}/${$("#customer_from_date1").val()}/${$("#customer_to_date2").val()}`).load();
+    purchase_data_table.ajax.url(nafisa_domain + `/customer_purchase_report/${id}/${$("#customer_from_date1").val()}/${$("#customer_to_date2").val()}`).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   $("#customer_purchase_datatable tbody").on("click", "#product_list", function() {
@@ -4867,7 +4897,7 @@
   });
   $("#salesman_performance").click(function() {
     var id = $("#select_salesman_performance").val();
-    salesman_performance_table.ajax.url(`https://nafisa.selopian.us/salesman_performance_report/${id}/${$("#salesman_performance_from_date").val()}/${$("#salesman_performance_to_date").val()}`).load();
+    salesman_performance_table.ajax.url(nafisa_domain + `/salesman_performance_report/${id}/${$("#salesman_performance_from_date").val()}/${$("#salesman_performance_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   $.ajax({
@@ -4900,7 +4930,7 @@
       }
     ],
     columns: [
-      { data: "supplier_name" },
+      { data: "name" },
       { data: "total_purchase_cost" },
       {
         data: "product_list[]",
@@ -4918,7 +4948,7 @@
   });
   $("#supplier_sales_submit_button").click(function() {
     var id = $("#select_supplier_sales").val();
-    supplier_sales_table.ajax.url(`https://nafisa.selopian.us/supplier_sales_report/${id}/${$("#supplier_from_date").val()}/${$("#supplier_to_date").val()}`).load();
+    supplier_sales_table.ajax.url(nafisa_domain + `/supplier_sales_report/${id}/${$("#supplier_from_date").val()}/${$("#supplier_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   $("#supplier_sales_datatable tbody").on("click", "#details_supplier_modal_btn", function() {
@@ -4953,19 +4983,17 @@
     ],
     columns: [
       { data: "name" },
-      { data: "total_ordered" },
-      { data: "total_paid" },
+      { data: "total_orders" },
+      { data: "total_paid_amount" },
       { data: "total_due" },
-      { data: "total_number_of_orders" },
-      { data: "total_completed_orders" },
-      { data: "total_pending_orders" },
-      { data: "from" },
-      { data: "to" }
+      { data: "total_order_amount" },
+      { data: "start" },
+      { data: "finish" }
     ]
   });
   $("#supplier_due_submit_button").click(function() {
     var id = $("#select_supplier_sales").val();
-    supplier_due_table.ajax.url(`https://nafisa.selopian.us/supplier_due_report/${id}/${$("#supplier_due_from_date").val()}/${$("#supplier_due_date").val()}`).load();
+    supplier_due_table.ajax.url(nafisa_domain + `/supplier_due_report/${id}/${$("#supplier_due_from_date").val()}/${$("#supplier_due_date").val()}`).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   $.ajax({
@@ -4981,7 +5009,7 @@
   function formatData(d2) {
     let str = "";
     d2.products.forEach((item) => {
-      str += `<table class="table mb-0" style="background: #ead4c136; transition: .5s" ><tr><td class='ps-6'>Product Name:</td><td class='pe-12'>` + item.product_name + "</td></tr><td class='ps-6'>Buying Price:</td><td>" + item.buying_price + "</td></tr><td class='ps-6'>Total Units:</td><td>" + item.total_units_sold + "</td></tr><td class='ps-6'>Selling Price:</td><td>" + item.total_selling_price + "</td></tr><td class='ps-6'>Total Profit:</td><td>" + item.total_profit + "</td></tr><td><hr/></td></table>";
+      str += `<table class="table mb-0" style="background: #ead4c136; transition: .5s" ><tr><td class='ps-6'>Product Name:</td><td class='pe-12'>` + item.name + "</td></tr><td class='ps-6'>Buying Price:</td><td>" + item.buying_price + "</td></tr><td class='ps-6'>Total Units:</td><td>" + item.total_units_sold + "</td></tr><td class='ps-6'>Selling Price:</td><td>" + item.total_selling_price + "</td></tr><td class='ps-6'>Total Profit:</td><td>" + item.total_profit + "</td></tr><td><hr/></td></table>";
     });
     return str;
   }
@@ -5051,7 +5079,7 @@
   });
   $("#submit_product_sales_report").click(function() {
     var id = $("#select_branch_report_product_sales").val();
-    sales_report_table.ajax.url(`https://nafisa.selopian.us/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
+    sales_report_table.ajax.url(nafisa_domain + `/product_sales_report/${id}/${$("#product_sales_report_from_date").val()}/${$("#product_sales_report_customer_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   var category_wise_product_sales_report_table = $("#category_wise_product_sales_report_datatable").DataTable({
@@ -5081,7 +5109,7 @@
     ]
   });
   $("#submit_category_wise_product_sales_report").click(function() {
-    category_wise_product_sales_report_table.ajax.url(`https://nafisa.selopian.us/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
+    category_wise_product_sales_report_table.ajax.url(nafisa_domain + `/categorywise_product_sales_report/${$("#category_wise_product_sales_report_from_date").val()}/${$("#category_wise_product_sales_report_to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = "throw";
   });
   $.ajax({
@@ -5189,7 +5217,7 @@
       });
     } else {
       $(".revenue_datatable").css("display", "block");
-      revenue_table.ajax.url(`https://nafisa.selopian.us/revenue/${$("#company_select_length").val()}`).load();
+      revenue_table.ajax.url(nafisa_domain + `/revenue/${$("#company_select_length").val()}`).load();
       $.fn.dataTable.ext.errMode = "throw";
     }
   });
@@ -5203,7 +5231,7 @@
       });
     } else {
       $(".revenue_datatable_by_branch").css("display", "block");
-      revenue_table_by_branch.ajax.url(`https://nafisa.selopian.us/revenue/byBranch/${id}/${$("#branch_select_length").val()}`).load();
+      revenue_table_by_branch.ajax.url(nafisa_domain + `/revenue/byBranch/${id}/${$("#branch_select_length").val()}`).load();
       $.fn.dataTable.ext.errMode = "throw";
     }
   });
@@ -5217,8 +5245,72 @@
       });
     } else {
       $(".revenue_By_shop_datatable").css("display", "block");
-      revenue_table_by_shop.ajax.url(`https://nafisa.selopian.us/revenue/byShop/${id}/${$("#shop_select_length").val()}`).load();
+      revenue_table_by_shop.ajax.url(nafisa_domain + `/revenue/byShop/${id}/${$("#shop_select_length").val()}`).load();
       $.fn.dataTable.ext.errMode = "throw";
+    }
+  });
+  $("#login_button").click(function() {
+    let email_val = $("#login_email").val();
+    let password_val = $("#login_password").val();
+    let email = "admin@admin.com";
+    let password = "test123";
+    if (email_val === email && password_val === password) {
+      window.location = "dashboard.html";
+      document.cookie = "token=" + email + "; path=/; secure; sameSite=Lax";
+      notyf.success({
+        message: "You Are Successfully Login",
+        duration: 7e3,
+        icon: false
+      });
+    } else {
+      notyf.error({
+        message: "Email or password incorrect",
+        duration: 7e3,
+        icon: false
+      });
+    }
+  });
+  function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+      let c2 = ca[i];
+      while (c2.charAt(0) == " ") {
+        c2 = c2.substring(1);
+      }
+      if (c2.indexOf(name) == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+  if (!getCookie("token") && location.href.replace(/.*\/\/[^\/]*/, "") != "/index.html") {
+    window.location.replace("/index.html");
+  }
+  $("#log_out").click(function() {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    location.reload(true);
+  });
+  $.ajax({
+    url: nafisa_domain + "/revenue/3",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("#daily_revenue").text("BDT " + element.net_revenue);
+        $("#Today").text(element.time);
+      });
+    }
+  });
+  $.ajax({
+    url: nafisa_domain + "/revenue/2",
+    type: "GET",
+    success: function(data2) {
+      let purchase_branch = data2?.data.map((item) => item);
+      purchase_branch.forEach((element) => {
+        $("#monthly_revenue").text("BDT " + element.net_revenue);
+        $("#Monthly").text(element.time);
+      });
     }
   });
 })();
