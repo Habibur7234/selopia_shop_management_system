@@ -5447,7 +5447,7 @@ $("#purchase_transaction_form").on('submit', (function (e) {
 
 
 //init shop & branch  datatable and load data
-$('#purchase_transaction_dataTable').DataTable({
+let transaction_document_table=$('#purchase_transaction_dataTable').DataTable({
     order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/purchase_transaction',
@@ -5536,7 +5536,7 @@ $('#purchase_transaction_dataTable').DataTable({
         {
             data: 'transaction_document_url',
             render: function () {
-                return '<button id="brand_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#brand_image_modal">View</button>'
+                return '<button id="transaction_document_ur"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#purchase_transaction_modal">View</button>'
             }
         },
         {data: 'ref_comment'},
@@ -5546,6 +5546,20 @@ $('#purchase_transaction_dataTable').DataTable({
 
 
 //SALES ORDER FROM ==========================================================================================================
+
+
+
+
+$('#purchase_transaction_dataTable tbody').on('click', '#transaction_document_ur', function () {
+
+    rowData = transaction_document_table.row($(this).parents('tr')).data();
+
+    $("#purchase_image").attr("src", nafisa_domain + rowData.transaction_document_url);
+});
+
+
+
+
 
 
 $(document).ready(function () {
@@ -5815,7 +5829,7 @@ $("#sales_transaction_form").on('submit', (function (e) {
 
 
 //init shop & branch  datatable and load data
-$('#sales_transaction_dataTable').DataTable({
+let sales_transaction_table =$('#sales_transaction_dataTable').DataTable({
     order: [[1, 'desc']],
     ajax: {
         url: nafisa_domain + '/sales_transaction',
@@ -5904,12 +5918,22 @@ $('#sales_transaction_dataTable').DataTable({
         {
             data: 'transaction_document_url',
             render: function () {
-                return '<button id="brand_photo"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#brand_image_modal">View</button>'
+                return '<button id="sales_transaction"  class="btn btn-outline-gray-600" toggle="tooltip" title="details" type="button" data-bs-toggle="modal" data-bs-target="#sales_transaction_modal">View</button>'
             }
         },
         {data: 'ref_comment'},
 
     ]
+});
+
+
+
+
+$('#sales_transaction_dataTable tbody').on('click', '#sales_transaction', function () {
+
+    rowData = sales_transaction_table.row($(this).parents('tr')).data();
+
+    $("#sales_image").attr("src", nafisa_domain + rowData.transaction_document_url);
 });
 
 
