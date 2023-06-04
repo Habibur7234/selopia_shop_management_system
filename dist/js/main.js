@@ -3,7 +3,7 @@
   var rowIndex;
   var rowData;
   var notyf = new Notyf();
-  var nafisa_domain = "http://192.168.68.124:3005";
+  var nafisa_domain = "https://riyadshop.selopian.us";
   $.fn.dataTable.ext.errMode = "throw";
   var closeModalValue = (id) => {
     $(id).on("hidden.bs.modal", function(e) {

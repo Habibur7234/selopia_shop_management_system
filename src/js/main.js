@@ -1,7 +1,7 @@
 let rowIndex, rowData;
 const notyf = new Notyf();
 
-const nafisa_domain = 'http://192.168.68.124:3005'
+const nafisa_domain = 'https://riyadshop.selopian.us'
 
 $.fn.dataTable.ext.errMode = 'throw';
 
