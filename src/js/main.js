@@ -2104,7 +2104,7 @@ $("#Brand_post_form").on('submit', (function (e) {
 $('#Brand_dataTable tbody').on('click', '#brand_photo', function () {
 
     rowData = brand_table.row($(this).parents('tr')).data();
-    $("#brand_image").attr("src", rowData.logo_url);
+    $("#brand_image").attr("src",nafisa_domain+ rowData.logo_url);
 
 });
 
