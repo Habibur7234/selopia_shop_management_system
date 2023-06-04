@@ -2948,18 +2948,16 @@ let designation_table = $('#Designation_dataTable').DataTable({
         {
             data: '',
             render: function () {
-                return '<button   id="delete_categorybtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
+                return '<button   id="del_des"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>'
             }
         },
     ]
 });
 
 
-$("#add_kpi").click(function () {
-
-    $(this).text('Submitting');
+$("#Add_designation").click(function () {
     let addKpiModal = {
-        user_id: $("#kpi_user").val(),
+        name: $("#des_name").val(),
 
     };
 
@@ -2972,31 +2970,20 @@ $("#add_kpi").click(function () {
 
             if (data.status.code === 1) {
 
-                const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+                const modal = bootstrap.Modal.getInstance($("#add_designation_modal"));
                 modal.hide();
                 notyf.success({
                     message: data.status.message,
                     duration: 7000,
                     icon: false
                 });
-                let newRowIndex = kpi_table.row.add(d).draw();
-
+                designation_table.ajax.reload()
                 //Success Notification
 
-                $("#add_kpi").text('Submit');
-
-                //reset input Field
-                $('form :input').val('');
-                $('.input').val('');
-                kpi_table.search('');
-                // re-ordering to default
-                kpi_table.order([0, 'desc']).draw();
-                // highlighting newly added row
-                $(kpi_table.row(newRowIndex.index()).nodes()).addClass('selected');
             } else {
                 //Set default button text again
-                $("#add_kpi").text('Submit');
-                const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+                designation_table.ajax.reload()
+                const modal = bootstrap.Modal.getInstance($("#add_designation_modal"));
                 modal.hide();
                 //Notification
                 notyf.error({
@@ -3009,9 +2996,7 @@ $("#add_kpi").click(function () {
         error: function (data) {
             const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
             modal.hide();
-            //Set default button text again
-            $("#add_kpi").text('Submit');
-            // notification
+            designation_table.ajax.reload()
             notyf.error({
                 message: data.status.message,
                 duration: 7000,
@@ -3021,6 +3006,64 @@ $("#add_kpi").click(function () {
     });
 
 })
+
+
+//    DELETE button ------------------------------------------------
+$('#Designation_dataTable tbody').on('click', '#del_des', function () {
+    rowData = designation_table.row($(this).parents('tr')).data();
+    rowIndex = designation_table.row($(this).parents('tr')).index();
+});
+
+// DELETE Confirmation button
+$("#delete_designation").click(function () {
+
+    $.ajax({
+        url: nafisa_domain + '/user_designation/' + rowData.id,
+        type: 'DELETE',
+        dataType: "json",
+        success: function (data) {
+
+            if (data.status.code === 1) {
+
+
+                const modal = bootstrap.Modal.getInstance($("#delete_designation_modal"));
+                modal.hide();
+                designation_table.ajax.reload()
+                notyf.success({
+                    message: 'Designation  Deleted <strong>Successfully !</strong>',
+                    duration: 7000,
+                    icon: false
+                });
+
+
+            } else {
+                const modal = bootstrap.Modal.getInstance($("#delete_designation_modal"));
+                modal.hide();
+                designation_table.ajax.reload()
+                notyf.error({
+                    message: data.status.message,
+                    duration: 7000,
+                    icon: false
+                });
+                rowData = undefined;
+                rowIndex = undefined;
+            }
+
+        },
+        error: function (data) {
+            const modal = bootstrap.Modal.getInstance($("#delete_designation_modal"));
+            modal.hide();
+            designation_table.ajax.reload();
+            notyf.error({
+                message: data.status.message,
+                duration: 7000,
+                icon: false
+            });
+        }
+
+
+    });
+});
 
 
 //User Profile================================================================================================================
@@ -3185,10 +3228,8 @@ $('#userProfile_datatable tbody').on('click', '#nidPhoto_view', function () {
 
 $('#userProfile_datatable tbody').on('click', '#profilePhoto_view', function () {
     rowData = userProfile_table.row($(this).parents('tr')).data();
-    $("#profile_img_link").attr("src",nafisa_domain+ rowData.profile_photo_url);
+    $("#profile_img_link").attr("src", nafisa_domain + rowData.profile_photo_url);
 });
-
-
 
 
 $.ajax({
@@ -3307,8 +3348,6 @@ $("#user_profile_post_form").on('submit', (function (e) {
     });
 }));
 /* ### Post Data End ### */
-
-
 
 
 $('#userProfile_datatable tbody').on('click', '#update_userProfile_btn', function () {
@@ -6559,13 +6598,13 @@ $("#due_customer_submit_button").click(function () {
     let toData = $("#to_date").val();
 
 
- if (!fromData && !toData){
-     notyf.error({
-         message: 'Please Select All Field',
-         duration: 3000,
-         icon: false
-     });
- }
+    if (!fromData && !toData) {
+        notyf.error({
+            message: 'Please Select All Field',
+            duration: 3000,
+            icon: false
+        });
+    }
 
     due_data_table.ajax.url(nafisa_domain + `/customer_due_report/${id}/${$("#from_date").val()}/${$("#to_date").val()}`).load();
     $.fn.dataTable.ext.errMode = 'throw';
@@ -7212,42 +7251,33 @@ $("#shop_revenue_submit_button").click(function () {
 });
 
 
-
-
-
-
-
 $("#login_button").click(function () {
 
-    let email_val= $("#login_email").val();
-     let password_val = $("#login_password").val();
+    let email_val = $("#login_email").val();
+    let password_val = $("#login_password").val();
 
-    let email='admin@admin.com'
-     let password='test123'
+    let email = 'admin@admin.com'
+    let password = 'test123'
 
-     if (email_val===email && password_val===password){
-         window.location="dashboard.html";
-         document.cookie = "token" + "=" + email +  "; path=/; secure; sameSite=Lax";
+    if (email_val === email && password_val === password) {
+        window.location = "dashboard.html";
+        document.cookie = "token" + "=" + email + "; path=/; secure; sameSite=Lax";
 
-         notyf.success({
-             message: "You Are Successfully Login",
-             duration: 7000,
-             icon: false
-         });
+        notyf.success({
+            message: "You Are Successfully Login",
+            duration: 7000,
+            icon: false
+        });
 
-     }else {
-         notyf.error({
-             message: "Email or password incorrect",
-             duration: 7000,
-             icon: false
-         });
-     }
+    } else {
+        notyf.error({
+            message: "Email or password incorrect",
+            duration: 7000,
+            icon: false
+        });
+    }
 
 });
-
-
-
-
 
 
 function getCookie(cname) {
@@ -7267,12 +7297,6 @@ function getCookie(cname) {
 }
 
 
-
-
-
-
-
-
 if (!getCookie("token") && location.href.replace(/.*\/\/[^\/]*/, '') != "/index.html") {
     window.location.replace("/index.html");
 }
@@ -7284,31 +7308,18 @@ $("#log_out").click(function () {
 });
 
 
-
-
-
-
-
-
-
 $.ajax({
     url: nafisa_domain + '/revenue/3',
     type: 'GET',
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
-            $("#daily_revenue").text("BDT "+element.net_revenue);
+            $("#daily_revenue").text("BDT " + element.net_revenue);
             $("#Today").text(element.time);
 
         });
     }
 });
-
-
-
-
-
-
 
 
 $.ajax({
@@ -7317,7 +7328,7 @@ $.ajax({
     success: function (data) {
         let purchase_branch = data?.data.map(item => item)
         purchase_branch.forEach((element) => {
-            $("#monthly_revenue").text("BDT "+element.net_revenue);
+            $("#monthly_revenue").text("BDT " + element.net_revenue);
             $("#Monthly").text(element.time);
 
         });

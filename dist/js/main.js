@@ -1972,15 +1972,14 @@
       {
         data: "",
         render: function() {
-          return '<button   id="delete_categorybtn"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
+          return '<button   id="del_des"  class="btn btn-danger" toggle="tooltip" title="Delete" data-bs-toggle="modal"   data-bs-target="#delete_designation_modal"><svg class="icon icon-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>';
         }
       }
     ]
   });
-  $("#add_kpi").click(function() {
-    $(this).text("Submitting");
+  $("#Add_designation").click(function() {
     let addKpiModal = {
-      user_id: $("#kpi_user").val()
+      name: $("#des_name").val()
     };
     $.ajax({
       url: nafisa_domain + "/user_designation",
@@ -1989,23 +1988,17 @@
       contentType: "application/json",
       success: function(data2) {
         if (data2.status.code === 1) {
-          const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+          const modal = bootstrap.Modal.getInstance($("#add_designation_modal"));
           modal.hide();
           notyf.success({
             message: data2.status.message,
             duration: 7e3,
             icon: false
           });
-          let newRowIndex = kpi_table.row.add(d).draw();
-          $("#add_kpi").text("Submit");
-          $("form :input").val("");
-          $(".input").val("");
-          kpi_table.search("");
-          kpi_table.order([0, "desc"]).draw();
-          $(kpi_table.row(newRowIndex.index()).nodes()).addClass("selected");
+          designation_table.ajax.reload();
         } else {
-          $("#add_kpi").text("Submit");
-          const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
+          designation_table.ajax.reload();
+          const modal = bootstrap.Modal.getInstance($("#add_designation_modal"));
           modal.hide();
           notyf.error({
             message: data2.status.message,
@@ -2017,7 +2010,51 @@
       error: function(data2) {
         const modal = bootstrap.Modal.getInstance($("#add_kpi_modal"));
         modal.hide();
-        $("#add_kpi").text("Submit");
+        designation_table.ajax.reload();
+        notyf.error({
+          message: data2.status.message,
+          duration: 7e3,
+          icon: false
+        });
+      }
+    });
+  });
+  $("#Designation_dataTable tbody").on("click", "#del_des", function() {
+    rowData = designation_table.row($(this).parents("tr")).data();
+    rowIndex = designation_table.row($(this).parents("tr")).index();
+  });
+  $("#delete_designation").click(function() {
+    $.ajax({
+      url: nafisa_domain + "/user_designation/" + rowData.id,
+      type: "DELETE",
+      dataType: "json",
+      success: function(data2) {
+        if (data2.status.code === 1) {
+          const modal = bootstrap.Modal.getInstance($("#delete_designation_modal"));
+          modal.hide();
+          designation_table.ajax.reload();
+          notyf.success({
+            message: "Designation  Deleted <strong>Successfully !</strong>",
+            duration: 7e3,
+            icon: false
+          });
+        } else {
+          const modal = bootstrap.Modal.getInstance($("#delete_designation_modal"));
+          modal.hide();
+          designation_table.ajax.reload();
+          notyf.error({
+            message: data2.status.message,
+            duration: 7e3,
+            icon: false
+          });
+          rowData = void 0;
+          rowIndex = void 0;
+        }
+      },
+      error: function(data2) {
+        const modal = bootstrap.Modal.getInstance($("#delete_designation_modal"));
+        modal.hide();
+        designation_table.ajax.reload();
         notyf.error({
           message: data2.status.message,
           duration: 7e3,
@@ -2442,7 +2479,7 @@
       user_id: $("#kpi_user").val(),
       target_sales_volume: $("#sales_kpi_volume").val()
     };
-    let d2 = {
+    let d = {
       user_id: {
         id: 3,
         profile_user_id: {
@@ -2468,7 +2505,7 @@
             duration: 7e3,
             icon: false
           });
-          let newRowIndex = kpi_table.row.add(d2).draw();
+          let newRowIndex = kpi_table.row.add(d).draw();
           $("#add_kpi").text("Submit");
           $("form :input").val("");
           $(".input").val("");
@@ -4689,9 +4726,9 @@
       { data: "event_time" }
     ]
   });
-  function format(d2) {
+  function format(d) {
     let str = "";
-    d2.formula_ingredients.forEach((item) => {
+    d.formula_ingredients.forEach((item) => {
       str += `<table class="table mb-0" style="background: #ead4c136"><tr><td class='ps-6'>Raw Material:</td><td class='pe-12'>` + item.raw_mat_id.name + "</td></tr><td class='ps-6'>Percentage:</td><td>" + item.percentage + "</td></tr><td class='ps-6'>Unit:</td><td>" + item.no_of_unit + "</td></tr><td><hr/></td></table>";
     });
     return str;
@@ -5006,9 +5043,9 @@
       });
     }
   });
-  function formatData(d2) {
+  function formatData(d) {
     let str = "";
-    d2.products.forEach((item) => {
+    d.products.forEach((item) => {
       str += `<table class="table mb-0" style="background: #ead4c136; transition: .5s" ><tr><td class='ps-6'>Product Name:</td><td class='pe-12'>` + item.name + "</td></tr><td class='ps-6'>Buying Price:</td><td>" + item.buying_price + "</td></tr><td class='ps-6'>Total Units:</td><td>" + item.total_units_sold + "</td></tr><td class='ps-6'>Selling Price:</td><td>" + item.total_selling_price + "</td></tr><td class='ps-6'>Total Profit:</td><td>" + item.total_profit + "</td></tr><td><hr/></td></table>";
     });
     return str;
