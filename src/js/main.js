@@ -1,7 +1,7 @@
 let rowIndex, rowData;
 const notyf = new Notyf();
 
-const nafisa_domain = 'https://riyadshop.selopian.us'
+const nafisa_domain = 'http://192.168.68.124:3005'
 
 $.fn.dataTable.ext.errMode = 'throw';
 
@@ -3984,7 +3984,7 @@ let attendance_table = $('#attendance_datatable').DataTable({
 let product_table = $('#product_dataTable').DataTable({
     order: [[1, 'desc']],
     ajax: {
-        url: nafisa_domain + '/products',
+        url: nafisa_domain + '/products/',
         dataSrc: 'data',
     },
     order: [[0, 'desc']],
@@ -4222,7 +4222,7 @@ $("#product_post_form").on('submit', (function (e) {
 
     e.preventDefault();
     $.ajax({
-        url: nafisa_domain + '/products',
+        url: nafisa_domain + '/products/',
         type: "POST",
         data: new FormData(this),
         contentType: false,
@@ -5259,7 +5259,7 @@ $(document).ready(function () {
 
 //init Unit--------------------------------------------
 $.ajax({
-    url: nafisa_domain + '/products',
+    url: nafisa_domain + '/products/',
     type: 'GET',
     success: function (data) {
         let product_parents = data?.data.map(item => item)
@@ -5642,7 +5642,7 @@ $(document).ready(function () {
 
 //init Unit--------------------------------------------
 $.ajax({
-    url: nafisa_domain + '/products',
+    url: nafisa_domain + '/products/',
     type: 'GET',
     success: function (data) {
         let product_parents = data?.data.map(item => item)

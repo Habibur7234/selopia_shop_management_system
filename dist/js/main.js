@@ -3,7 +3,7 @@
   var rowIndex;
   var rowData;
   var notyf = new Notyf();
-  var nafisa_domain = "https://riyadshop.selopian.us";
+  var nafisa_domain = "http://192.168.68.124:3005";
   $.fn.dataTable.ext.errMode = "throw";
   var closeModalValue = (id) => {
     $(id).on("hidden.bs.modal", function(e) {
@@ -2730,7 +2730,7 @@
   var product_table = $("#product_dataTable").DataTable({
     order: [[1, "desc"]],
     ajax: {
-      url: nafisa_domain + "/products",
+      url: nafisa_domain + "/products/",
       dataSrc: "data"
     },
     order: [[0, "desc"]],
@@ -2931,7 +2931,7 @@
     };
     e.preventDefault();
     $.ajax({
-      url: nafisa_domain + "/products",
+      url: nafisa_domain + "/products/",
       type: "POST",
       data: new FormData(this),
       contentType: false,
@@ -3754,7 +3754,7 @@
     });
   });
   $.ajax({
-    url: nafisa_domain + "/products",
+    url: nafisa_domain + "/products/",
     type: "GET",
     success: function(data2) {
       let product_parents = data2?.data.map((item) => item);
@@ -4075,7 +4075,7 @@
     });
   });
   $.ajax({
-    url: nafisa_domain + "/products",
+    url: nafisa_domain + "/products/",
     type: "GET",
     success: function(data2) {
       let product_parents = data2?.data.map((item) => item);
